@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  domain: MyString
+  comment: MyText
+  wafwoof_result: MyText
+  dig_result: MyText
+
+two:
+  name: MyString
+  domain: MyString
+  comment: MyText
+  wafwoof_result: MyText
+  dig_result: MyText
