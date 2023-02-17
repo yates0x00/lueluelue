@@ -1,0 +1,2 @@
+class IpMapping < ApplicationRecord
+end

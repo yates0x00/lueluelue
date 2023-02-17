@@ -10,15 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_14_045011) do
-  create_table "servers", charset: "utf8", force: :cascade do |t|
-    t.string "name"
-    t.string "domain"
-    t.text "comment"
-    t.text "wafwoof_result"
-    t.text "dig_result"
+ActiveRecord::Schema[7.0].define(version: 2023_02_16_005709) do
+  create_table "ip_mappings", charset: "utf8", force: :cascade do |t|
+    t.integer "ip_id"
+    t.integer "server_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ips", charset: "utf8", force: :cascade do |t|
+    t.string "ip"
+    t.text "nmap_result", size: :long
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "servers", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "name"
+    t.string "domain"
+    t.text "comment", size: :medium
+    t.text "wafwoof_result", size: :medium
+    t.text "dig_result", size: :medium
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "pure_ip"
+    t.text "title", size: :medium
+    t.string "os_type"
+    t.string "web_server"
+    t.string "web_framework"
+    t.string "web_language"
+    t.text "observer_ward_result", size: :medium
+    t.text "ehole_result", size: :medium
+    t.integer "level", comment: "level 0 is the most important"
+    t.text "wappalyzer_result", size: :medium
   end
 
 end

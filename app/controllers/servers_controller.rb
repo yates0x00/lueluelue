@@ -3,7 +3,18 @@ class ServersController < ApplicationController
 
   # GET /servers or /servers.json
   def index
-    @servers = Server.all
+    @servers = Server
+    @servers = @servers.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
+    @servers = @servers.where("wafwoof_result not like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
+
+    @servers = @servers.where("wappalyzer_result is not null") if params[:is_detected_by_wappalyzer].present? && params[:is_detected_by_wappalyzer] == 'yes'
+    @servers = @servers.where("ehole_result is not null") if  params[:is_detected_by_ehole].present? && params[:is_detected_by_ehole] == 'yes'
+    @servers = @servers.where("the_harvester_result is not null") if params[:is_detected_by_the_harvester].present? && params[:is_detected_by_the_harvester] == 'yes'
+    @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
+    @servers = @servers.where("level = ?") if params[:level].present?
+    @servers = @servers.order(params["order_by"] || "id desc")
+      .order('level asc')
+      .page(params[:page]).per(500)
   end
 
   # GET /servers/1 or /servers/1.json

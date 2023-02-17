@@ -1,11 +1,17 @@
-source "https://rubygems.org"
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+#source "https://rubygems.org"
+source "https://gems.ruby-china.com"
 
 ruby "3.0.3"
 
+gem 'httparty'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4", ">= 7.0.4.2"
 gem 'mysql2'
+gem 'kaminari'
+
+gem 'nokogiri'
+gem 'mechanize'
+gem 'optparse'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
