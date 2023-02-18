@@ -1,0 +1,69 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Servers</h1>
+<%= form_tag '', method: 'GET' do |f| %>
+  name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
+<!--
+  has_waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>
+  wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]  ) %>
+  ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]  ) %>
+  ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..' %>
+  the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]  ) %>
+  nmap: <%= select_tag "is_detected_by_nmap", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap"]  ) %>
+  level: <%= text_field_tag "level", params[:level], placeholder: '0,1,2... small is more important' %>
+  order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
+-->
+  <br/>
+  <%= submit_tag 'search' %>
+<% end %>
+
+<%= paginate @ips %>, total: <%= @total_count %>
+<table class='table table-bordered table-hovered table-striped'>
+  <tr>
+    <td style='width:50px'> id </td>
+    <td style='width: 150px'> ip </td>
+    <td style='width: 250px'> domains </td>
+    <td style='width: 1100px'> nmap_result</td>
+    <td style='width: 150px'> comment </td>
+    <td style='width: 150px'> time </td>
+  </tr>
+  <% @ips.each do |ip| %>
+  <tr>
+    <td> <%= ip.id %> </td>
+    <td> <%= ip.ip %> </td>
+    <td>
+      <% ip.servers.each do |server| %>
+        <%= link_to server.name, server %> <br/>
+      <% end %>
+      (<%= ip.servers.count %>)
+    </td>
+    <td>
+      <pre><%= ip.nmap_result %>
+      </pre>
+    </td>
+    <td><%# ip.comment %> </td>
+    <td><%= ip.created_at %> <br/><%= ip.created_at %> </td>
+    <td>
+      <%= link_to "Show", ip %>
+      <%= link_to "Edit", ip %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<%= paginate @ips %>
+
+<style>
+table {
+  border: 1px solid black;
+  table-layout: fixed;
+  width: 200px;
+}
+
+th,
+td {
+  border: 1px solid black;
+  width: 100px;
+  overflow: hidden;
+}
+</style>
