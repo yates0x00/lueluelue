@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_16_005709) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_17_013308) do
   create_table "ip_mappings", charset: "utf8", force: :cascade do |t|
     t.integer "ip_id"
     t.integer "server_id"
@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_16_005709) do
     t.text "ehole_result", size: :medium
     t.integer "level", comment: "level 0 is the most important"
     t.text "wappalyzer_result", size: :medium
+    t.text "the_harvester_result", size: :long
   end
 
 end

@@ -4,14 +4,17 @@ class ServersController < ApplicationController
   # GET /servers or /servers.json
   def index
     @servers = Server
+    @servers = @servers.where("name like '%#{params[:name]}%'") if params[:name].present?
     @servers = @servers.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
     @servers = @servers.where("wafwoof_result not like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
-
     @servers = @servers.where("wappalyzer_result is not null") if params[:is_detected_by_wappalyzer].present? && params[:is_detected_by_wappalyzer] == 'yes'
-    @servers = @servers.where("ehole_result is not null") if  params[:is_detected_by_ehole].present? && params[:is_detected_by_ehole] == 'yes'
+    @servers = @servers.where("ehole_result is not null") if params[:is_detected_by_ehole].present? && params[:is_detected_by_ehole] == 'yes'
+    @servers = @servers.where("ehole_result like '%#{params[:ehole_text]}%'") if params[:ehole_text].present?
     @servers = @servers.where("the_harvester_result is not null") if params[:is_detected_by_the_harvester].present? && params[:is_detected_by_the_harvester] == 'yes'
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("level = ?") if params[:level].present?
+    @total_count = @servers.count
+
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
       .page(params[:page]).per(500)

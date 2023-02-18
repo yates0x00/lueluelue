@@ -2,30 +2,33 @@
 
 <h1>Servers</h1>
 <%= form_tag servers_path, method: 'GET' do |f| %>
+  name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
   has_waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>
   wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]  ) %>
   ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]  ) %>
+  ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..' %>
   the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]  ) %>
   nmap: <%= select_tag "is_detected_by_nmap", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap"]  ) %>
   level: <%= text_field_tag "level", params[:level], placeholder: '0,1,2... small is more important' %>
   order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
-  <%= submit_tag %>
+  <br/>
+  <%= submit_tag 'search' %>
 <% end %>
 
-<%= paginate @servers %>, total: <%= @servers.count %>
+<%= paginate @servers %>, total: <%= @total_count %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>
-    <td style='width:50px'> name </td>
+    <td style='width: 150px'> name </td>
     <td style='width: 200px'> dig_result</td>
     <td style='width: 200px'> wafwoof_result</td>
     <td style='width: 400px'> wappalyzer_result </td>
     <td style='width: 200px'> ehole_result</td>
-    <td style='width: 50px'> nmap_result</td>
+    <td style='width: 150px'> nmap_result</td>
     <td style='width: 150px'> title </td>
     <td style='width: 50px'> level </td>
-    <td style='width: 50px'> comment </td>
-    <td style='width: 50px'> time </td>
+    <td style='width: 150px'> comment </td>
+    <td style='width: '> time </td>
   </tr>
   <% @servers.each do |server| %>
   <tr>
