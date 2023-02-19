@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_18_123740) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_19_003835) do
   create_table "ip_mappings", charset: "utf8", force: :cascade do |t|
     t.integer "ip_id"
     t.integer "server_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_123740) do
     t.text "nmap_result", size: :long
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "location"
   end
 
   create_table "servers", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
