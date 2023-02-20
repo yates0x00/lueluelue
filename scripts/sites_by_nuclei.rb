@@ -7,7 +7,7 @@ require 'httparty'
 def run servers, is_https = true
   puts "=servers to run:#{servers.count}"
 
-  servers.each_slice(20) do |servers_in_20|
+  servers.each_slice(10) do |servers_in_20|
 
     threads = []
     servers_in_20.each do |server|
@@ -38,6 +38,9 @@ def run servers, is_https = true
   end
 end
 
-run Server.where("name like '%beiersdorf%'"), true
-run Server.where("name like '%beiersdorf%'"), false
+#run Server.where("name like '%beiersdorf%'"), true
+#run Server.where("name like '%beiersdorf%'"), false
+
+run Server.where("name not like '%beiersdorf%'"), true
+run Server.where("name not like '%beiersdorf%'"), false
 
