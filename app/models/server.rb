@@ -2,6 +2,7 @@ class Server < ApplicationRecord
   has_many :ip_mappings
   has_many :ips, through: :ip_mappings
   has_many :emails
+  belongs_to :project, optional: true
 
   def short_text_for_wappalyzer_result
     return '-' if wappalyzer_result.blank?
