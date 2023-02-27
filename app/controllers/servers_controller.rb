@@ -81,6 +81,6 @@ class ServersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def server_params
-      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result)
+      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language, :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result, :nuclei_manual_result, :domain_protocal)
     end
 end
