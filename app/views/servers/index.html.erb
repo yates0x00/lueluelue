@@ -38,7 +38,7 @@ total: <%= @total_count %>
     <td style='width: '> operations</td>
   </tr>
   <% @servers.each do |server| %>
-  <tr>
+    <tr onclick='window.location.href = "/servers/<%= server.id %>";'>
     <td> <%= server.id %> </td>
     <td>
       <%= server.name %>
