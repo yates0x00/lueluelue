@@ -13,14 +13,28 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-default" role="navigation" style="text-align: center;">
-      <span style="line-height: 50px;">
-      <%= link_to "servers", servers_path %>
-      <%= link_to "ips", ips_path %>
-      <%= link_to "emails", emails_path %>
-      <%= link_to "projects", projects_path %>
-      <span>
-    </nav>
+    <% if manager_signed_in? %>
+      <nav class="navbar navbar-default" role="navigation" style="text-align: center;">
+        <span style="line-height: 50px;">
+          <%= link_to "servers", servers_path, class: 'menu' %>
+          <%= link_to "ips", ips_path, class: 'menu' %>
+          <%= link_to "emails", emails_path, class: 'menu' %>
+          <%= link_to "projects", projects_path, class: 'menu' %>
+        </span>
+        <ul class="nav navbar-nav" style='float:right'>
+          <li><%= link_to "欢迎你：#{current_manager.try :email}" %></li>
+          <li>
+            <%= link_to '退出', destroy_manager_session_path, :method => :delete  %>
+          </li>
+        </ul>
+      </nav>
+    <% else %>
+      <ul class="nav navbar-nav" style='float:right'>
+        <li>
+          <%= link_to '登陆' , '/managers/sign_in', :method => :get%>
+        </li>
+      </ul>
+    <% end %>
 
     <%= yield %>
   </body>

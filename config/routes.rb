@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root "servers#index"
+  devise_for :managers
   resources :projects
   resources :servers
   resources :emails
@@ -7,7 +9,4 @@ Rails.application.routes.draw do
     end
   end
   resources :ip_mappings
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

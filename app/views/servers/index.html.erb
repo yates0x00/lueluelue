@@ -78,7 +78,7 @@ total: <%= @total_count %>
       <%= server.remove_ansi_color server.nuclei_http_result %>
     </td>
     <td>
-      <%= server.domain_protocal %>
+      <%= server.domain_protocal rescue '' %>
     </td>
     <td>
       <%= link_to "Show", server %>
