@@ -31,6 +31,29 @@ class ServersController < ApplicationController
     @server = Server.new
   end
 
+  def new_some_servers
+  end
+
+  def create_some_servers
+    @server = Server.new
+    params[:names].split("\n").each do |temp_name|
+      Rails.logger.info "==== create temp_name #{temp_name}"
+      if temp_name.include?('https://')
+        name = temp_name.split('https://')
+        @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
+      elsif
+        name = temp_name.split('http://')
+        @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
+      end
+    end
+
+    if @server.save
+      redirect_to servers_url, notice: '操作成功'
+    else
+      render :new
+    end
+  end
+
   # GET /servers/1/edit
   def edit
   end

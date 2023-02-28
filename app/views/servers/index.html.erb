@@ -22,7 +22,8 @@
   <%= submit_tag 'search', class: '' %>
 <% end %>
 <br/>
-total: <%= @total_count %>
+total: <%= @total_count %><br/>
+<%= link_to "new some servers", new_some_servers_servers_path, target: '_blank' %><br/>
 <%= paginate @servers %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
@@ -82,7 +83,7 @@ total: <%= @total_count %>
     </td>
     <td>
       <%= link_to "Show", server %>
-      <%= link_to "Edit", server %>
+      <%= link_to "Edit", edit_server_path(server), target: '_blank' %>
     </td>
   </tr>
   <% end %>

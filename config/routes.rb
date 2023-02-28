@@ -10,10 +10,17 @@ Rails.application.routes.draw do
   end
 
   resources :projects
-  resources :servers
+  resources :servers do
+    collection do
+      get :new_some_servers
+      post :create_some_servers
+    end
+  end
   resources :emails
   resources :ips do
     collection do
+      get :new_some_ips
+      post :create_some_ips
     end
   end
   resources :ip_mappings
