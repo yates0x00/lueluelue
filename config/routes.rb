@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
   root "servers#index"
-  devise_for :managers
+  devise_for :managers, controllers: {
+    registrations: 'managers/registrations',
+    passwords: 'managers/passwords',
+    sessions: 'managers/sessions'
+  }
+  devise_scope :manager do
+    get '/managers/sign_out' => 'devise/sessions#destroy'
+  end
+
   resources :projects
   resources :servers
   resources :emails
