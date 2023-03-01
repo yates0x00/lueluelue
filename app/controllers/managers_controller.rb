@@ -12,4 +12,8 @@ class ManagersController < ApplicationController
     end
   end
 
+  def new
+    @manager = Manager.new
+  end
+
 end

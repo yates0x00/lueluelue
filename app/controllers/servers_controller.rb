@@ -5,6 +5,7 @@ class ServersController < ApplicationController
   def index
     @servers = Server
     @servers = @servers.where("name like '%#{params[:name]}%'") if params[:name].present?
+    @servers = @servers.where('project_id = ? ', params[:project_id]) if params[:project_id].present?
     @servers = @servers.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
     @servers = @servers.where("wafwoof_result not like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
     @servers = @servers.where("wappalyzer_result is not null") if params[:is_detected_by_wappalyzer].present? && params[:is_detected_by_wappalyzer] == 'yes'
@@ -37,12 +38,11 @@ class ServersController < ApplicationController
   def create_some_servers
     @server = Server.new
     params[:names].split("\n").each do |temp_name|
-      Rails.logger.info "==== create temp_name #{temp_name}"
       if temp_name.include?('https://')
-        name = temp_name.split('https://')
+        name = temp_name.split("https://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
       elsif
-        name = temp_name.split('http://')
+        name = temp_name.split("http://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
       end
     end
@@ -104,6 +104,6 @@ class ServersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def server_params
-      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language, :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result, :nuclei_manual_result, :domain_protocal)
+      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language, :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result, :nuclei_manual_result, :domain_protocal, :project_id)
     end
 end

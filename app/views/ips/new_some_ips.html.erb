@@ -1,5 +1,5 @@
 <h1>new some ips</h1>
 <%= form_tag create_some_ips_ips_path, method: :post do %>
-  ips: <%= text_area_tag :ips %></br>
+  ips: <%= text_area_tag :ips, :"", placeholder: "123.123.123.123\n 43.43.43.43\n 5.5.5.5\n" %></br>
   <%= submit_tag '新建', class: "form_submit", class: 'btn btn-secondary btn-sm fa-input' %>
 <% end %>

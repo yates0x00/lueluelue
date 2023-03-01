@@ -6,6 +6,8 @@
   name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
   ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..' %>
   <br/>
+  <label>search by project:</label> <br/>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name) %>
   <br/>
   <label>search by detect status:</label> <br/>
   if has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>
@@ -44,6 +46,8 @@ total: <%= @total_count %><br/>
     <td>
       <%= server.name %>
       <br/>
+      project name: <%= server.project.try(:name) %><br/>
+      project ID: <%= server.project_id rescue '' %><br/>
       comment: <%= server.comment %> <br/>
       level: <%= server.level %> <br/>
       created: <%= server.created_at %> <br/>
