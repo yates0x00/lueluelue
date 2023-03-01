@@ -1,12 +1,15 @@
 <div id="<%= dom_id project %>">
-  <p>
-    <strong>Name:</strong>
-    <%= project.name %>
-  </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= project.description %>
-  </p>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">Name:</th>
+      <td><%= project.description %></td>
+    </tr>
+
+    <tr>
+      <th>Description:</th>
+      <td><%= project.name %></td>
+    </tr>
+  </table>
 
 </div>

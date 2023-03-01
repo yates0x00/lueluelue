@@ -1,5 +1,5 @@
 <h1>new some servers</h1>
 <%= form_tag create_some_servers_servers_path, method: :post do %>
-  names: <%= text_area_tag :names, :"", placeholder: "https://google.com\n https://help.google.com\n" %></br>
+  names: <%= text_area_tag :names, :"", placeholder: "https://google.com\nhttps://help.google.com\n", class: 'form-control', rows: 20 %></br>
   <%= submit_tag '新建', class: "form_submit", class: 'btn btn-secondary btn-sm fa-input' %>
 <% end %>

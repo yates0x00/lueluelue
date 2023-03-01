@@ -2,13 +2,54 @@
 
 <h1>Emails</h1>
 
+<%= form_tag emails_path, method: 'GET' do |f| %>
+  <label>search by project:</label> <br/>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name) %>
+  <br/>
+  <label>search by server:</label> <br/>
+  Server：<%= select_tag :server_id, options_from_collection_for_select(Server.all, :id, :name) %>
+  <br/>
+  <%= submit_tag 'search' %>
+<% end %>
 <div id="emails">
-  <% @emails.each do |email| %>
-    <%= render email %>
-    <p>
-      <%= link_to "Show this email", email %>
-    </p>
-  <% end %>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 100px;">
+        id
+      </th>
+      <th>
+        address
+      </th>
+      <th>
+        project
+      </th>
+      <th>
+        server
+      </th>
+      <th>
+        operations
+      </th>
+    </tr>
+    <% @emails.each do |email| %>
+      <tr>
+        <th>
+          <%= email.id %>
+        </th>
+        <th>
+          <%= email.address %>
+        </th>
+        <th>
+          <%= email.project.try(:name) %>
+        </th>
+        <th>
+          <%= email.server.try(:name) %>
+        </th>
+        <td>
+          <%= link_to "Show this email", email %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 </div>
 
 <%= link_to "New email", new_email_path %>

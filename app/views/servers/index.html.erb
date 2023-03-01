@@ -21,7 +21,7 @@
   level: <%= text_field_tag "level", params[:level], placeholder: '0,1,2... small is more important' %>
   order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
   <br/>
-  <%= submit_tag 'search', class: '' %>
+  <%= submit_tag 'search' %>
 <% end %>
 <br/>
 total: <%= @total_count %><br/>

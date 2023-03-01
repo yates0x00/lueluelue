@@ -25,7 +25,7 @@
         <%= form.label :project_id, style: "display: block" %>
       </th>
       <td>
-        <%= form.select "project_id", options_from_collection_for_select(Project.all, :id, :name), class: 'form-control' %>
+        <%= form.select "project_id", options_from_collection_for_select(Project.all, :id, :name), {}, {class: 'form-control'} %>
       </td>
     </tr>
     <tr>
@@ -41,7 +41,7 @@
         <%= form.label :comment, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :comment, class: 'form-control' %>
+        <%= form.text_field :comment, class: 'form-control' %>
       </td>
     </tr>
     <tr>
@@ -49,7 +49,7 @@
         <%= form.label :wafwoof_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :wafwoof_result, class: 'form-control' %>
+        <%= form.text_area :wafwoof_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -57,7 +57,7 @@
         <%= form.label :dig_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :dig_result, class: 'form-control' %>
+        <%= form.text_area :dig_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
 
@@ -66,7 +66,7 @@
         <%= form.label :dig_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :dig_result, class: 'form-control' %>
+        <%= form.text_area :dig_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@
         <%= form.label :observer_ward_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :observer_ward_result, class: 'form-control' %>
+        <%= form.text_area :observer_ward_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@
         <%= form.label :ehole_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :ehole_result, class: 'form-control' %>
+        <%= form.text_area :ehole_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -147,7 +147,7 @@
         <%= form.label :wappalyzer_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :wappalyzer_result, class: 'form-control' %>
+        <%= form.text_area :wappalyzer_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -155,7 +155,7 @@
         <%= form.label :the_harvester_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :the_harvester_result, class: 'form-control' %>
+        <%= form.text_area :the_harvester_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -163,7 +163,7 @@
         <%= form.label :nuclei_https_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :nuclei_https_result, class: 'form-control' %>
+        <%= form.text_area :nuclei_https_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -171,7 +171,7 @@
         <%= form.label :nuclei_http_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :nuclei_http_result, class: 'form-control' %>
+        <%= form.text_area :nuclei_http_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -179,7 +179,7 @@
         <%= form.label :nuclei_manual_result, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :nuclei_manual_result, class: 'form-control' %>
+        <%= form.text_area :nuclei_manual_result, class: 'form-control', rows: 10 %>
       </td>
     </tr>
     <tr>
@@ -187,7 +187,7 @@
         <%= form.label :domain_protocal, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :domain_protocal %>
+        <%= form.select :domain_protocal, options_for_select(["https","http"]), {}, {class: 'form-control'} %>
       </td>
     </tr>
 

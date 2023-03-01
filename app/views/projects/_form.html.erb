@@ -11,17 +11,24 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        <%= form.label :name, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :name, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th style="width: 200px;">
+        <%= form.label :description, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :description, class: 'form-control', rows: 5 %>
+      </td>
+    </tr>
+  </table>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= form.submit %>
 <% end %>

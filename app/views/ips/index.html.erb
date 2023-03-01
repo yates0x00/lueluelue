@@ -2,6 +2,12 @@
 <h1>Ips</h1>
 <%= form_tag '', method: 'GET' do |f| %>
   name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
+  <label>search by project:</label> <br/>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name) %>
+  <br/>
+  <label>search by server:</label> <br/>
+  Server：<%= select_tag :server_id, options_from_collection_for_select(Server.all, :id, :name) %>
+  <br/>
 <!--
   has_waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>
   wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]  ) %>
@@ -17,7 +23,7 @@
 <% end %>
 
 <%= paginate @ips %>, total: <%= @total_count %>,
-<%= link_to "new some ips", new_some_ips_ips_path %>
+<%= link_to "new some ips", new_some_ips_ips_path, target: '_blank' %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>

@@ -4,6 +4,9 @@ class EmailsController < ApplicationController
   # GET /emails or /emails.json
   def index
     @emails = Email.all
+    @emails = @emails.where('server_id = ? ', params[:server_id]) if params[:server_id].present?
+    @emails = @emails.where('project_id = ? ', params[:project_id]) if params[:project_id].present?
+    @emails = @emails.order("id desc").page(params[:page]).per(500)
   end
 
   # GET /emails/1 or /emails/1.json
