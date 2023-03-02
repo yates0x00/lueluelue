@@ -67,7 +67,7 @@ total: <%= @total_count %>
       <%= server.ehole_result%>
     </td>
     <td>
-      <pre><%= server.short_text_for_the_harvester_result %></pre>
+      <pre><%= server.short_text_for_the_harvester_result[0,100] rescue '-' %></pre>
     </td>
     <td>
       HTTPS:  <br/>
