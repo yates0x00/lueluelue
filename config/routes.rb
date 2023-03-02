@@ -12,15 +12,15 @@ Rails.application.routes.draw do
   resources :projects
   resources :servers do
     collection do
-      get :new_some_servers
-      post :create_some_servers
+      get :new_batch_servers
+      post :create_batch_servers
     end
   end
   resources :emails
   resources :ips do
     collection do
-      get :new_some_ips
-      post :create_some_ips
+      get :new_batch_ips
+      post :create_batch_ips
     end
   end
   resources :ip_mappings

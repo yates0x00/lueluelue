@@ -4,6 +4,10 @@ class EmailsController < ApplicationController
   # GET /emails or /emails.json
   def index
     @emails = Email.all
+    @emails = @emails.joins(:project).where("projects.name like ?", "%#{params[:project_name]}%") if params[:project_name].present?
+    @emails = @emails.joins(:server).where("servers.name like ?", "%#{params[:server_name]}%") if params[:server_name].present?
+    @total_count = @emails.count
+    @emails = @emails.order("id desc").page(params[:page]).per(500)
   end
 
   # GET /emails/1 or /emails/1.json

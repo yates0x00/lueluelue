@@ -2,29 +2,31 @@
 
 <h1>Servers</h1>
 <%= form_tag servers_path, method: 'GET' do |f| %>
-  <label>search for text: </label><br/>
+  <label>search by text: </label><br/>
   name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
   ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..' %>
   <br/>
+  <label>search by project:</label> <br/>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), class: 'form_select' %>
   <br/>
   <label>search by detect status:</label> <br/>
-  if has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>
-  detected by wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]  ) %>
-  detected by ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]  ) %>
-  detected by the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]  ) %>
-  detected by nmap: <%= select_tag "is_detected_by_nmap", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap"]  ) %>
-  detected by nuclei: <%= select_tag "is_detected_by_nuclei", options_for_select(["all", "yes", "no"], params["is_detected_by_nuclei"]  ) %>
+  if has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"]), class: 'form_select' %>
+  detected by wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]), class: 'form_select' %>
+  detected by ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]), class: 'form_select' %>
+  detected by the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]), class: 'form_select' %>
+  detected by nmap: <%= select_tag "is_detected_by_nmap", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap"]), class: 'form_select' %>
+  detected by nuclei: <%= select_tag "is_detected_by_nuclei", options_for_select(["all", "yes", "no"], params["is_detected_by_nuclei"]), class: 'form_select' %>
 
   <br/>
   level: <%= text_field_tag "level", params[:level], placeholder: '0,1,2... small is more important' %>
   order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
   <br/>
-  <%= submit_tag 'search', class: '' %>
+  <%= submit_tag 'search', class: 'btn btn-primary' %>
 <% end %>
 <br/>
-total: <%= @total_count %><br/>
-<%= link_to "new some servers", new_some_servers_servers_path, target: '_blank' %><br/>
+<%= link_to "new batch servers", new_batch_servers_servers_path, target: '_blank' %><br/>
 <%= paginate @servers %>
+total: <%= @total_count %><br/>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>
@@ -44,6 +46,8 @@ total: <%= @total_count %><br/>
     <td>
       <%= server.name %>
       <br/>
+      project name: <%= server.project.try(:name) %><br/>
+      project ID: <%= server.project_id rescue '' %><br/>
       comment: <%= server.comment %> <br/>
       level: <%= server.level %> <br/>
       created: <%= server.created_at %> <br/>

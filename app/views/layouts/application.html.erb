@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BeiersdorfInforGathering</title>
+    <title>Board</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -12,14 +12,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body style="padding: 0 20px;">
     <% if manager_signed_in? %>
-      <nav class="navbar navbar-default" role="navigation" style="text-align: center;">
+      <nav class="navbar navbar-default" role="navigation">
         <span style="line-height: 50px;">
+          <%= link_to "projects", projects_path, class: 'menu' %>
           <%= link_to "servers", servers_path, class: 'menu' %>
           <%= link_to "ips", ips_path, class: 'menu' %>
           <%= link_to "emails", emails_path, class: 'menu' %>
-          <%= link_to "projects", projects_path, class: 'menu' %>
         </span>
         <ul class="nav navbar-nav" style='float:right'>
           <li><%= link_to "欢迎你：#{current_manager.try :email}" %></li>

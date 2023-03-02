@@ -2,13 +2,55 @@
 
 <h1>Emails</h1>
 
+<%= form_tag emails_path, method: 'GET' do |f| %>
+  <label>search by project:</label> <br/>
+  Project name: <%= text_field_tag "project_name", params[:project_name], placeholder: 'e.g. beiersdorf' %>
+  <br/>
+  <label>search by server:</label> <br/>
+  Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
+  <br/>
+  <%= submit_tag 'search', class: 'btn btn-primary' %>
+<% end %>
+<%= paginate @emails %>, total: <%= @total_count %>
 <div id="emails">
-  <% @emails.each do |email| %>
-    <%= render email %>
-    <p>
-      <%= link_to "Show this email", email %>
-    </p>
-  <% end %>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 100px;">
+        id
+      </th>
+      <th>
+        address
+      </th>
+      <th>
+        project
+      </th>
+      <th>
+        server
+      </th>
+      <th>
+        operations
+      </th>
+    </tr>
+    <% @emails.each do |email| %>
+      <tr>
+        <th>
+          <%= email.id %>
+        </th>
+        <th>
+          <%= email.address %>
+        </th>
+        <th>
+          <%= email.project.try(:name) %>
+        </th>
+        <th>
+          <%= email.server.try(:name) %>
+        </th>
+        <td>
+          <%= link_to "Show this email", email %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 </div>
 
 <%= link_to "New email", new_email_path %>

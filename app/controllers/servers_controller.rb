@@ -5,6 +5,7 @@ class ServersController < ApplicationController
   def index
     @servers = Server
     @servers = @servers.where("name like '%#{params[:name]}%'") if params[:name].present?
+    @servers = @servers.where('project_id = ? ', params[:project_id]) if params[:project_id].present?
     @servers = @servers.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
     @servers = @servers.where("wafwoof_result not like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
     @servers = @servers.where("wappalyzer_result is not null") if params[:is_detected_by_wappalyzer].present? && params[:is_detected_by_wappalyzer] == 'yes'
@@ -15,8 +16,8 @@ class ServersController < ApplicationController
     @servers = @servers.where("nuclei_https_result is not null or nuclei_http_result is not null") if params[:is_detected_by_nuclei].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("level = ?") if params[:level].present?
-    @total_count = @servers.count
 
+    @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
       .page(params[:page]).per(500)
@@ -31,26 +32,25 @@ class ServersController < ApplicationController
     @server = Server.new
   end
 
-  def new_some_servers
+  def new_batch_servers
   end
 
-  def create_some_servers
+  def create_batch_servers
     @server = Server.new
     params[:names].split("\n").each do |temp_name|
-      Rails.logger.info "==== create temp_name #{temp_name}"
       if temp_name.include?('https://')
-        name = temp_name.split('https://')
+        name = temp_name.split("https://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
-      elsif
-        name = temp_name.split('http://')
+      elsif temp_name.include?("http://")
+        name = temp_name.split("http://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
       end
     end
 
     if @server.save
-      redirect_to servers_url, notice: '操作成功'
+      redirect_to servers_url, notice: 'Operation succeeded'
     else
-      render :new
+      render :new, notice: 'Please check the input'
     end
   end
 
@@ -104,6 +104,7 @@ class ServersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def server_params
-      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language, :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result, :nuclei_manual_result, :domain_protocal)
+      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language, :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result, :nuclei_manual_result, :domain_protocal, :project_id,
+                                    :is_detected_by_wafwoof_result, :is_detected_by_dig_result, :is_detected_by_observer_ward_result, :is_detected_by_ehole_result, :is_detected_by_wappalyzer_result, :is_detected_by_nuclei_https_result, :is_detected_by_the_harvester_result, :is_detected_by_nuclei_http_result, :is_detected_by_nuclei_manual_result)
     end
 end

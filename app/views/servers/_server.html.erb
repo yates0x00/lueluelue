@@ -1,88 +1,142 @@
 <div id="<%= dom_id server %>">
-  <p>
-    <strong>Name:</strong>
-    <%= server.name %>
-  </p>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        Name
+      </th>
+      <td>
+        <%= server.name %>
+      </td>
+    </tr>
 
-  <p>
-    <strong>Domain:</strong>
-    <%= server.domain %>
-  </p>
-
-  <p>
-    <strong>Comment:</strong>
-    <%= server.comment %>
-  </p>
-
-  <p>
-    <strong>Wafwoof result:</strong>
-    <%= server.wafwoof_result %>
-  </p>
-
-  <p>
-    <strong>Dig result:</strong>
-    <%= server.dig_result %>
-  </p>
-
-  <p>
-    <strong>pure_ip:</strong>
-    <%= server.pure_ip %>
-  </p>
-  <p>
-    <strong>title:</strong>
-    <%= server.title %>
-  </p>
-  <p>
-    <strong>os_type:</strong>
-    <%= server.os_type %>
-  </p>
-  <p>
-    <strong>web_server:</strong>
-    <%= server.web_server %>
-  </p>
-  <p>
-    <strong>web_framework:</strong>
-    <%= server.web_framework %>
-  </p>
-  <p>
-    <strong>web_language:</strong>
-    <%= server.web_language %>
-  </p>
-  <p>
-    <strong>observer_ward_result:</strong>
-    <%= server.observer_ward_result %>
-  </p>
-  <p>
-    <strong>ehole_result:</strong>
-    <%= server.ehole_result %>
-  </p>
-  <p>
-    <strong>level:</strong>
-    <%= server.level %>
-  </p>
-  <p>
-    <strong>wappalyzer_result:</strong>
-    <%= server.wappalyzer_result %>
-  </p>
-  <p>
-    <strong>the_harvester_result:</strong>
-    <%= server.the_harvester_result %>
-  </p>
-  <p>
-    <strong>nuclei_https_result:</strong>
-    <%= server.nuclei_https_result %>
-  </p>
-  <p>
-    <strong>nuclei_http_result:</strong>
-    <%= server.nuclei_http_result %>
-  </p>
-  <p>
-    <strong>nuclei_manual_result:</strong>
-    <%= server.nuclei_manual_result %>
-  </p>
-  <p>
-    <strong>domain_protocal:</strong>
-    <%= server.domain_protocal %>
-  </p>
-
+    <tr>
+      <th>
+       Project name
+      </th>
+      <td>
+        <%= server.project.try(:name) %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Domain
+      </th>
+      <td>
+        <%= server.domain %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Comment
+      </th>
+      <td>
+        <%= server.comment %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Wafwoof result:
+      </th>
+      <td>
+        <%= server.wafwoof_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Dig result:
+      </th>
+      <td>
+        <%= server.dig_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>pure_ip:</th>
+      <td>
+        <%= server.pure_ip %>
+      </td>
+    </tr>
+    <tr>
+      <th>title:</th>
+      <td>
+        <%= server.title %>
+    </tr>
+    <tr>
+      <th>os_type:</th>
+      <td>
+        <%= server.os_type %>
+      </td>
+    </tr>
+    <tr>
+      <th>web_server:</th>
+      <td>
+        <%= server.web_server %>
+      </td>
+    </tr>
+    <tr>
+      <th>web_framework:</th>
+      <td>
+        <%= server.web_framework %>
+      </td>
+    </tr>
+    <tr>
+      <th>web_language:</th>
+      <td>
+        <%= server.web_language %>
+      </td>
+    </tr>
+    <tr>
+      <th>observer_ward_result:</th>
+      <td>
+        <%= server.observer_ward_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>ehole_result:</th>
+      <td>
+        <%= server.ehole_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>level:</th>
+      <td>
+        <%= server.level %>
+      </td>
+    </tr>
+    <tr>
+      <th>wappalyzer_result:</th>
+      <td>
+        <%= server.wappalyzer_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>the_harvester_result:</th>
+      <td>
+        <%= server.the_harvester_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>nuclei_https_result:</th>
+      <td>
+        <%= server.nuclei_https_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>nuclei_http_result:</th>
+      <td>
+        <%= server.nuclei_http_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>nuclei_manual_result:</th>
+      <td>
+        <%= server.nuclei_manual_result %>
+      </td>
+    </tr>
+    <tr>
+      <th>domain_protocal:</th>
+      <td>
+        <%= server.domain_protocal %>
+      </td>
+    </tr>
+  </table>
 </div>

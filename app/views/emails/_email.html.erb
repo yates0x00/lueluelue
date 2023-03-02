@@ -1,17 +1,16 @@
-<div id="<%= dom_id project %>">
-  <p>
-    <strong>Address:</strong>
-    <%= email.address %>
-  </p>
+<table class='table table-bordered table-hovered table-striped'>
+  <tr>
+    <th style="width: 200px;">Address:</th>
+    <td><%= email.address %></td>
+  </tr>
 
-  <p>
-    <strong>Project:</strong>
-    <%= email.project_id %>
-  </p>
+  <tr>
+    <th>Project:</th>
+    <td><%= email.project.try(:name) %></td>
+  </tr>
 
-  <p>
-    <strong>Server:</strong>
-    <%= email.server_id %>
-  </p>
-
-</div>
+  <tr>
+    <th>Server:</th>
+    <td><%= email.server.try(:name) %></td>
+  </tr>
+</table>

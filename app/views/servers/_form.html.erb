@@ -11,106 +11,187 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        <%= form.label :name, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :name, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :project_id, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.select "project_id", options_from_collection_for_select(Project.all, :id, :name), {}, {class: 'form-control'} %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :domain, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :domain, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :comment, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :comment, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :wafwoof_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :wafwoof_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :dig_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :dig_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
 
-  <div>
-    <%= form.label :domain, style: "display: block" %>
-    <%= form.text_field :domain %>
-  </div>
+    <tr>
+      <th>
+        <%= form.label :dig_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :dig_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :pure_ip, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :pure_ip, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :title, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :title, class: 'form-control' %>
+      </td>
+    </tr>
 
-  <div>
-    <%= form.label :comment, style: "display: block" %>
-    <%= form.text_area :comment %>
-  </div>
+    <tr>
+      <th>
+        <%= form.label :os_type, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :os_type, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :web_server, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :web_server, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :web_framework, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :web_framework, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :web_language, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :web_language, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :observer_ward_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :observer_ward_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :ehole_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :ehole_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :level, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :level, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :wappalyzer_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :wappalyzer_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :the_harvester_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :the_harvester_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :nuclei_https_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :nuclei_https_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :nuclei_http_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :nuclei_http_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :nuclei_manual_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :nuclei_manual_result, class: 'form-control', rows: 10 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :domain_protocal, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.select :domain_protocal, options_for_select(["https","http"]), {}, {class: 'form-control'} %>
+      </td>
+    </tr>
 
-  <div>
-    <%= form.label :wafwoof_result, style: "display: block" %>
-    <%= form.text_area :wafwoof_result %>
-  </div>
-
-  <div>
-    <%= form.label :dig_result, style: "display: block" %>
-    <%= form.text_area :dig_result %>
-  </div>
-
-  <div>
-    <%= form.label :pure_ip, style: "display: block" %>
-    <%= form.text_area :pure_ip %>
-  </div>
-
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_area :title %>
-  </div>
-
-  <div>
-    <%= form.label :os_type, style: "display: block" %>
-    <%= form.text_area :os_type %>
-  </div>
-
-  <div>
-    <%= form.label :web_server, style: "display: block" %>
-    <%= form.text_area :web_server %>
-  </div>
-
-  <div>
-    <%= form.label :web_framework, style: "display: block" %>
-    <%= form.text_area :web_framework %>
-  </div>
-
-  <div>
-    <%= form.label :web_language, style: "display: block" %>
-    <%= form.text_area :web_language %>
-  </div>
-
-  <div>
-    <%= form.label :observer_ward_result, style: "display: block" %>
-    <%= form.text_area :observer_ward_result %>
-  </div>
-
-  <div>
-    <%= form.label :ehole_result, style: "display: block" %>
-    <%= form.text_area :ehole_result %>
-  </div>
-
-  <div>
-    <%= form.label :level, style: "display: block" %>
-    <%= form.text_area :level %>
-  </div>
-
-  <div>
-    <%= form.label :wappalyzer_result, style: "display: block" %>
-    <%= form.text_area :wappalyzer_result %>
-  </div>
-
-  <div>
-    <%= form.label :the_harvester_result, style: "display: block" %>
-    <%= form.text_area :the_harvester_result %>
-  </div>
-
-  <div>
-    <%= form.label :nuclei_https_result, style: "display: block" %>
-    <%= form.text_area :nuclei_https_result %>
-  </div>
-
-  <div>
-    <%= form.label :nuclei_http_result, style: "display: block" %>
-    <%= form.text_area :nuclei_http_result %>
-  </div>
-
-  <div>
-    <%= form.label :nuclei_manual_result, style: "display: block" %>
-    <%= form.text_area :nuclei_manual_result %>
-  </div>
-
-  <div>
-    <%= form.label :domain_protocal, style: "display: block" %>
-    <%= form.text_area :domain_protocal %>
-  </div>
-  <div>
-    <%= form.submit %>
-  </div>
+  </table>
+  <%= form.submit %>
 <% end %>
+

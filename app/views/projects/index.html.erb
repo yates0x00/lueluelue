@@ -1,14 +1,58 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Projects</h1>
-
+<%= paginate @projects %>, total: <%= @total_count %>
 <div id="projects">
-  <% @projects.each do |project| %>
-    <%= render project %>
-    <p>
-      <%= link_to "Show this project", project %>
-    </p>
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        ID
+      </th>
+      <td>
+        Name
+      </td>
+      <td>
+        Description
+      </td>
+      <td>
+        Ips
+      </td>
+      <td>
+        Servers
+      </td>
+      <td>
+        Emails
+      </td>
+      <td>
+        operations
+      </td>
+    </tr>
+    <% @projects.each do |project| %>
+      <tr>
+        <th>
+          <%= project.id %>
+        </th>
+        <td>
+          <%= project.name %>
+        </td>
+        <td>
+          <%= project.description %>
+        </td>
+        <td>
+          <%#= project.ips.count %>
+        </td>
+        <td>
+          <%= project.servers.count %>
+        </td>
+        <td>
+          <%= project.emails.count %>
+        </td>
+        <td>
+          <%= link_to "Show this project", project %>
+        </td>
+      </tr>
   <% end %>
+  </table>
 </div>
 
 <%= link_to "New project", new_project_path %>
