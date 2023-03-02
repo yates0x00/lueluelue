@@ -2,6 +2,39 @@
 
 an internal tool to present the penitration testing result
 
+## usage
+
+
+1.(optional)setup your VPN or proxy
+2.setup PROXY environment.e.g.
+
+```
+export HTTP_PROXY="http://192.168.137.1:8080"
+export HTTPS_PROXY="http://192.168.137.1:8080"
+export http_proxy="http://192.168.137.1:8080"
+export https_proxy="http://192.168.137.1:8080"
+```
+3.manually query the target website, e.g. target.com, using shuize and theharvester
+
+python3 ShuiZe.py -d nextcloud.com --proxy=socks5://192.168.31.224:1092
+
+
+4.create server (in database) for "target.com", then
+
+```
+bundle exec ruby scripts/detect_by_theharvester.rb
+```
+
+5.create servers from shuize and theharvester result
+
+
+```
+
+```
+
+
+
+
 ## installation
 
 1.git clone https://github.com/yates0x00/lueluelue
