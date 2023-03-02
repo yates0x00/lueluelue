@@ -1,6 +1,5 @@
 <p style="color: green"><%= notice %></p>
-
-<h1>Servers</h1>
+<h1>Ips</h1>
 <%= form_tag '', method: 'GET' do |f| %>
   name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
 <!--
@@ -17,7 +16,8 @@
   <%= submit_tag 'search' %>
 <% end %>
 
-<%= paginate @ips %>, total: <%= @total_count %>
+<%= paginate @ips %>, total: <%= @total_count %>,
+<%= link_to "new some ips", new_some_ips_ips_path %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>

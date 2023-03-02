@@ -22,7 +22,8 @@
   <%= submit_tag 'search', class: '' %>
 <% end %>
 <br/>
-total: <%= @total_count %>
+total: <%= @total_count %><br/>
+<%= link_to "new some servers", new_some_servers_servers_path, target: '_blank' %><br/>
 <%= paginate @servers %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
@@ -34,10 +35,11 @@ total: <%= @total_count %>
     <td style='width: 200px'> ehole_result</td>
     <td style='width: 250px'> harvester_result</td>
     <td style='width: 100px'> nuclei_result</td>
+    <td style='width: 100px'> domain_protocal</td>
     <td style='width: '> operations</td>
   </tr>
   <% @servers.each do |server| %>
-  <tr>
+    <tr onclick='window.location.href = "/servers/<%= server.id %>";'>
     <td> <%= server.id %> </td>
     <td>
       <%= server.name %>
@@ -77,8 +79,11 @@ total: <%= @total_count %>
       <%= server.remove_ansi_color server.nuclei_http_result %>
     </td>
     <td>
+      <%= server.domain_protocal rescue '' %>
+    </td>
+    <td>
       <%= link_to "Show", server %>
-      <%= link_to "Edit", server %>
+      <%= link_to "Edit", edit_server_path(server), target: '_blank' %>
     </td>
   </tr>
   <% end %>
