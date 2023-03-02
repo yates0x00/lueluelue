@@ -1,7 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Projects</h1>
-
+<%= paginate @projects %>, total: <%= @total_count %>
 <div id="projects">
   <table class='table table-bordered table-hovered table-striped'>
     <tr>

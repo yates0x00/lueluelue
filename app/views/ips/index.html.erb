@@ -2,11 +2,12 @@
 <h1>Ips</h1>
 <%= form_tag '', method: 'GET' do |f| %>
   name: <%= text_field_tag "name", params[:name], placeholder: 'e.g. beiersdorf' %>
+  <br/>
   <label>search by project:</label> <br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name) %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), class: 'form_select' %>
   <br/>
   <label>search by server:</label> <br/>
-  Server：<%= select_tag :server_id, options_from_collection_for_select(Server.all, :id, :name) %>
+  Server：<%= select_tag :server_id, options_from_collection_for_select(Server.all, :id, :name), class: 'form_select' %>
   <br/>
 <!--
   has_waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>

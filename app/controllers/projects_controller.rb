@@ -4,6 +4,7 @@ class ProjectsController < ApplicationController
   # GET /projects or /projects.json
   def index
     @projects = Project.all
+    @total_count = @projects.count
     @projects = @projects.order("id desc").page(params[:page]).per(500)
   end
 

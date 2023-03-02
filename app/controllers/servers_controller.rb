@@ -16,8 +16,8 @@ class ServersController < ApplicationController
     @servers = @servers.where("nuclei_https_result is not null or nuclei_http_result is not null") if params[:is_detected_by_nuclei].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("level = ?") if params[:level].present?
-    @total_count = @servers.count
 
+    @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
       .page(params[:page]).per(500)
