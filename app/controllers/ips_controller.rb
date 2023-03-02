@@ -3,23 +3,23 @@ class IpsController < ApplicationController
 
   def index
     @ips = Ip.all
-    @ips = @ips.joins(:servers).where("servers.name like '%#{params[:name]}%'") if params[:name].present?
+    @ips = @ips.joins(:servers).where("servers.name like '%#{params[:server_name]}%'") if params[:server_name].present?
     #@ips = @ips.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
     @total_count = @ips.count
     @ips = @ips.order("id desc").page(params[:page]).per(500)
   end
 
-  def new_some_ips
+  def new_batch_ips
   end
 
-  def create_some_ips
+  def create_batch_ips
     @ip = Ip.new
     params[:ips].split("\n").each do |ip|
       @ip = Ip.find_or_create_by! ip: ip
     end
 
     if @ip.save
-      redirect_to ips_url, notice: '操作成功'
+      redirect_to ips_url, notice: 'Operation succeeded'
     else
       render :new
     end

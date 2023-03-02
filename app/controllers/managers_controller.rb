@@ -6,7 +6,7 @@ class ManagersController < ApplicationController
   def update
     @manager = Manager.find(params[:id])
     if @manager.update(manager.id)
-        redirect_to '/', notice: '操作成功'
+        redirect_to '/', notice: 'Operation succeeded'
     else
       render :edit
     end

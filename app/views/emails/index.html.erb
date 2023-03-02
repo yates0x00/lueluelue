@@ -4,10 +4,10 @@
 
 <%= form_tag emails_path, method: 'GET' do |f| %>
   <label>search by project:</label> <br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), class: 'form_select' %>
+  Project name: <%= text_field_tag "project_name", params[:project_name], placeholder: 'e.g. beiersdorf' %>
   <br/>
   <label>search by server:</label> <br/>
-  Server：<%= select_tag :server_id, options_from_collection_for_select(Server.all, :id, :name), class: 'form_select' %>
+  Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
   <br/>
   <%= submit_tag 'search', class: 'btn btn-primary' %>
 <% end %>

@@ -32,25 +32,25 @@ class ServersController < ApplicationController
     @server = Server.new
   end
 
-  def new_some_servers
+  def new_batch_servers
   end
 
-  def create_some_servers
+  def create_batch_servers
     @server = Server.new
     params[:names].split("\n").each do |temp_name|
       if temp_name.include?('https://')
         name = temp_name.split("https://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
-      elsif
+      elsif temp_name.include?("http://")
         name = temp_name.split("http://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
       end
     end
 
     if @server.save
-      redirect_to servers_url, notice: '操作成功'
+      redirect_to servers_url, notice: 'Operation succeeded'
     else
-      render :new
+      render :new, notice: 'Please check the input'
     end
   end
 
