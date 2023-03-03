@@ -24,6 +24,7 @@
 
 <%= paginate @ips %>, total: <%= @total_count %>,
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
+<%= link_to '下载csv', download_csv_ips_path, class: 'btn btn-success btn-sm' %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>

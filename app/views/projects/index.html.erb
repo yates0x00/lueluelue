@@ -2,8 +2,9 @@
 
 <h1>Projects</h1>
 <%= paginate @projects %>, total: <%= @total_count %>
+<%= link_to '下载csv', download_csv_projects_path, class: 'btn btn-success btn-sm' %>
 <div id="projects">
-  <table class='table table-bordered table-hovered table-striped'>
+  <table class='table table-bordered table-hovered table-strprojected'>
     <tr>
       <th style="width: 200px;">
         ID
@@ -39,7 +40,7 @@
           <%= project.description %>
         </td>
         <td>
-          <%#= project.ips.count %>
+          <%#= project.projects.count %>
         </td>
         <td>
           <%= project.servers.count %>

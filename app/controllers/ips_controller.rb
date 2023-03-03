@@ -35,5 +35,18 @@ class IpsController < ApplicationController
     @server = ActiveRecord::Base.connection.exec_query(sql)
   end
 
+  def download_csv
+    require 'csv'
+
+    headers = %w{ID Ip NmapResult Location}
+    file = CSV.generate do |csv|
+      csv << headers
+      Ip.all.each_with_index do |ip, index|
+        row = [ip.id, ip.ip, ip.nmap_result, ip.location]
+        csv << row
+      end
+    end
+    send_data file.encode("utf-8", "utf-8"), :type => 'text/csv; charset=utf-8; header=present', :disposition => "attachment;filename=ips.csv"
+  end
 
 end
