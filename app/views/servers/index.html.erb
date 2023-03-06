@@ -27,7 +27,7 @@
 <br/>
 <span><%= paginate @servers %>
 total: <%= @total_count %></span>
-<span style="margin-left: 80%;">per page:<%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), :onchange => "if(this.value){window.location='?per_page='+this.value;}" %><span>
+<span style="margin-left: 80%;">per page: <%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), class: 'form_select', :onchange => "if(this.value){window.location='?per_page='+this.value;}" %><span>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>
