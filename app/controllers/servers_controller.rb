@@ -19,7 +19,7 @@ class ServersController < ApplicationController
     @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
-      .page(params[:page]).per(params[:per_page] || 500)
+      .page(params[:page]).per(params[:per_page] || 1000)
   end
 
   # GET /servers/1 or /servers/1.json
