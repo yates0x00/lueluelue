@@ -19,20 +19,19 @@
   order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
 -->
   <br/>
-  <%= submit_tag 'search', class: 'btn btn-primary' %>
+  <%= submit_tag 'search' %>
 <% end %>
 
 <%= paginate @ips %>, total: <%= @total_count %>,
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
-<%= link_to '下载csv', download_csv_ips_path, class: 'btn btn-success btn-sm' %>
+<%= link_to '下载csv', download_csv_ips_path %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
-    <td style='width:50px'> id </td>
-    <td style='width: 150px'> ip </td>
-    <td style='width: 250px'> domains </td>
-    <td style='width: 1100px'> nmap_result</td>
-    <td style='width: 150px'> comment </td>
-    <td style='width: 150px'> time </td>
+    <td style='width:50px'>id</td>
+    <td style='width: 150px'>ip</td>
+    <td style='width: 250px'>domains </td>
+    <td style='width: 1100px'>nmap_result</td>
+    <td style='width: 150px'>location</td>
   </tr>
   <% @ips.each do |ip| %>
   <tr>
@@ -48,11 +47,11 @@
       <pre><%= ip.nmap_result %>
       </pre>
     </td>
-    <td><%# ip.comment %> </td>
-    <td><%= ip.created_at %> <br/><%= ip.created_at %> </td>
+    <td><%= ip.location %> </td>
+    <td><%= ip.created_at %> </td>
     <td>
       <%= link_to "Show", ip %>
-      <%= link_to "Edit", ip %>
+      <%= link_to "Edit", edit_ip_path(ip) %>
     </td>
   </tr>
   <% end %>

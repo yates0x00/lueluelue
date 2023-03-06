@@ -1,10 +1,8 @@
 class IpsController < ApplicationController
-  #before_action :set_server, only: %i[ show edit update destroy ]
-
+  before_action :set_ip, only: %i[ show edit update destroy ]
   def index
     @ips = Ip.all
     @ips = @ips.joins(:servers).where("servers.name like '%#{params[:server_name]}%'") if params[:server_name].present?
-    #@ips = @ips.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
     @total_count = @ips.count
     @ips = @ips.order("id desc").page(params[:page]).per(500)
   end
@@ -13,7 +11,7 @@ class IpsController < ApplicationController
   end
 
   def create_batch_ips
-    @ip = Ip.new
+    @ip = Ip.new(ip_params)
     params[:ips].split("\n").each do |ip|
       @ip = Ip.find_or_create_by! ip: ip
     end
@@ -25,14 +23,7 @@ class IpsController < ApplicationController
     end
   end
 
-  # GET /servers/1 or /servers/1.json
   def show
-    @server = Server.where("id=?")
-  end
-  def show2
-    #@server = Server.where("name like '#{params[:name]}' ")
-    sql = "select * from servers where name like '#{params[:name]}'"
-    @server = ActiveRecord::Base.connection.exec_query(sql)
   end
 
   def download_csv
@@ -49,4 +40,55 @@ class IpsController < ApplicationController
     send_data file.encode("utf-8", "utf-8"), :type => 'text/csv; charset=utf-8; header=present', :disposition => "attachment;filename=ips.csv"
   end
 
+  # GET /ips/1/edit
+  def edit
+  end
+
+  # POST /ips or /ips.json
+  def create
+    @ip = Ip.new(ip_params)
+
+    respond_to do |format|
+      if @ip.save
+        format.html { redirect_to ip_url(@ip), notice: "Ip was successfully created." }
+        format.json { render :show, status: :created, location: @ip }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @ip.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /ips/1 or /ips/1.json
+  def update
+    respond_to do |format|
+      if @ip.update(ip_params)
+        format.html { redirect_to ip_url(@ip), notice: "Ip was successfully updated." }
+        format.json { render :show, status: :ok, location: @ip }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @ip.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /ips/1 or /ips/1.json
+  def destroy
+    @ip.destroy
+
+    respond_to do |format|
+      format.html { redirect_to ips_url, notice: "Ip was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_ip
+      @ip = Ip.find(params[:id])
+    end
+
+    def ip_params
+      params.require(:ip).permit(:ip, :location, :nmap_result)
+    end
 end

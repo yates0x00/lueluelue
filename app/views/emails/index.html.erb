@@ -12,7 +12,7 @@
   <%= submit_tag 'search' %>
 <% end %>
 <%= paginate @emails %>, total: <%= @total_count %>
-<%= link_to '下载csv', download_csv_emails_path, class: 'btn btn-success btn-sm' %>
+<%= link_to '下载csv', download_csv_emails_path %>
 <div id="emails">
   <table class='table table-bordered table-hovered table-striped'>
     <tr>

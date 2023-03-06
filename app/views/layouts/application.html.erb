@@ -16,10 +16,11 @@
     <% if manager_signed_in? %>
       <nav class="navbar navbar-default" role="navigation">
         <span style="line-height: 50px;">
-          <%= link_to "projects", projects_path, class: 'menu' %>
-          <%= link_to "servers", servers_path, class: 'menu' %>
-          <%= link_to "ips", ips_path, class: 'menu' %>
-          <%= link_to "emails", emails_path, class: 'menu' %>
+          <%= link_to "Projects", projects_path, class: 'menu' %>
+          <%= link_to "Servers", servers_path, class: 'menu' %>
+          <%= link_to "Ips", ips_path, class: 'menu' %>
+          <%= link_to "IpMappings", ip_mappings_path, class: 'menu' %>
+          <%= link_to "Emails", emails_path, class: 'menu' %>
         </span>
         <ul class="nav navbar-nav" style='float:right'>
           <li><%= link_to "欢迎你：#{current_manager.try :email}" %></li>

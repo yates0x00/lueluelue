@@ -1,3 +1,10 @@
-hi
-<%= @server.size %>
-...kasdjf
+<p style="color: green"><%= notice %></p>
+
+<%= render @ip %>
+
+<div>
+  <%= link_to "Edit this ip", edit_ip_path(@ip) %> |
+  <%= link_to "Back to ips", ips_path %>
+
+  <%= button_to "Destroy this ip", @ip, method: :delete, class: 'btn btn-danger btn-sm' %>
+</div>

@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   end
   resources :ip_mappings do
     collection do
+      get :download_csv
     end
   end
 
