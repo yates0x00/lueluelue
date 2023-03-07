@@ -8,17 +8,17 @@
 <% end %>
 
 <%= paginate @ip_mappings %>, total: <%= @total_count %>
-<%= link_to '下载csv', download_csv_ip_mappings_path %>
+<%= link_to 'Download csv', download_csv_ip_mappings_path %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
-    <td style='width:50px'>ID</td>
+    <td style='width: 50px;'>ID</td>
     <td>Server name</td>
     <td>Created at</td>
   </tr>
   <% @ip_mappings.each do |ip_mapping| %>
   <tr>
     <td><%= ip_mapping.id %></td>
-    <td><%= ip_mapping.server.try(:name) %></td>
+    <td><%= link_to ip_mapping.server.try(:name), "/servers/#{ip_mapping.server_id}" %></td>
     <td><%= ip_mapping.created_at %></td>
   </tr>
   <% end %>

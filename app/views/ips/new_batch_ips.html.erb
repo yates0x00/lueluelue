@@ -1,5 +1,5 @@
 <h1>new batch ips</h1>
 <%= form_tag create_batch_ips_ips_path, method: :post do %>
   ips: <%= text_area_tag :ips, :"", placeholder: "123.123.123.123\n43.43.43.43\n5.5.5.5\n", class: 'form-control', rows: 20 %></br>
-  <%= submit_tag '新建', class: "form_submit", class: 'btn btn-primary btn-sm fa-input' %>
+  <%= submit_tag 'new batch ips', class: "form_submit", class: 'btn btn-primary fa-input' %>
 <% end %>

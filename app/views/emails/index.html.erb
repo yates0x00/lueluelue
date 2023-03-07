@@ -12,7 +12,7 @@
   <%= submit_tag 'search' %>
 <% end %>
 <%= paginate @emails %>, total: <%= @total_count %>
-<%= link_to '下载csv', download_csv_emails_path %>
+<%= link_to 'Download csv', download_csv_emails_path %>
 <div id="emails">
   <table class='table table-bordered table-hovered table-striped'>
     <tr>
@@ -38,13 +38,13 @@
           <%= email.id %>
         </th>
         <th>
-          <%= email.address %>
+          <%= link_to email.address, email %>
         </th>
         <th>
-          <%= email.project.try(:name) %>
+          <%= link_to email.project.try(:name), "/projects/#{email.project_id}" %>
         </th>
         <th>
-          <%= email.server.try(:name) %>
+          <%= link_to email.server.try(:name), "/servers/#{email.server_id}" %>
         </th>
         <td>
           <%= link_to "Show this email", email %>

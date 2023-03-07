@@ -14,7 +14,7 @@
 
 <%= paginate @ips %>, total: <%= @total_count %>,
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
-<%= link_to '下载csv', download_csv_ips_path %>
+<%= link_to 'Download csv', download_csv_ips_path %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'>id</td>
@@ -26,7 +26,7 @@
   <% @ips.each do |ip| %>
   <tr>
     <td> <%= ip.id %> </td>
-    <td> <%= ip.ip %> </td>
+    <td> <%= link_to ip.ip, ip %> </td>
     <td>
       <% ip.servers.each do |server| %>
         <%= link_to server.name, server %> <br/>
