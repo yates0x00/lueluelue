@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_28_021417) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
+  create_table "c_class_ips", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "host"
+    t.string "title"
+    t.string "ip"
+    t.string "port"
+    t.string "service_name"
+    t.string "protocal"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -30,14 +42,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_28_021417) do
     t.index ["server_id"], name: "index_emails_on_server_id"
   end
 
-  create_table "ip_mappings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "ip_mappings", charset: "utf8", force: :cascade do |t|
     t.integer "ip_id"
     t.integer "server_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "ips", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "ips", charset: "utf8", force: :cascade do |t|
     t.string "ip"
     t.text "nmap_result", size: :long
     t.datetime "created_at", null: false
@@ -64,30 +76,40 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_28_021417) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "servers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "servers", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "domain"
-    t.text "comment"
-    t.text "wafwoof_result"
-    t.text "dig_result"
+    t.text "comment", size: :medium
+    t.text "wafwoof_result", size: :medium
+    t.text "dig_result", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "pure_ip"
-    t.text "title"
+    t.text "title", size: :medium
     t.string "os_type"
     t.string "web_server"
     t.string "web_framework"
     t.string "web_language"
-    t.text "observer_ward_result"
-    t.text "ehole_result"
+    t.text "observer_ward_result", size: :medium
+    t.text "ehole_result", size: :medium
     t.integer "level", comment: "level 0 is the most important"
-    t.text "wappalyzer_result"
+    t.text "wappalyzer_result", size: :medium
     t.text "the_harvester_result", size: :long
     t.text "nuclei_https_result", size: :long
     t.text "nuclei_http_result", size: :long
     t.text "nuclei_manual_result", size: :long
     t.string "domain_protocal", default: "https", comment: "可以用的值: http/https"
     t.bigint "project_id"
+    t.boolean "is_detected_by_wafwoof", default: false
+    t.boolean "is_detected_by_dig", default: false
+    t.boolean "is_detected_by_observer_ward", default: false
+    t.boolean "is_detected_by_ehole", default: false
+    t.boolean "is_detected_by_wappalyzer", default: false
+    t.boolean "is_detected_by_the_harvester", default: false
+    t.boolean "is_detected_by_nuclei_https", default: false
+    t.boolean "is_detected_by_nuclei_http", default: false
+    t.boolean "is_detected_by_nuclei_manual", default: false
+    t.integer "max_severity_in_nuclei_result"
     t.index ["project_id"], name: "index_servers_on_project_id"
   end
 
