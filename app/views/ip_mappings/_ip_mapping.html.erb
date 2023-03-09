@@ -1,11 +1,11 @@
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <th style="width: 200px;">Server:</th>
-    <td><%= ip_mapping.server.try(:name)%></td>
+    <td><%= link_to ip_mapping.server.try(:name), ip_mapping.server %></td>
   </tr>
 
   <tr>
     <th>Ip:</th>
-    <td><%= ip_mapping.ip.try(:ip) %></td>
+    <td><%= link_to ip_mapping.ip.try(:ip), ip_mapping.ip %></td>
   </tr>
 </table>
