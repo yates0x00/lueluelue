@@ -15,12 +15,11 @@ class ServersController < ApplicationController
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("nuclei_https_result is not null or nuclei_http_result is not null") if params[:is_detected_by_nuclei].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
-    @servers = @servers.where("level = ?") if params[:level].present?
-
+    @servers = @servers.where("level = ?", params[:level]) if params[:level].present?
     @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
-      .page(params[:page]).per(500)
+      .page(params[:page]).per(params[:per_page] || 1000)
   end
 
   # GET /servers/1 or /servers/1.json
@@ -94,6 +93,28 @@ class ServersController < ApplicationController
       format.html { redirect_to servers_url, notice: "Server was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def download_csv
+    require 'csv'
+
+    headers = %w{ID Name Domain Comment Wafwoof_result dig_result Pure_ip title Os_type web_server Web_framework Web_language Observer_ward_result Ehole_result Level The_harvester_result Wappalyzer_result Nuclei_https_result Nuclei_http_result Nuclei_manual_result Domain_protocal Project_id Is_detected_by_wafwoof_result Is_detected_by_dig_result Is_detected_by_observer_ward_result Is_detected_by_ehole_result Is_detected_by_wappalyzer_result Is_detected_by_nuclei_https_result Is_detected_by_the_harvester_result Is_detected_by_nuclei_http_result Is_detected_by_nuclei_manual_result}
+    file = CSV.generate do |csv|
+      csv << headers
+      Server.all.each_with_index do |server, index|
+      row = [
+        server.id, server.name, server.domain, server.comment, server.wafwoof_result, server.dig_result, server.pure_ip, server.title, server.os_type,
+        server.web_server, server.web_framework, server.web_language, server.observer_ward_result, server.ehole_result, server.level,
+        server.the_harvester_result, server.wappalyzer_result, server.nuclei_https_result, server.nuclei_http_result,
+        server.nuclei_manual_result, server.domain_protocal, server.project_id, server.is_detected_by_wafwoof_result,
+        server.is_detected_by_dig_result, server.is_detected_by_observer_ward_result, server.is_detected_by_ehole_result,
+        server.is_detected_by_wappalyzer_result, server.is_detected_by_nuclei_https_result, server.is_detected_by_the_harvester_result,
+        server.is_detected_by_nuclei_http_result, server.is_detected_by_nuclei_manual_result
+      ]
+        csv << row
+      end
+    end
+    send_data file.encode("utf-8", "utf-8"), :type => 'text/csv; charset=utf-8; header=present', :disposition => "attachment;filename=servers.csv"
   end
 
   private

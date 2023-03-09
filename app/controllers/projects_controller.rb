@@ -59,6 +59,20 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def download_csv
+    require 'csv'
+
+    headers = %w{ID Name Description}
+    file = CSV.generate do |csv|
+      csv << headers
+      Project.all.each_with_index do |project, index|
+        row = [project.id, project.name, project.description]
+        csv << row
+      end
+    end
+    send_data file.encode("utf-8", "utf-8"), :type => 'text/csv; charset=utf-8; header=present', :disposition => "attachment;filename=projects.csv"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project

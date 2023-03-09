@@ -4,14 +4,15 @@
 
 <%= form_tag emails_path, method: 'GET' do |f| %>
   <label>search by project:</label> <br/>
-  Project name: <%= text_field_tag "project_name", params[:project_name], placeholder: 'e.g. beiersdorf' %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
   <br/>
   <label>search by server:</label> <br/>
   Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
   <br/>
-  <%= submit_tag 'search', class: 'btn btn-primary' %>
+  <%= submit_tag 'search' %>
 <% end %>
 <%= paginate @emails %>, total: <%= @total_count %>
+<%= link_to 'Download csv', download_csv_emails_path %>
 <div id="emails">
   <table class='table table-bordered table-hovered table-striped'>
     <tr>
@@ -37,13 +38,13 @@
           <%= email.id %>
         </th>
         <th>
-          <%= email.address %>
+          <%= link_to email.address, email %>
         </th>
         <th>
-          <%= email.project.try(:name) %>
+          <%= link_to email.project.try(:name), "/projects/#{email.project_id}" %>
         </th>
         <th>
-          <%= email.server.try(:name) %>
+          <%= link_to email.server.try(:name), "/servers/#{email.server_id}" %>
         </th>
         <td>
           <%= link_to "Show this email", email %>

@@ -139,7 +139,7 @@
         <%= form.label :level, style: "display: block" %>
       </th>
       <td>
-        <%= form.text_area :level, class: 'form-control' %>
+        <%= form.select :level, options_for_select([["all", 0], ["level1: marked direct domain", 1], ["level2: sub domain and relative domain", 2], ["level3: relative domain(tls not same)", 3], ["level4: same ip domains", 4]]), {}, class: 'form-control' %>
       </td>
     </tr>
     <tr>
@@ -192,6 +192,6 @@
     </tr>
 
   </table>
-  <%= form.submit %>
+  <%= form.submit class: 'btn btn-primary' %>
 <% end %>
 

@@ -3,40 +3,30 @@
 <%= form_tag '', method: 'GET' do |f| %>
   <br/>
   <label>search by project:</label> <br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), class: 'form_select' %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
   <br/>
   <label>search by server:</label> <br/>
   Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
   <br/>
-<!--
-  has_waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"] ) %>
-  wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]  ) %>
-  ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]  ) %>
-  ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..' %>
-  the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]  ) %>
-  nmap: <%= select_tag "is_detected_by_nmap", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap"]  ) %>
-  level: <%= text_field_tag "level", params[:level], placeholder: '0,1,2... small is more important' %>
-  order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
--->
   <br/>
-  <%= submit_tag 'search', class: 'btn btn-primary' %>
+  <%= submit_tag 'search' %>
 <% end %>
 
 <%= paginate @ips %>, total: <%= @total_count %>,
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
+<%= link_to 'Download csv', download_csv_ips_path %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
-    <td style='width:50px'> id </td>
-    <td style='width: 150px'> ip </td>
-    <td style='width: 250px'> domains </td>
-    <td style='width: 1100px'> nmap_result</td>
-    <td style='width: 150px'> comment </td>
-    <td style='width: 150px'> time </td>
+    <td style='width:50px'>id</td>
+    <td style='width: 150px'>ip</td>
+    <td style='width: 250px'>domains </td>
+    <td style='width: 1100px'>nmap_result</td>
+    <td style='width: 150px'>location</td>
   </tr>
   <% @ips.each do |ip| %>
   <tr>
     <td> <%= ip.id %> </td>
-    <td> <%= ip.ip %> </td>
+    <td> <%= link_to ip.ip, ip %> </td>
     <td>
       <% ip.servers.each do |server| %>
         <%= link_to server.name, server %> <br/>
@@ -47,11 +37,11 @@
       <pre><%= ip.nmap_result %>
       </pre>
     </td>
-    <td><%# ip.comment %> </td>
-    <td><%= ip.created_at %> <br/><%= ip.created_at %> </td>
+    <td><%= ip.location %> </td>
+    <td><%= ip.created_at %> </td>
     <td>
       <%= link_to "Show", ip %>
-      <%= link_to "Edit", ip %>
+      <%= link_to "Edit", edit_ip_path(ip) %>
     </td>
   </tr>
   <% end %>

@@ -4,7 +4,7 @@ class EmailsController < ApplicationController
   # GET /emails or /emails.json
   def index
     @emails = Email.all
-    @emails = @emails.joins(:project).where("projects.name like ?", "%#{params[:project_name]}%") if params[:project_name].present?
+    @emails = @emails.where("project_id = ?", params[:project_id]) if params[:project_id].present?
     @emails = @emails.joins(:server).where("servers.name like ?", "%#{params[:server_name]}%") if params[:server_name].present?
     @total_count = @emails.count
     @emails = @emails.order("id desc").page(params[:page]).per(500)
@@ -59,6 +59,20 @@ class EmailsController < ApplicationController
       format.html { redirect_to emails_url, notice: "Email was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def download_csv
+    require 'csv'
+
+    headers = %w{ID Address Project Server}
+    file = CSV.generate do |csv|
+      csv << headers
+      Email.all.each_with_index do |email, index|
+        row = [email.id, email.address, email.project.try(:name), email.server.try(:name)]
+        csv << row
+      end
+    end
+    send_data file.encode("utf-8", "utf-8"), :type => 'text/csv; charset=utf-8; header=present', :disposition => "attachment;filename=emails.csv"
   end
 
   private

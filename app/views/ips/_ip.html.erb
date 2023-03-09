@@ -1,0 +1,37 @@
+<div id="<%= dom_id ip %>">
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        Ip
+      </th>
+      <td>
+        <%= ip.ip %>
+      </td>
+    </tr>
+
+    <tr>
+      <th>
+       Server name
+      </th>
+      <td>
+        <%= ip.servers.map{|server| server.name } %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Nmap result
+      </th>
+      <td>
+        <pre><%= ip.nmap_result %></pre>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Location
+      </th>
+      <td>
+        <%= ip.location %>
+      </td>
+    </tr>
+  </table>
+</div>

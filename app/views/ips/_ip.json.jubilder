@@ -1,0 +1,2 @@
+json.extract! ip, :id, :ip, :server_id
+json.url ip_url(ip, format: :json)

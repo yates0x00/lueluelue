@@ -1,0 +1,42 @@
+<%= form_with(model: ip) do |form| %>
+  <% if ip.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ip.errors.count, "error") %> prohibited this ip from being saved:</h2>
+
+      <ul>
+        <% ip.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        <%= form.label :ip, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :ip, class: 'form-control' %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :nmap_result, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_area :nmap_result, class: 'form-control', rows: 20 %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :location, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :location, class: 'form-control' %>
+      </td>
+    </tr>
+  </table>
+  <%= form.submit class: 'btn btn-primary' %>
+<% end %>
+
