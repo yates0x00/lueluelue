@@ -4,7 +4,8 @@ class ServersController < ApplicationController
   # GET /servers or /servers.json
   def index
     @servers = Server
-    @servers = @servers.where("name like '%#{params[:name]}%'") if params[:name].present?
+    @servers = @servers.where("name like '%#{params[:like_name]}%'") if params[:like_name].present?
+    @servers = @servers.where("name = ?", params[:equal_name]) if params[:equal_name].present?
     @servers = @servers.where('project_id = ? ', params[:project_id]) if params[:project_id].present?
     @servers = @servers.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
     @servers = @servers.where("wafwoof_result not like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'

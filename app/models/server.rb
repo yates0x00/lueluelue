@@ -19,7 +19,7 @@ class Server < ApplicationRecord
     temp = the_harvester_result.split('Searching Sublist3r').last
     return '-' if temp.blank?
     #temp = (temp).gsub("\n", "<br/>")
-    return temp
+    return temp[0,2000]
   end
 
   def remove_ansi_color string
