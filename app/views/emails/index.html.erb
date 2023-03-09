@@ -41,10 +41,10 @@
           <%= link_to email.address, email %>
         </th>
         <th>
-          <%= link_to email.project.try(:name), "/projects/#{email.project_id}" %>
+          <%= link_to email.project.try(:name), email.project %>
         </th>
         <th>
-          <%= link_to email.server.try(:name), "/servers/#{email.server_id}" %>
+          <%= link_to email.server.try(:name), email.server %>
         </th>
         <td>
           <%= link_to "Show this email", email %>

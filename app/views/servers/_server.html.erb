@@ -14,7 +14,7 @@
        Project name
       </th>
       <td>
-        <%= server.project.try(:name) %>
+        <%= link_to server.project.try(:name), server.project %>
       </td>
     </tr>
     <tr>

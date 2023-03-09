@@ -13,13 +13,17 @@
   <tr>
     <td style='width: 50px;'>ID</td>
     <td>Server name</td>
+    <td>Ip</td>
     <td>Created at</td>
+    <td>Operations</td>
   </tr>
   <% @ip_mappings.each do |ip_mapping| %>
   <tr>
     <td><%= ip_mapping.id %></td>
-    <td><%= link_to ip_mapping.server.try(:name), "/servers/#{ip_mapping.server_id}" %></td>
+    <td><%= link_to ip_mapping.server.try(:name), ip_mapping.server %></td>
+    <td><%= link_to ip_mapping.ip.try(:ip), ip_mapping.ip %></td>
     <td><%= ip_mapping.created_at %></td>
+    <td><%= link_to "Show this ip mapping", ip_mapping %></td>
   </tr>
   <% end %>
 </table>
