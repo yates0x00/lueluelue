@@ -25,7 +25,7 @@
         <%= form.label :project_id, style: "display: block" %>
       </th>
       <td>
-        <%= form.select "project_id", options_from_collection_for_select(Project.all, :id, :name), {}, {class: 'form-control'} %>
+        <%= form.select "project_id", options_from_collection_for_select(Project.all, :id, :name, @server.project_id), {}, {class: 'form-control'} %>
       </td>
     </tr>
     <tr>

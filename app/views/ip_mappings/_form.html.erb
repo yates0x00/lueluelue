@@ -1,0 +1,34 @@
+<%= form_with(model: ip_mapping) do |form| %>
+  <% if ip_mapping.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ip_mapping.errors.count, "error") %> prohibited this ip_mapping from being saved:</h2>
+
+      <ul>
+        <% ip_mapping.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <table class='table table-bordered table-hovered table-striped'>
+    <tr>
+      <th style="width: 200px;">
+        <%= form.label :server_id, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.select :server_id, options_from_collection_for_select(Server.all, :id, :name, @ip_mapping.server_id), {}, {class: 'form-control'} %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= form.label :ip_id, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.select :ip_id, options_from_collection_for_select(Ip.all, :id, :ip, @ip_mapping.ip_id), {}, {class: 'form-control'} %>
+      </td>
+    </tr>
+  </table>
+  <%= form.submit class: 'btn btn-primary' %>
+<% end %>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @ip_mapping %>
+
+<div>
+  <%= link_to "Edit this ip_mapping", edit_ip_mapping_path(@ip_mapping) %> |
+  <%= link_to "Back to ip_mappings", ip_mappings_path %>
+
+  <%= button_to "Destroy this ip_mapping", @ip_mapping, method: :delete, class: 'btn btn-danger btn-sm' %>
+</div>

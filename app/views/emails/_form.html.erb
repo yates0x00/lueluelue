@@ -26,7 +26,7 @@
         <%= form.label :server_id, style: "display: block" %>
       </th>
       <td>
-        <%= form.select :server_id, options_from_collection_for_select(Server.all, :id, :name), {}, {class: 'form-control'} %>
+        <%= form.select :server_id, options_from_collection_for_select(Server.all, :id, :name, @email.server_id), {}, {class: 'form-control'} %>
       </td>
     </tr>
     <tr>
@@ -34,7 +34,7 @@
         <%= form.label :project_id, style: "display: block" %>
       </th>
       <td>
-        <%= form.select :project_id, options_from_collection_for_select(Project.all, :id, :name), {}, {class: 'form-control'} %>
+        <%= form.select :project_id, options_from_collection_for_select(Project.all, :id, :name, @email.project_id), {}, {class: 'form-control'} %>
       </td>
     </tr>
   </table>
