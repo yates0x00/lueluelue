@@ -1,4 +1,4 @@
-class AddIsDetectedByWafwoofResultAndOtherIsDetectedByColumnsToServers < ActiveRecord::Migration[7.0]
+class AddIsDetectedByWafwoofAndOtherIsDetectedByColumnsToServers < ActiveRecord::Migration[7.0]
   def change
     add_column :servers, :is_detected_by_wafwoof, :boolean, default: false
     add_column :servers, :is_detected_by_dig, :boolean, default: false

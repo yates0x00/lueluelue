@@ -1,8 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Projects</h1>
-<%= paginate @projects %>, total: <%= @total_count %>
+total: <%= @total_count %>
+<br/>
+<%= link_to "New project", new_project_path %>&nbsp;&nbsp;&nbsp;&nbsp;
 <%= link_to 'Download csv', download_csv_projects_path %>
+<%= paginate @projects %>
 <div id="projects">
   <table class='table table-bordered table-hovered table-strprojected'>
     <tr>
@@ -43,13 +46,20 @@
           <%#= project.ips.count %>
         </td>
         <td>
-          <%= project.servers.count %>
+          (<%= project.servers.count %>)<br/>
+          <% project.servers.each do |server| %>
+            <%= link_to server.name, server %><br/>
+          <% end %>
         </td>
         <td>
-          <%= project.emails.count %>
+          (<%= project.emails.count %>)<br/>
+          <% project.emails.each do |email| %>
+            <%= link_to email.address, email %><br/>
+          <% end %>
         </td>
         <td>
-          <%= link_to "Show this project", project %>
+          <%= link_to "Show", project %>&nbsp;&nbsp;
+          <%= link_to "Edit", edit_project_path(project) %>
         </td>
       </tr>
   <% end %>

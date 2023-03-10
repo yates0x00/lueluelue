@@ -2,15 +2,15 @@
 
 <h1>Servers</h1>
 <%= form_tag servers_path, method: 'GET' do |f| %>
-  <label>search by text: </label><br/>
-  Like by name: <%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf' %>
-  Equal by name: <%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. beiersdorf' %>
-  Like by ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..' %>
+  <b>search by text:</b><br/>
+  Like by name: <%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
+  Equal by name: <%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. www.zh.beiersdorf.cn', class: 'form_select' %>
+  Like by ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..', class: 'form_select' %>
   <br/>
-  <label>search by project:</label> <br/>
+  <b>search by project:</b><br/>
   Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: "all", class: 'form_select' %>
   <br/>
-  <label>search by detect status:</label> <br/>
+  <b>search by detect status:</b><br/>
   if has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"]), class: 'form_select' %>
   detected by wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]), class: 'form_select' %>
   detected by ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]), class: 'form_select' %>
@@ -23,16 +23,15 @@
                                                      ["level2: sub domain and relative domain(e.g. sub.target.com)", 2],
                                                      ["level3: relative domain(tls not same, e.g target.abc)", 3],
                                                      ["level4: same ip domains(name not same, e.g. another-site.com)", 4]]), class: 'form_select' %>
-  order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc' %>
+  order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc', class: 'form_select' %>
   <br/>
   <%= submit_tag 'search' %>
 <% end %>
-<%= link_to "new batch servers", new_batch_servers_servers_path, target: '_blank' %>
-<%= link_to 'Download csv', download_csv_servers_path %>
-<br/>
-<span><%= paginate @servers %>
-total: <%= @total_count %></span>
-<span style="margin-left: 80%;">per page: <%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), class: 'form_select', :onchange => "if(this.value){window.location='?per_page='+this.value;}" %><span>
+<%= link_to "new batch servers", new_batch_servers_servers_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
+<%= link_to 'Download csv', download_csv_servers_path %><br/>
+total: <%= @total_count %><br/>
+<span><%= paginate @servers %></span>
+<span style="float: right">per page: <%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), class: 'form_select', :onchange => "if(this.value){window.location='?per_page='+this.value;}" %></span>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> id </td>

@@ -2,7 +2,9 @@ class IpsController < ApplicationController
   before_action :set_ip, only: %i[ show edit update destroy ]
   def index
     @ips = Ip.all
-    @ips = @ips.joins(:servers).where("servers.name like '%#{params[:server_name]}%'") if params[:server_name].present?
+    @ips = @ips.joins(:servers).where("servers.name like '%#{params[:like_name]}%'") if params[:like_name].present?
+    @ips = @ips.joins(:servers).where("servers.name = ?", params[:equal_name]) if params[:equal_name].present?
+    @ips = @ips.joins(:project).where("projects.id = ?", params[:project_id]) if params[:project_id].present?
     @total_count = @ips.count
     @ips = @ips.order("id desc").page(params[:page]).per(500)
   end

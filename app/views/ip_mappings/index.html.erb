@@ -2,13 +2,17 @@
 
 <h1>IpMapping</h1>
 <%= form_tag ip_mappings_path, method: 'GET' do |f| %>
-  name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
+  Like by server name:<%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
+  Equal by server name:<%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   <br/>
   <%= submit_tag 'search' %>
 <% end %>
-
-<%= paginate @ip_mappings %>, total: <%= @total_count %>
 <%= link_to 'Download csv', download_csv_ip_mappings_path %>
+<br/>
+total: <%= @total_count %>
+<br/>
+
+<%= paginate @ip_mappings %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width: 50px;'>ID</td>
@@ -20,8 +24,8 @@
   <% @ip_mappings.each do |ip_mapping| %>
   <tr>
     <td><%= ip_mapping.id %></td>
-    <td><%= link_to ip_mapping.server.try(:name), ip_mapping.server %></td>
-    <td><%= link_to ip_mapping.ip.try(:ip), ip_mapping.ip %></td>
+    <td><%= link_to ip_mapping.server.name, ip_mapping.server if ip_mapping.server.present? %></td>
+    <td><%= link_to ip_mapping.ip.ip, ip_mapping.ip if ip_mapping.ip.present? %></td>
     <td><%= ip_mapping.created_at %></td>
     <td><%= link_to "Show this ip mapping", ip_mapping %></td>
   </tr>

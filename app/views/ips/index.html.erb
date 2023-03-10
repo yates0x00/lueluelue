@@ -1,20 +1,20 @@
 <p style="color: green"><%= notice %></p>
 <h1>Ips</h1>
 <%= form_tag '', method: 'GET' do |f| %>
-  <br/>
-  <label>search by project:</label> <br/>
+  <b>search by project:</b><br/>
   Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
   <br/>
-  <label>search by server:</label> <br/>
-  Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
-  <br/>
+  <b>search by server:</b><br/>
+  Like by server name:<%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
+  Equal by server name:<%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   <br/>
   <%= submit_tag 'search' %>
 <% end %>
-
-<%= paginate @ips %>, total: <%= @total_count %>,
-<%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
+<%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
 <%= link_to 'Download csv', download_csv_ips_path %>
+<br/>
+total: <%= @total_count %><br/>
+<%= paginate @ips %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'>id</td>
@@ -22,6 +22,8 @@
     <td style='width: 250px'>domains </td>
     <td style='width: 1100px'>nmap_result</td>
     <td style='width: 150px'>location</td>
+    <td style='width: 150px'>Created at</td>
+    <td style='width: 150px'>Operations</td>
   </tr>
   <% @ips.each do |ip| %>
   <tr>

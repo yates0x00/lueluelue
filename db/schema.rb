@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.index ["project_id"], name: "index_c_class_networks_on_project_id"
   end
 
-  create_table "emails", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "emails", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "server_id"
     t.string "address"
     t.datetime "created_at", null: false
@@ -57,7 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.text "location"
   end
 
-  create_table "managers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "managers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.index ["reset_password_token"], name: "index_managers_on_reset_password_token", unique: true
   end
 
-  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false

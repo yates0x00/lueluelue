@@ -6,11 +6,11 @@
 
   <tr>
     <th>Project:</th>
-    <td><%= link_to email.project.try(:name), email.project %></td>
+    <td><%= link_to email.project.name, email.project if email.project.present? %></td>
   </tr>
 
   <tr>
     <th>Server:</th>
-    <td><%= link_to email.server.try(:name), email.server %></td>
+    <td><%= link_to email.server.name, email.server if email.server.present? %></td>
   </tr>
 </table>

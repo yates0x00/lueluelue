@@ -3,7 +3,8 @@ class IpMappingsController < ApplicationController
 
   def index
     @ip_mappings = IpMapping.all
-    @ip_mappings = @ip_mappings.joins(:server).where("name like '%#{params[:server_name]}%'") if params[:server_name].present?
+    @ip_mappings = @ip_mappings.joins(:server).where("name like '%#{params[:like_name]}%'") if params[:like_name].present?
+    @ip_mappings = @ip_mappings.joins(:server).where("name = ?", params[:equal_name]) if params[:equal_name].present?
     @total_count = @ip_mappings.count
     @ip_mappings = @ip_mappings.order("id desc").page(params[:page]).per(500)
   end
