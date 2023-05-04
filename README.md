@@ -9,31 +9,35 @@ an internal tool to present the penitration testing result
 2.setup PROXY environment.e.g.
 
 ```
+
+# ~/env_my_proxy
 export HTTP_PROXY="http://192.168.137.1:8080"
 export HTTPS_PROXY="http://192.168.137.1:8080"
 export http_proxy="http://192.168.137.1:8080"
 export https_proxy="http://192.168.137.1:8080"
 ```
-3.manually query the target website, e.g. target.com, using shuize and theharvester
 
-python3 ShuiZe.py -d nextcloud.com --proxy=socks5://192.168.31.224:1092
+3.then run `source ~/env_my_proxy`, most of the commands you run in the following steps will use this proxy.
+
+you should check the target manually to see if success, because some target will block your access because your IP is restricted. (e.g. from Russia, from China...)
+
+## detections
+
+should run these command manually or automatically:
+
+- shuize
+- theharvester
+- dig
+- wafw00f
+- nmap
+- wappalyzer
+- ehole
+- nuclei
 
 
-4.create server (in database) for "target.com", then
+manually command: `$ bundle exec ruby scripts/detect_by_shuize.rb` (remember to change the code in this file )
 
-```
-bundle exec ruby scripts/detect_by_theharvester.rb
-```
-
-5.create servers from shuize and theharvester result
-
-
-```
-
-```
-
-
-
+TODO: make it automatic in future.
 
 ## installation
 
