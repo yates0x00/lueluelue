@@ -3,35 +3,45 @@
 <%= form_tag '', method: 'GET' do |f| %>
   <br/>
   <label>search by project:</label> <br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'all', class: 'form_select' %>
   <br/>
   <label>search by server:</label> <br/>
-  Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
+  Like by name: <%= text_field_tag "like_by_name", params[:like_by_name], placeholder: 'e.g. beiersdorf' %>
+  Equal by name: <%= text_field_tag "equal_by_name", params[:equal_by_name], placeholder: 'e.g. beiersdorf.com' %>
   <br/>
+  <label>order by: </label> <br/>
+  <%= text_field_tag "order_by", params[:order_by], placeholder: 'e.g. ip desc' %>
   <br/>
   <%= submit_tag 'search' %>
 <% end %>
 
-<%= paginate @ips %>, total: <%= @total_count %>,
+<%= paginate @ip_mappings %>, total: <%= @total_count %>,
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
 <%= link_to 'Download csv', download_csv_ips_path %>
+
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'>id</td>
     <td style='width: 150px'>ip</td>
-    <td style='width: 250px'>domains </td>
+    <td style='width: 250px'>domains <br/> (only display max 20 records) </td>
     <td style='width: 1100px'>nmap_result</td>
     <td style='width: 150px'>location</td>
   </tr>
-  <% @ips.each do |ip| %>
+  <% @ip_mappings.map(&:ip_id).uniq.each do |ip_id|
+    ip = Ip.find ip_id
+  %>
+
   <tr>
     <td> <%= ip.id %> </td>
     <td> <%= link_to ip.ip, ip %> </td>
     <td>
-      <% ip.servers.each do |server| %>
+      <% ip.servers.first(20).each do |server, index| %>
         <%= link_to server.name, server %> <br/>
+
       <% end %>
-      (<%= ip.servers.count %>)
+      <!--
+      (<%# ip.servers.count %>)
+      -->
     </td>
     <td>
       <pre><%= ip.nmap_result %>
@@ -47,7 +57,7 @@
   <% end %>
 </table>
 
-<%= paginate @ips %>
+<%= paginate @ip_mappings %>
 
 <style>
 table {

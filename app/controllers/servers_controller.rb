@@ -45,6 +45,8 @@ class ServersController < ApplicationController
         name = temp_name.split("http://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
       end
+
+      @server.update comment: params[:comment], project_id: params[:project_id], level: params[:level]
     end
 
     if @server.save

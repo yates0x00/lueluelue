@@ -4,7 +4,7 @@
 
 <%= form_tag emails_path, method: 'GET' do |f| %>
   <label>search by project:</label> <br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'all', class: 'form_select' %>
   <br/>
   <label>search by server:</label> <br/>
   Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>

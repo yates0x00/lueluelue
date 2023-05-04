@@ -1,5 +1,11 @@
 <h1>new batch servers</h1>
 <%= form_tag create_batch_servers_servers_path, method: :post do %>
+  project: <%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name) %> <br/>
+  comment: <%= text_field_tag :comment, '', placeholder: 'e.g. comes from c class network' %>  <br/>
+  level: <%= select_tag "level", options_for_select([["level1: marked direct domain(e.g. target.com) ", 1],
+                                                     ["level2: sub domain and relative domain(e.g. sub.target.com)", 2],
+                                                     ["level3: relative domain(tls not same, e.g target.abc)", 3],
+                                                     ["level4: same ip domains(name not same, e.g. another-site.com)", 4]]), class: 'form_select' %> <br/>
   names: <%= text_area_tag :names, :"", placeholder: "https://google.com\nhttps://help.google.com\n", class: 'form-control', rows: 20 %></br>
   <%= submit_tag 'new batch servers', class: "form_submit", class: 'btn btn-primary' %>
 <% end %>

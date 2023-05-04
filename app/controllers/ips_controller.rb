@@ -1,10 +1,16 @@
 class IpsController < ApplicationController
   before_action :set_ip, only: %i[ show edit update destroy ]
   def index
-    @ips = Ip.all
-    @ips = @ips.joins(:servers).where("servers.name like '%#{params[:server_name]}%'") if params[:server_name].present?
-    @total_count = @ips.count
-    @ips = @ips.order("id desc").page(params[:page]).per(500)
+    @ip_mappings = IpMapping.select('distinct(ip_mappings.ip_id)').joins(:ip, [:server => :project]).includes(:ip)
+    @ip_mappings = @ip_mappings.where("servers.name like '%#{params[:like_by_name]}%'") if params[:like_by_name].present?
+    @ip_mappings = @ip_mappings.where("servers.name = ?", params[:equal_by_name]) if params[:equal_by_name].present?
+    @ip_mappings = @ip_mappings.where("servers.project_id = ?", params[:project_id]) if params[:project_id].present?
+
+    @total_count = @ip_mappings.count
+    puts "== ip_mappings.inspect: #{@ip_mappings.inspect}"
+
+    #@ip_mappings = @ip_mappings.order(params[:order_by] || "ips.ip desc")
+    @ip_mappings = @ip_mappings.page(params[:page]).per(1000)
   end
 
   def new_batch_ips

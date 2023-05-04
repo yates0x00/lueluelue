@@ -1,5 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
+<div class='alert alert-info'>
+  level 1: detect by shuize, the_harvester<br/>
+  level 2+: detect by dig, waf, ehole, wappalyzer, nuclei, iplocation<br/>
+  ip: detect by nmap<br/>
+</div>
+
 <h1>Servers</h1>
 <%= form_tag servers_path, method: 'GET' do |f| %>
   <label>search by text: </label><br/>
@@ -38,7 +44,7 @@ total: <%= @total_count %></span>
     <td style='width:50px'> id </td>
     <td style='width: 150px'> name </td>
     <td style='width: 200px'> dig_result and <br/> nmap_result</td>
-    <td style='width: 200px'> wafwoof_result</td>
+    <td style='width: 200px'> wafwoof_result </td>
     <td style='width: 100px'> wappalyzer_result </td>
     <td style='width: 200px'> ehole_result</td>
     <td style='width: 250px'> harvester_result</td>
@@ -52,7 +58,7 @@ total: <%= @total_count %></span>
         <%= server.id %>
       </td>
       <td>
-        <%= link_to server.name, server %>
+        <%= link_to server.name, "https://#{server.name}", target: '_blank' %>
         <br/>
         project name: <%= server.project.try(:name) %><br/>
         project ID: <%= server.project_id rescue '' %><br/>
@@ -71,7 +77,7 @@ total: <%= @total_count %></span>
         <% } %>
       </td>
       <td>
-        <%= raw server.wafwoof_result %>
+        <%= raw server.wafwoof_result.include?("is behind") ? "<span style='color:red'>Waf</span>" : "<span style='color:green'>No waf, or server down</span>" rescue '-'%>
       </td>
       <td>
         <%= raw server.short_text_for_wappalyzer_result %>
