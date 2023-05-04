@@ -9,9 +9,9 @@ require 'csv'
 
 puts "== install wappalyzer from: https://github.com/wappalyzer/wappalyzer"
 
-WAPPALYZER = "node /workspace2/coding_tools/wappalyzer/src/drivers/npm/cli.js"
+WAPPALYZER = "node /workspace/coding_tools/wappalyzer/src/drivers/npm/cli.js"
 
-def run url, server
+def run_single_thread url, server
   command = "#{WAPPALYZER} https://#{url}"
   result = `#{command}`
   puts "== result: #{result.inspect}"
@@ -25,18 +25,23 @@ def run url, server
     result = `#{command}`
     server.update wappalyzer_result: "https is not available, <br/>" + result
   end
+  server.update is_detected_by_wappalyzer: true
 end
 
-all_servers = Server.where("wappalyzer_result is null").order('id desc')
-puts "== all_servers.count: #{all_servers.count}"
-all_servers.each_slice(10) do |servers|
-  threads = []
-  servers.each do |server|
-    threads << Thread.new do
-      puts "== site: #{server.name}, id: #{server.id}, now: #{Time.now}"
-      run server.name, server
+def run servers
+  puts "== servers.count: #{servers.count}"
+  servers.each_slice(10) do |servers|
+    threads = []
+    servers.each do |server|
+      threads << Thread.new do
+        puts "== site: #{server.name}, id: #{server.id}, now: #{Time.now}"
+        run_single_thread server.name, server
+      end
     end
+    threads.each {|t| t.join }
+    sleep 30
   end
-  threads.each {|t| t.join }
-  sleep 30
 end
+
+servers = Server.where("project_id = 2 and is_detected_by_wappalyzer = ?", false).order('id desc')
+run servers

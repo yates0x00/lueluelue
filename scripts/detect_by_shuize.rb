@@ -18,7 +18,7 @@ def run servers
         result_file = "/workspace/coding_tools/shuize/results/#{site.name}.xlsx"
         touch_command = "touch #{result_file}"
         `#{touch_command}`
-        command = "cd /workspace/coding_tools/shuize && python3 ShuiZe.py -d #{site.name} -f #{result_file} --proxy=socks5://192.168.31.224:1092"
+        command = "cd /workspace/coding_tools/shuize && python3 ShuiZe.py -d #{site.name} -f #{result_file} --proxy=socks5://192.168.1.105:1092"
         puts "== command: #{command}"
         result = `#{command}`
         puts "done, #{site.name}, #{site.id}, check saved to #{result_file}"
@@ -29,4 +29,6 @@ def run servers
   end
 end
 
-run Server.where('(name not like "%beiersdorf%" and name not like "%nivea%")').order('level asc')
+#run Server.where('(name not like "%beiersdorf%" and name not like "%nivea%")').order('level asc')
+#run Server.where('id >= 9301').order('level asc')
+run Server.where('id = 10361').order('level asc')

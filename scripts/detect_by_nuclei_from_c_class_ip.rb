@@ -13,17 +13,7 @@ def run servers, is_https = true
     servers_in_20.each do |server|
       threads << Thread.new do
         name = server.name
-
-        if is_https == "c_class"
-          command = "nuclei -u #{name} -se nuclei_c_class_ip_result_#{name} -as"
-          result = `#{command}`
-          if result.blank?
-            result = 'not found'
-          end
-          Rails.logger.info "== command: #{command}, raw result: #{result}"
-          server.update nuclei_manual_result: result
-
-        elsif is_https
+        if is_https
           command = "nuclei -u https://#{name} -se nuclei_result_#{name} -as"
           result = `#{command}`
           if result.blank?
@@ -51,9 +41,6 @@ end
 #run Server.where("name like '%beiersdorf%'"), true
 #run Server.where("name like '%beiersdorf%'"), false
 
-#run Server.where("project_id = 2 and is_detected_by_nuclei_https = 0 "), "c_class"
-#run Server.where("project_id = 2 and is_detected_by_nuclei_https = 0 "), true
-#run Server.where("project_id = 2 and is_detected_by_nuclei_http = 0 "), false
-run Server.where("id >= 9301"), true
-run Server.where("id >= 9301"), false
+run Server.where("id >= 4641"), true
+run Server.where("id >= 4641"), false
 

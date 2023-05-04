@@ -44,6 +44,7 @@ def run servers
           title = http_result.split('|')[5]
           site.update title: title, web_server: web_server, ehole_result: "https seems not work" + https_result + http_result
         end
+        site.update is_detected_by_ehole: true
       end
     end
     threads.each {|t| t.join}
@@ -52,4 +53,5 @@ def run servers
   end
 end
 
-run Server.where('ehole_result is null').order('level asc')
+#run Server.where('project_id = 2 and is_detected_by_ehole = 0').order('level asc')
+run Server.where('project_id = 3').order('level asc')
