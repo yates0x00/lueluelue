@@ -1,24 +1,20 @@
 <p style="color: green"><%= notice %></p>
 <h1>Ips</h1>
 <%= form_tag '', method: 'GET' do |f| %>
+  <b>search by project:</b><br/>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
   <br/>
-  <label>search by project:</label> <br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'all', class: 'form_select' %>
-  <br/>
-  <label>search by server:</label> <br/>
-  Like by name: <%= text_field_tag "like_by_name", params[:like_by_name], placeholder: 'e.g. beiersdorf' %>
-  Equal by name: <%= text_field_tag "equal_by_name", params[:equal_by_name], placeholder: 'e.g. beiersdorf.com' %>
-  <br/>
-  <label>order by: </label> <br/>
-  <%= text_field_tag "order_by", params[:order_by], placeholder: 'e.g. ip desc' %>
+  <b>search by server:</b><br/>
+  Like by server name:<%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
+  Equal by server name:<%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   <br/>
   <%= submit_tag 'search' %>
 <% end %>
-
-<%= paginate @ip_mappings %>, total: <%= @total_count %>,
-<%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>
+<%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
 <%= link_to 'Download csv', download_csv_ips_path %>
-
+<br/>
+total: <%= @total_count %><br/>
+<%= paginate @ips %>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'>id</td>
@@ -26,6 +22,8 @@
     <td style='width: 250px'>domains <br/> (only display max 20 records) </td>
     <td style='width: 1100px'>nmap_result</td>
     <td style='width: 150px'>location</td>
+    <td style='width: 150px'>Created at</td>
+    <td style='width: 150px'>Operations</td>
   </tr>
   <% @ip_mappings.map(&:ip_id).uniq.each do |ip_id|
     ip = Ip.find ip_id

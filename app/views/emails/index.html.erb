@@ -1,18 +1,19 @@
 <p style="color: green"><%= notice %></p>
-
 <h1>Emails</h1>
-
 <%= form_tag emails_path, method: 'GET' do |f| %>
-  <label>search by project:</label> <br/>
+  <b>search by project:</b><br/>
   Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'all', class: 'form_select' %>
   <br/>
-  <label>search by server:</label> <br/>
-  Server name: <%= text_field_tag "server_name", params[:server_name], placeholder: 'e.g. beiersdorf' %>
+  <b>search by server:</b><br/>
+  Like by server name:<%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
+  Equal by server name:<%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. www.zh.beiersdorf.cn', class: 'form_select' %>
   <br/>
   <%= submit_tag 'search' %>
 <% end %>
-<%= paginate @emails %>, total: <%= @total_count %>
-<%= link_to 'Download csv', download_csv_emails_path %>
+total: <%= @total_count %><br/>
+<%= link_to "New email", new_email_path %>&nbsp;&nbsp;&nbsp;&nbsp;
+<%= link_to 'Download csv', download_csv_emails_path %><br/>
+<%= paginate @emails %>
 <div id="emails">
   <table class='table table-bordered table-hovered table-striped'>
     <tr>
@@ -41,10 +42,10 @@
           <%= link_to email.address, email %>
         </th>
         <th>
-          <%= link_to email.project.try(:name), email.project %>
+          <%= link_to email.project.name, email.project if email.project.present? %>
         </th>
         <th>
-          <%= link_to email.server.try(:name), email.server %>
+          <%= link_to email.server.name, email.server if email.server.present? %>
         </th>
         <td>
           <%= link_to "Show this email", email %>

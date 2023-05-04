@@ -14,7 +14,10 @@
        Server name
       </th>
       <td>
-        <%= ip.servers.map{|server| server.name } %>
+        (<%= ip.servers.count %>)<br/>
+        <% ip.servers.each do |server| %>
+         <%= link_to server.name, server %><br/>
+        <% end %>
       </td>
     </tr>
     <tr>
