@@ -1,9 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
 <div class='alert alert-info'>
-  level 1: detect by shuize, the_harvester<br/>
-  level 2+: detect by dig, waf, ehole, wappalyzer, nuclei, iplocation<br/>
-  ip: detect by nmap<br/>
+  useful tips: <br/>
+  1. ehole 200 + no waf
 </div>
 
 <h1>Servers</h1>
@@ -12,12 +11,12 @@
   Like by name: <%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   Equal by name: <%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. www.zh.beiersdorf.cn', class: 'form_select' %>
   Like by ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..', class: 'form_select' %>
+  If has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"]), class: 'form_select' %>
   <br/>
   <b>search by project:</b><br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: "all", class: 'form_select' %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all.order('id desc'), :id, :name, params[:project_id]), include_blank: "all", class: 'form_select' %>
   <br/>
   <b>search by detect status:</b><br/>
-  if has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"]), class: 'form_select' %>
   detected by wappalyzer: <%= select_tag "is_detected_by_wappalyzer", options_for_select(["all", "yes", "no"], params["is_detected_by_wappalyzer"]), class: 'form_select' %>
   detected by ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]), class: 'form_select' %>
   detected by the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]), class: 'form_select' %>
@@ -28,7 +27,8 @@
                                                      ["level1: marked direct domain(e.g. target.com) ", 1],
                                                      ["level2: sub domain and relative domain(e.g. sub.target.com)", 2],
                                                      ["level3: relative domain(tls not same, e.g target.abc)", 3],
-                                                     ["level4: same ip domains(name not same, e.g. another-site.com)", 4]]), class: 'form_select' %>
+                                                     ["level4: same ip domains(name not same, e.g. another-site.com)", 4]], params[:level]), class: 'form_select' %>
+  <b>OR</b> check level by range: <%= text_field_tag "level_by_range", params[:level_by_range], placeholder: '1,2,3', class: 'form_select' %>
   order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc', class: 'form_select' %>
   <br/>
   <%= submit_tag 'search' %>

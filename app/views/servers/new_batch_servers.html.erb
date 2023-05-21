@@ -1,6 +1,6 @@
 <h1>new batch servers</h1>
 <%= form_tag create_batch_servers_servers_path, method: :post do %>
-  project: <%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name) %> <br/>
+  project: <%= select_tag :project_id, options_from_collection_for_select(Project.all.order('id desc'), :id, :name) %> <br/>
   comment: <%= text_field_tag :comment, '', placeholder: 'e.g. comes from c class network' %>  <br/>
   level: <%= select_tag "level", options_for_select([["level1: marked direct domain(e.g. target.com) ", 1],
                                                      ["level2: sub domain and relative domain(e.g. sub.target.com)", 2],

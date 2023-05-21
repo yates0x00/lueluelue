@@ -1,7 +1,6 @@
 class ServersController < ApplicationController
   before_action :set_server, only: %i[ show edit update destroy ]
 
-  # GET /servers or /servers.json
   def index
     @servers = Server
     @servers = @servers.where("name like '%#{params[:like_name]}%'") if params[:like_name].present?
@@ -17,6 +16,7 @@ class ServersController < ApplicationController
     @servers = @servers.where("nuclei_https_result is not null or nuclei_http_result is not null") if params[:is_detected_by_nuclei].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("level = ?", params[:level]) if params[:level].present?
+    @servers = @servers.where(level: params[:level_by_range].split(',')) if params[:level_by_range].present?
     @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
@@ -44,6 +44,9 @@ class ServersController < ApplicationController
       elsif temp_name.include?("http://")
         name = temp_name.split("http://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
+      else
+        name = temp_name
+        @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
       end
 
       @server.update comment: params[:comment], project_id: params[:project_id], level: params[:level]
