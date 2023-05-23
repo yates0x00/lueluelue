@@ -11,7 +11,11 @@
   Like by name: <%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   Equal by name: <%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. www.zh.beiersdorf.cn', class: 'form_select' %>
   Like by ehole_text: <%= text_field_tag "ehole_text", params[:ehole_text], placeholder: '100 | 200 ..', class: 'form_select' %>
-  If has waf: <%= select_tag "is_detected_waf", options_for_select(["all", "yes", "no"], params["is_detected_waf"]), class: 'form_select' %>
+  If has waf: <%= select_tag "is_detected_waf", options_for_select([
+    ["all", ''],
+    ["confirmed behind waf(yes)", 'yes'],
+    ["confirmed no waf", 'no']
+  ], params["is_detected_waf"]), class: 'form_select' %>
   <br/>
   <b>search by project:</b><br/>
   Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all.order('id desc'), :id, :name, params[:project_id]), include_blank: "all", class: 'form_select' %>
@@ -76,7 +80,13 @@ total: <%= @total_count %><br/>
         <% } %>
       </td>
       <td>
-        <%= raw server.wafwoof_result.include?("is behind") ? "<span style='color:red'>Waf</span>" : "<span style='color:green'>No waf, or server down</span>" rescue '-'%>
+        <% if server.is_confirmed_not_behind_waf %>
+          <span style='color:green'>No waf</span>
+        <% elsif server.is_confirmed_behind_waf %>
+          <span style='color:red'>Behind waf</span>
+        <% else %>
+          <span style='color:yellow'>Server seems down</span>
+        <% end %>
       </td>
       <td>
         <%= raw server.short_text_for_wappalyzer_result %>

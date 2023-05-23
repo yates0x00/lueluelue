@@ -6,8 +6,8 @@ class ServersController < ApplicationController
     @servers = @servers.where("name like '%#{params[:like_name]}%'") if params[:like_name].present?
     @servers = @servers.where("name = ?", params[:equal_name]) if params[:equal_name].present?
     @servers = @servers.where('project_id = ? ', params[:project_id]) if params[:project_id].present?
-    @servers = @servers.where("wafwoof_result like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
-    @servers = @servers.where("wafwoof_result not like '%No WAF detected%'") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
+    @servers = @servers.where("is_confirmed_not_behind_waf = 1") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
+    @servers = @servers.where("is_confirmed_behind_waf = 1") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
     @servers = @servers.where("wappalyzer_result is not null") if params[:is_detected_by_wappalyzer].present? && params[:is_detected_by_wappalyzer] == 'yes'
     @servers = @servers.where("ehole_result is not null") if params[:is_detected_by_ehole].present? && params[:is_detected_by_ehole] == 'yes'
     @servers = @servers.where("ehole_result like '%#{params[:ehole_text]}%'") if params[:ehole_text].present?
