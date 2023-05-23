@@ -17,17 +17,16 @@ class ServersController < ApplicationController
     @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("level = ?", params[:level]) if params[:level].present?
     @servers = @servers.where(level: params[:level_by_range].split(',')) if params[:level_by_range].present?
+    @servers = @servers.where("is_stared = ?", params[:is_stared]) if params[:is_stared].present?
     @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
       .page(params[:page]).per(params[:per_page] || 1000)
   end
 
-  # GET /servers/1 or /servers/1.json
   def show
   end
 
-  # GET /servers/new
   def new
     @server = Server.new
   end
@@ -59,11 +58,9 @@ class ServersController < ApplicationController
     end
   end
 
-  # GET /servers/1/edit
   def edit
   end
 
-  # POST /servers or /servers.json
   def create
     @server = Server.new(server_params)
 
@@ -131,7 +128,10 @@ class ServersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def server_params
-      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language, :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result, :nuclei_manual_result, :domain_protocal, :project_id,
-                                    :is_detected_by_wafwoof, :is_detected_by_dig, :is_detected_by_observer_ward, :is_detected_by_ehole, :is_detected_by_wappalyzer, :is_detected_by_nuclei_https, :is_detected_by_the_harvester, :is_detected_by_nuclei_http, :is_detected_by_nuclei_manual)
+      params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language,
+                                     :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result,
+                                     :nuclei_manual_result, :domain_protocal, :project_id, :is_detected_by_wafwoof, :is_detected_by_dig, :is_detected_by_observer_ward,
+                                     :is_detected_by_ehole, :is_detected_by_wappalyzer, :is_detected_by_nuclei_https, :is_detected_by_the_harvester, :is_detected_by_nuclei_http,
+                                     :is_detected_by_nuclei_manual, :is_stared)
     end
 end

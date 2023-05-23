@@ -139,7 +139,12 @@
         <%= form.label :level, style: "display: block" %>
       </th>
       <td>
-        <%= form.select :level, options_for_select([["all", 0], ["level1: marked direct domain", 1], ["level2: sub domain and relative domain", 2], ["level3: relative domain(tls not same)", 3], ["level4: same ip domains", 4]]), {}, class: 'form-control' %>
+        <%= form.select :level, options_for_select([
+          ["level1: marked direct domain", 1],
+          ["level2: sub domain and relative domain", 2],
+          ["level3: relative domain(tls not same)", 3],
+          ["level4: same ip domains", 4]
+        ], @server.level), {}, class: 'form-control' %>
       </td>
     </tr>
     <tr>
@@ -188,6 +193,14 @@
       </th>
       <td>
         <%= form.select :domain_protocal, options_for_select(["https","http"]), {}, {class: 'form-control'} %>
+      </td>
+    </tr>
+    <tr>
+      <th style="width: 200px;">
+        <%= form.label :is_stared, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.select :is_stared, options_for_select([["yes", true], ["no", false]], @server.is_stared), {}, {class: 'form-control'} %>
       </td>
     </tr>
 
