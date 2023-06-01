@@ -14,6 +14,9 @@ gem 'nokogiri'
 gem 'mechanize'
 gem 'optparse'
 
+gem 'delayed_job_active_record'
+gem 'daemons'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
@@ -78,3 +81,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+

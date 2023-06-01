@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_01_023145) do
   create_table "c_class_ips", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "host"
     t.string "title"
@@ -32,7 +32,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.index ["project_id"], name: "index_c_class_networks_on_project_id"
   end
 
-  create_table "emails", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "delayed_jobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "emails", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "server_id"
     t.string "address"
     t.datetime "created_at", null: false
@@ -57,7 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.text "location"
   end
 
-  create_table "managers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "managers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -69,7 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.index ["reset_password_token"], name: "index_managers_on_reset_password_token", unique: true
   end
 
-  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
@@ -110,6 +125,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_072752) do
     t.boolean "is_detected_by_nuclei_http", default: false
     t.boolean "is_detected_by_nuclei_manual", default: false
     t.integer "max_severity_in_nuclei_result"
+    t.float "max_security_severity", default: 0.0
+    t.boolean "is_server_maybe_down", default: false, comment: "maybe this server is down? (80, 443 port closed? )"
+    t.boolean "is_confirmed_behind_waf"
+    t.boolean "is_confirmed_not_behind_waf"
+    t.boolean "is_stared", default: false
+    t.boolean "is_detected_by_dirsearch", default: false, comment: "is detected by dirsearch"
+    t.text "dirsearch_result"
+    t.text "nmap_result_for_special_ports"
+    t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
+    t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
     t.index ["project_id"], name: "index_servers_on_project_id"
   end
 
