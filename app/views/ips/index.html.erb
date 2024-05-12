@@ -2,12 +2,15 @@
 <h1>Ips</h1>
 <%= form_tag '', method: 'GET' do |f| %>
   <b>search by project:</b><br/>
-  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name), include_blank: 'all', class: 'form_select' %>
+  Project：<%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'all', class: 'form_select' %>
   <br/>
   <b>search by server:</b><br/>
   Like by server name:<%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   Equal by server name:<%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
+  Server level: <%= text_field_tag "levels", params[:levels], placeholder: 'e.g. 1,2,3', class: 'form_select' %>
   <br/>
+
+  per page: <%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), class: 'form_select' %>
   <%= submit_tag 'search' %>
 <% end %>
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -25,9 +28,7 @@ total: <%= @total_count %><br/>
     <td style='width: 150px'>Created at</td>
     <td style='width: 150px'>Operations</td>
   </tr>
-  <% @ip_mappings.map(&:ip_id).uniq.each do |ip_id|
-    ip = Ip.find ip_id
-  %>
+  <% @ips.each do |ip| %>
 
   <tr>
     <td> <%= ip.id %> </td>
@@ -55,7 +56,7 @@ total: <%= @total_count %><br/>
   <% end %>
 </table>
 
-<%= paginate @ip_mappings %>
+<%= paginate @ips %>
 
 <style>
 table {

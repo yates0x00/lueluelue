@@ -1,0 +1,47 @@
+<p style="color: green"><%= notice %></p>
+
+<h3>Config items</h3>
+<%= link_to "New config item", new_config_item_path %>
+
+<table class='table table-striped table-hovered table-bordered'>
+  <tr>
+    <td>
+      Name
+    </td>
+    <td>
+      value
+    </td>
+    <td>
+      comment
+    </td>
+    <td>
+      date
+    </td>
+    <td>
+      operations
+    </td>
+  </tr>
+  <% @config_items.each do |config_item| %>
+  <tr>
+    <td>
+      <%= config_item.name %>
+    </td>
+    <td>
+      <%= config_item.value %>
+    </td>
+    <td>
+      <%= config_item.comment %>
+    </td>
+    <td>
+      <%= config_item.created_at %> <br/>
+      <%= config_item.updated_at %> <br/>
+    </td>
+
+    <td>
+      <%= link_to "Edit", edit_config_item_path(config_item) %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+

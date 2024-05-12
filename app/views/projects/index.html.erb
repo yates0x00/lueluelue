@@ -1,6 +1,12 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Projects</h1>
+
+<h3>batch operations</h3>
+<div>
+  <%# link_to "detect by nmap", job_path(server, job_name: 'nmap'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%# link_to "detect by ehole", job_path(server, job_name: 'ehole'), data: {confirm: 'are you sure?'} , method: :post %>
+</div>
 total: <%= @total_count %>
 <br/>
 <%= link_to "New project", new_project_path %>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -19,10 +25,10 @@ total: <%= @total_count %>
         Description
       </td>
       <td>
-        Ips
+        Ips ( not behind waf )
       </td>
       <td>
-        Servers
+        Servers(hide name not matched domains)
       </td>
       <td>
         Emails
@@ -43,11 +49,11 @@ total: <%= @total_count %>
           <%= project.description %>
         </td>
         <td>
-          <%#= project.ips.count %>
+          <%= raw project.ips_not_behind_waf.map {|e| e.ip }.uniq.join('<br/>')%>
         </td>
         <td>
-          (<%= project.servers.count %>)<br/>
-          <% project.servers.each do |server| %>
+          (<%= project.servers.where('level <= 3').count %>)<br/>
+          <% project.servers.where('level <= 3').first(500).each do |server| %>
             <%= link_to server.name, server %><br/>
           <% end %>
         </td>
@@ -60,6 +66,10 @@ total: <%= @total_count %>
         <td>
           <%= link_to "Show", project %>&nbsp;&nbsp;
           <%= link_to "Edit", edit_project_path(project) %>
+          <!--
+          <%# link_to "get ips", job_path(server, job_name: 'nmap'), data: {confirm: 'are you sure?'} , method: :post %>
+          <%# link_to "get real ips", job_path(server, job_name: 'nmap'), data: {confirm: 'are you sure?'} , method: :post %>
+          -->
         </td>
       </tr>
   <% end %>

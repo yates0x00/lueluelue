@@ -12,12 +12,13 @@ class ServersController < ApplicationController
     @servers = @servers.where("ehole_result is not null") if params[:is_detected_by_ehole].present? && params[:is_detected_by_ehole] == 'yes'
     @servers = @servers.where("ehole_result like '%#{params[:ehole_text]}%'") if params[:ehole_text].present?
     @servers = @servers.where("the_harvester_result is not null") if params[:is_detected_by_the_harvester].present? && params[:is_detected_by_the_harvester] == 'yes'
-    @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
+    #@servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
+    @servers = @servers.where("nmap_result_for_special_ports is not null") if params[:is_detected_by_nmap_for_special_ports].present? && params[:is_detected_by_nmap_for_special_ports] == 'yes'
     @servers = @servers.where("nuclei_https_result is not null or nuclei_http_result is not null") if params[:is_detected_by_nuclei].present? && params[:is_detected_by_nmap] == 'yes'
-    @servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
     @servers = @servers.where("level = ?", params[:level]) if params[:level].present?
     @servers = @servers.where(level: params[:level_by_range].split(',')) if params[:level_by_range].present?
     @servers = @servers.where("is_stared = ?", params[:is_stared]) if params[:is_stared].present?
+    @servers = @servers.where("dig_result is not null and dig_result != ''") if params[:is_detected_by_dig].present? && params[:is_detected_by_dig] == 'yes'
     @total_count = @servers.count
     @servers = @servers.order(params["order_by"] || "id desc")
       .order('level asc')
@@ -39,13 +40,13 @@ class ServersController < ApplicationController
     params[:names].split("\n").each do |temp_name|
       if temp_name.include?('https://')
         name = temp_name.split("https://")[1]
-        @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
+        @server = Server.find_or_create_by! name: name, domain_protocol: 'https'
       elsif temp_name.include?("http://")
         name = temp_name.split("http://")[1]
-        @server = Server.find_or_create_by! name: name, domain_protocal: 'http'
+        @server = Server.find_or_create_by! name: name, domain_protocol: 'http'
       else
         name = temp_name
-        @server = Server.find_or_create_by! name: name, domain_protocal: 'https'
+        @server = Server.find_or_create_by! name: name, domain_protocol: 'https'
       end
 
       @server.update comment: params[:comment], project_id: params[:project_id], level: params[:level]
@@ -109,7 +110,7 @@ class ServersController < ApplicationController
         server.id, server.name, server.domain, server.comment, server.wafwoof_result, server.dig_result, server.pure_ip, server.title, server.os_type,
         server.web_server, server.web_framework, server.web_language, server.observer_ward_result, server.ehole_result, server.level,
         server.the_harvester_result, server.wappalyzer_result, server.nuclei_https_result, server.nuclei_http_result,
-        server.nuclei_manual_result, server.domain_protocal, server.project_id, server.is_detected_by_wafwoof_result,
+        server.nuclei_manual_result, server.domain_protocol, server.project_id, server.is_detected_by_wafwoof_result,
         server.is_detected_by_dig_result, server.is_detected_by_observer_ward_result, server.is_detected_by_ehole_result,
         server.is_detected_by_wappalyzer_result, server.is_detected_by_nuclei_https_result, server.is_detected_by_the_harvester_result,
         server.is_detected_by_nuclei_http_result, server.is_detected_by_nuclei_manual_result
@@ -130,7 +131,7 @@ class ServersController < ApplicationController
     def server_params
       params.require(:server).permit(:name, :domain, :comment, :wafwoof_result, :dig_result, :pure_ip, :title, :os_type, :web_server, :web_framework, :web_language,
                                      :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result,
-                                     :nuclei_manual_result, :domain_protocal, :project_id, :is_detected_by_wafwoof, :is_detected_by_dig, :is_detected_by_observer_ward,
+                                     :nuclei_manual_result, :domain_protocol, :project_id, :is_detected_by_wafwoof, :is_detected_by_dig, :is_detected_by_observer_ward,
                                      :is_detected_by_ehole, :is_detected_by_wappalyzer, :is_detected_by_nuclei_https, :is_detected_by_the_harvester, :is_detected_by_nuclei_http,
                                      :is_detected_by_nuclei_manual, :is_stared)
     end

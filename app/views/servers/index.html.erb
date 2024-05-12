@@ -21,7 +21,9 @@
   detected by ehole: <%= select_tag "is_detected_by_ehole", options_for_select(["all", "yes", "no"], params["is_detected_by_ehole"]), class: 'form_select' %>
   detected by the_harvester: <%= select_tag "is_detected_by_the_harvester", options_for_select(["all", "yes", "no"], params["is_detected_by_the_harvester"]), class: 'form_select' %>
   detected by nmap: <%= select_tag "is_detected_by_nmap", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap"]), class: 'form_select' %>
+  detected by nmap(special ports): <%= select_tag "is_detected_by_nmap_for_special_ports", options_for_select(["all", "yes", "no"], params["is_detected_by_nmap_for_special_ports"]), class: 'form_select' %>
   detected by nuclei: <%= select_tag "is_detected_by_nuclei", options_for_select(["all", "yes", "no"], params["is_detected_by_nuclei"]), class: 'form_select' %>
+  detected by dig: <%= select_tag "is_detected_by_dig", options_for_select(["all", "yes", "no"], params["is_detected_by_dig"]), class: 'form_select' %>
   is stared: <%= select_tag "is_stared", options_for_select([
     ["all", ''],
     ["yes", 1],
@@ -40,19 +42,31 @@
   <%= link_to "New batch servers", new_batch_servers_servers_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
   <%= link_to 'Download csv', download_csv_servers_path %><br/>
 <% end %>
+
+<h3>batch operations</h3>
+<div>
+  <%= link_to "detect by wafwoof", jobs_path(job_name: 'wafwoof'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%= link_to "detect by dig", jobs_path(job_name: 'dig'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%= link_to "detect by ehole", jobs_path(job_name: 'ehole'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%= link_to "detect by wappalyzer", jobs_path(job_name: 'wappalyzer'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%= link_to "detect by theharvester", jobs_path(job_name: 'theharvester'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%= link_to "detect by nuclei", jobs_path(job_name: 'nuclei'), data: {confirm: 'are you sure?'} , method: :post %>
+  <%= link_to "detect by dirsearch", jobs_path(job_name: 'dirsearch'), data: {confirm: 'are you sure?'} , method: :post %>
+</div>
+
 total: <%= @total_count %><br/>
 <span><%= paginate @servers %></span>
 <table class='table table-bordered table-hovered table-striped'>
   <tr>
     <td style='width:50px'> ID </td>
     <td style='width: 150px'> name </td>
-    <td style='width: 200px'> dig_result and <br/> nmap_result</td>
+    <td style='width: 200px'> dig_result and <br/> nmap_result <br/> nmap_result_for_special_ports</td>
     <td style='width: 200px'> wafwoof_result </td>
     <td style='width: 100px'> wappalyzer_result </td>
     <td style='width: 200px'> ehole_result</td>
     <td style='width: 250px'> harvester_result</td>
     <td style='width: 100px'> nuclei_result</td>
-    <td style='width: 100px'> domain_protocal</td>
+    <td style='width: 100px'> domain_protocol</td>
     <td style='width: '> operations</td>
   </tr>
   <% @servers.each do |server| %>
@@ -80,8 +94,13 @@ total: <%= @total_count %><br/>
         <br/>
         ip and ports: <br/>
         <% server.ips.each {|ip|  %>
-          <%= ip.ip %>: <%= raw ip.short_text_for_nmap_result %> <br/>
+          <%= ip.ip %>: <%= raw short_text_for_nmap_result(ip.nmap_result) %> <br/>
         <% } %>
+
+        <hr/>
+        special ports: <br/>
+        <%= raw short_text_for_nmap_result server.nmap_result_for_special_ports %>
+
       </td>
       <td>
         <% if server.is_confirmed_not_behind_waf %>
@@ -112,11 +131,12 @@ total: <%= @total_count %><br/>
         <pre><%= server.remove_ansi_color server.nuclei_http_result %></pre>
       </td>
       <td>
-        <%= server.domain_protocal rescue '' %>
+        <%= server.domain_protocol rescue '' %>
       </td>
       <td>
-        <%= link_to "Show", server %>
+        <%= link_to "Show", server, target: '_blank' %>
         <%= link_to "Edit", edit_server_path(server), target: '_blank' %>
+        <%= link_to "detect by wafw00f", job_path(server, job_name: ''), data: {confirm: 'are you sure?'} , method: :post %>
       </td>
     </tr>
   <% end %>

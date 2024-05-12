@@ -1,0 +1,26 @@
+<div class='alert alert-info'>
+  keyword: <br/>
+  SERVER_NAME: e.g. beiersdorf.com<br/>
+  RESULT_FILE: e.g. beiersdorf.xlst<br/>
+  PROTOCOL: e.g. http  or https
+</div>
+<%= form_with(model: config_item) do |form| %>
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name, class: 'form-control', placeholder: 'named with comand_xyz, xyz could be find reference in app/controllers/jobs_controller.rb#detect_by_xyz, e.g. command_dig' %>
+  </div>
+
+  <div>
+    <%= form.label :value, style: "display: block" %>
+    <%= form.text_field :value , class: 'form-control', placeholder: 'full command, e.g. python3 /workspace/coding_tools/dirsearch/dirsearch.py -e html,js -u SERVER_NAME -o RESULT_FILE '%>
+  </div>
+
+  <div>
+    <%= form.label :comment, style: "display: block" %>
+    <%= form.text_field :comment , class: 'form-control'%>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

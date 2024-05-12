@@ -6,6 +6,6 @@
                                                      ["level2: sub domain and relative domain(e.g. sub.target.com)", 2],
                                                      ["level3: relative domain(tls not same, e.g target.abc)", 3],
                                                      ["level4: same ip domains(name not same, e.g. another-site.com)", 4]]), class: 'form_select' %> <br/>
-  names: <%= text_area_tag :names, :"", placeholder: "https://google.com\nhttps://help.google.com\n", class: 'form-control', rows: 20 %></br>
+  names: <%= text_area_tag :names, :"", placeholder: "(没有https也可以)\nhttps://google.com\nhttps://help.google.com\n", class: 'form-control', rows: 20 %></br>
   <%= submit_tag 'new batch servers', class: "form_submit", class: 'btn btn-primary' %>
 <% end %>

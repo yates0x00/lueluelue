@@ -1,0 +1,48 @@
+<h3>jobs</h3>
+
+<span><%= paginate @delayed_jobs %></span>
+<table class="table table-striped table-hovered table-bordered">
+  <tr>
+    <td>
+      id
+    </td>
+    <td>
+      priority
+    </td>
+    <td>
+      handler
+    </td>
+    <td>
+      queue
+    </td>
+    <td>
+      created_at
+    </td>
+    <td>
+      operations
+    </td>
+  </tr>
+  <% @delayed_jobs.each do |delayed_job| %>
+  <tr>
+    <td>
+      id
+    </td>
+    <td>
+      priority
+    </td>
+    <td>
+      handler
+    </td>
+    <td>
+      queue
+    </td>
+    <td>
+      created_at
+    </td>
+    <td>
+      operations
+    </td>
+  </tr>
+  <% end %>
+</table>
+<span><%= paginate @delayed_jobs %></span>

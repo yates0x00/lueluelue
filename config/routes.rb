@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :config_items
   root "servers#index"
   devise_for :managers, controllers: {
     registrations: 'managers/registrations',
@@ -39,4 +40,5 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :jobs
 end

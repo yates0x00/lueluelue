@@ -4,9 +4,13 @@ class IpsController < ApplicationController
     @ips = Ip.all
     @ips = @ips.joins(:servers).where("servers.name like '%#{params[:like_name]}%'") if params[:like_name].present?
     @ips = @ips.joins(:servers).where("servers.name = ?", params[:equal_name]) if params[:equal_name].present?
-    @ips = @ips.joins(:project).where("projects.id = ?", params[:project_id]) if params[:project_id].present?
+    @ips = @ips.joins(:servers).where("servers.level in (?)", params[:levels]) if params[:levels].present?
+
+    @ips = @ips.joins(:servers => :project).where("projects.id = ?", params[:project_id]) if params[:project_id].present?
     @total_count = @ips.count
-    @ips = @ips.order("id desc").page(params[:page]).per(500)
+    params[:page] ||= 1
+    params[:per_page] ||= 500
+    @ips = @ips.order("id desc").page(params[:page]).per(params[:per_page])
   end
 
   def new_batch_ips
