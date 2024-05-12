@@ -4,7 +4,6 @@ an internal tool to present the penitration testing result
 
 ## usage
 
-
 1.(optional)setup your VPN or proxy
 2.setup PROXY environment.e.g.
 
@@ -20,6 +19,25 @@ export https_proxy="http://192.168.137.1:8080"
 3.then run `source ~/env_my_proxy`, most of the commands you run in the following steps will use this proxy.
 
 you should check the target manually to see if success, because some target will block your access because your IP is restricted. (e.g. from Russia, from China...)
+
+4. rails server and open localhost:3000
+
+5. run the delayed job command:
+
+5.1 in development mode: $ bundle exec bin/delayed_job start
+5.2 in production mode:  $ bundle exec bin/delayed_job start -n 2 -e production
+
+
+6. add new target:
+
+- create new project
+- add batch of servers ( the root domain only )
+- manually run the shuize script, and get all sub-domains
+- add them to batch of servers
+- trigger the scans ( see examples below )
+
+6.1 bundle exec ruby scripts/detect_by_wafwoof.rb 32
+
 
 ## detections
 
@@ -70,3 +88,4 @@ TODO: make it automatic in future.
 Ruby 3.0.3
 
 MySQL 5.7
+
