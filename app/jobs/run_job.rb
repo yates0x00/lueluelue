@@ -11,9 +11,18 @@ class RunJob < ApplicationJob
 
     entity = options[:entity]
     if entity.present?
-      entity.send "#{options[:attribute]}=", result
-      Rails.logger.info "== entity: #{entity.inspect}"
-      entity.save!
+      entity.update options[:is_detected_by_column] => true if options[:is_detected_by_column].present?
+      entity.update options[:result_column] => result if options[:result_column].present?
     end
+
+    # 针对wafwoof :
+    if entity.result_column == 'wafwoof_result'
+      if server.wafwoof_result.include? "No WAF detected"
+        server.is_confirmed_not_behind_waf = true
+      elsif server.wafwoof_result.include? "is behind"
+        server.is_confirmed_behind_waf = true
+      end
+    end
+
   end
 end

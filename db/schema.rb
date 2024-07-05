@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_01_023145) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_12_035954) do
   create_table "c_class_ips", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "host"
     t.string "title"
@@ -30,6 +30,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_023145) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_c_class_networks_on_project_id"
+  end
+
+  create_table "config_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "value"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "delayed_jobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -113,7 +121,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_023145) do
     t.text "nuclei_https_result", size: :long
     t.text "nuclei_http_result", size: :long
     t.text "nuclei_manual_result", size: :long
-    t.string "domain_protocal", default: "https", comment: "可以用的值: http/https"
+    t.string "domain_protocol", default: "https", comment: "可以用的值: http/https"
     t.bigint "project_id"
     t.boolean "is_detected_by_wafwoof", default: false
     t.boolean "is_detected_by_dig", default: false
