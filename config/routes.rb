@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :config_items
-  root "servers#index"
+  #root "servers#index"
+  root "servers#readme"
   devise_for :managers, controllers: {
     registrations: 'managers/registrations',
     passwords: 'managers/passwords',
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
       get :new_batch_servers
       post :create_batch_servers
       get :download_csv
+      get :readme
     end
   end
   resources :emails do

@@ -1,23 +1,22 @@
 default: &default
 
   adapter: mysql2
-  pool: 1000
-  #host: 172.18.0.2
-  host: 127.0.0.1
+  pool: 3306
+  host: 192.168.56.1
   username: root
-  password: 123456
+  password: 666666
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
 
 development:
   <<: *default
-  database: beiersdorf_info_gathering_development
+  database: mass_info_gather
 
 test:
   <<: *default
-  database: beiersdorf_info_gathering_test
+  database: mass_info_gather_test
 
 production:
   <<: *default
-  database: beiersdorf_info_gathering_development
+  database: mass_info_gather
 

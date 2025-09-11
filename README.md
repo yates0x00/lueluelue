@@ -52,6 +52,7 @@ should run these command manually or automatically:
 - ehole
 - nuclei
 
+- manually: run the dirsearch command
 
 manually command: `$ bundle exec ruby scripts/detect_by_shuize.rb` (remember to change the code in this file )
 
@@ -85,7 +86,7 @@ TODO: make it automatic in future.
 
 ## env
 
-Ruby 3.0.3
+Ruby 3.2.0
 
 MySQL 5.7
 
