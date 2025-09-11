@@ -5,47 +5,46 @@ require 'rubygems'
 require 'httparty'
 
 def run servers, is_https = true
-  puts "=servers to run:#{servers.count}"
 
-  servers.each_slice(10) do |servers_in_20|
+  servers.each do |server|
+    puts "== checking server: #{server.name}, index: #{server.id}"
 
-    threads = []
-    servers_in_20.each do |server|
-      threads << Thread.new do
-        name = server.name
+    name = server.name
+    attribute = ''
 
-        if is_https == "c_class"
-          command = "nuclei -u #{name} -se nuclei_c_class_ip_result_#{name} -as"
-          result = `#{command}`
-          if result.blank?
-            result = 'not found'
-          end
-          Rails.logger.info "== command: #{command}, raw result: #{result}"
-          server.update nuclei_manual_result: result
+    if is_https == "c_class"
+      command = "nuclei -u #{name} -se nuclei_c_class_ip_result_#{name} -as"
+      attribute = 'nuclei_manual_result'
+      #result = `#{command}`
+      #if result.blank?
+      #  result = 'not found'
+      #end
+      #Rails.logger.info "== command: #{command}, raw result: #{result}"
+      #server.update nuclei_manual_result: result
 
-        elsif is_https
-          command = "nuclei -u https://#{name} -se nuclei_result_#{name} -as"
-          result = `#{command}`
-          if result.blank?
-            result = 'not found'
-          end
-          Rails.logger.info "== command: #{command}, raw result: #{result}"
-          server.update nuclei_https_result: result
-        else
-          command = "nuclei -u http://#{name} -se nuclei_result_#{name} -as"
-          result = `#{command}`
-          if result.blank?
-            result = 'not found'
-          end
-          Rails.logger.info "== command: #{command}, raw result: #{result}"
-          server.update nuclei_http_result: result
-        end
-      end
+    elsif is_https
+      command = "nuclei -u https://#{name} -se nuclei_result_#{name} -as"
+      attribute = 'nuclei_https_result'
+      #result = `#{command}`
+      #if result.blank?
+      #  result = 'not found'
+      #end
+      #Rails.logger.info "== command: #{command}, raw result: #{result}"
+      #server.update nuclei_https_result: result
+    else
+      command = "nuclei -u http://#{name} -se nuclei_result_#{name} -as"
+      attribute = 'nuclei_http_result'
+      #result = `#{command}`
+      #if result.blank?
+      #  result = 'not found'
+      #end
+      #Rails.logger.info "== command: #{command}, raw result: #{result}"
+      #server.update nuclei_http_result: result
     end
-
-    threads.each {|t| t.join}
-    sleep 300
+    RunJob.perform_later command: command, entity: server, result_column: 'nuclei_https_result',
+      is_detected_by_column: 'is_detected_by_nuclei_https'
   end
+
 end
 
 #run Server.where("name like '%beiersdorf%'"), true
@@ -53,7 +52,5 @@ end
 
 #run Server.where("project_id = 2 and is_detected_by_nuclei_https = 0 "), "c_class"
 #run Server.where("project_id = 2 and is_detected_by_nuclei_https = 0 "), true
-#run Server.where("project_id = 2 and is_detected_by_nuclei_http = 0 "), false
-run Server.where("id >= 9301"), true
-run Server.where("id >= 9301"), false
+run Server.where("project_id >= 7")
 

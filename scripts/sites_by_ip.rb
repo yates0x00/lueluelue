@@ -1,7 +1,5 @@
-#ENV['RAILS_ENV'] = ARGV.first || ENV['RAILS_ENV'] || 'production'
-ENV['RAILS_ENV'] = 'production'
+ENV['RAILS_ENV'] = ARGV.first || ENV['RAILS_ENV'] || 'production'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-
 require 'rails'
 require 'rubygems'
 require 'httparty'
@@ -9,13 +7,12 @@ require 'httparty'
 require 'csv'
 
 def get_ip_by_domains servers
-  #servers.each_slice(20) do |servers_in_20|
-  servers.each_slice(5) do |servers_in_20|
+  servers.each_slice(20) do |servers_in_20|
 
     threads = []
     servers_in_20.each do |server|
       threads << Thread.new do
-        command = "dig +short #{server.name}"
+        command = "dig +short #{server}"
         dig_result = `#{command}`
 
         Rails.logger.info "== command: #{command}, result: #{dig_result}"
@@ -29,6 +26,5 @@ def get_ip_by_domains servers
   end
 end
 
-servers = Server.where('project_id = ? and is_detected_by_dig = 0', ARGV[0])
-puts "== servers to detect: #{servers.count}"
+servers = Server.where('project_id = 2 and is_detected_by_dig = 0')
 get_ip_by_domains servers

@@ -7,8 +7,10 @@ require 'httparty'
 require 'csv'
 
 ips = []
-Server.all.each do |server|
-  server.pure_ip.split(',').each do |ip|
+Server.where('project_id = 5').find_each do |server|
+  next if server.dig_result.blank?
+  server.dig_result.scan(/\d+\.\d+\.\d+\.\d+/).each do |ip|
+  #server.pure_ip.split(',').each do |ip|
     ips << ip
     ip_record = Ip.find_by_ip ip
     if ip_record.blank?

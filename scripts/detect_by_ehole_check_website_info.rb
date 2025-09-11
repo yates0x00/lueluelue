@@ -7,7 +7,7 @@ require 'httparty'
 require 'csv'
 
 
-puts "== install echo from: https://github.com/EdgeSecurityTeam/EHole"
+puts "== install ehole from: https://github.com/EdgeSecurityTeam/EHole"
 
 
 def run servers
@@ -54,4 +54,4 @@ def run servers
 end
 
 #run Server.where('project_id = 2 and is_detected_by_ehole = 0').order('level asc')
-run Server.where('project_id = 3').order('level asc')
+run Server.where('project_id = 31 and is_detected_by_ehole = ?', false).order('level asc')

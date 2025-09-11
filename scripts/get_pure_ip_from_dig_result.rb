@@ -4,7 +4,7 @@ require 'rails'
 require 'rubygems'
 require 'httparty'
 
-Server.all.each do |server|
+Server.where('project_id = 31').each do |server|
   server.pure_ip = server.dig_result.scan(/\d+\.\d+\.\d+\.\d+/).join(',')
   server.save!
 end

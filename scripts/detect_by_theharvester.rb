@@ -32,4 +32,4 @@ end
 #run Server.where('name like ? and name != ?', "%nextcloud%", 'nextcloud.com').order('level asc')
 
 #run Server.where('name = ?', 'bc.game').order('level asc')
-run Server.where('project_id = 5').order('level asc')
+run Server.where('project_id = 31 and is_detected_by_the_harvester = 0 ').order('level asc')

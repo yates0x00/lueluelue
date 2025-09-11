@@ -43,5 +43,5 @@ def run servers
   end
 end
 
-servers = Server.where("project_id = 2 and is_detected_by_wappalyzer = ?", false).order('id desc')
+servers = Server.where("project_id = 31 and is_detected_by_wappalyzer = ?", false).order('id desc')
 run servers

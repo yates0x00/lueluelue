@@ -10,8 +10,10 @@ def run servers
   servers.each do |server|
     puts "== checking server: #{server.name}, index: #{server.id}"
     result_file = "dirsearch_result_#{server.name}"
-    command = "python3 /workspace/coding_tools/dirsearch/dirsearch.py -e html,js -u #{server.name} -o #{result_file} --proxy=socks5://192.168.1.105:1094"
-    RunJob.perform_later command: command
+    #command = "python3 /workspace/coding_tools/dirsearch/dirsearch.py -e html,js -u #{server.name} -o #{result_file} --proxy=socks5://192.168.1.105:1094"
+    #RunJob.perform_later command: command
+    command = "python3 /workspace/coding_tools/dirsearch/dirsearch.py -u #{server.name} -o #{result_file}"
+    `#{command}`
   end
 end
 
@@ -19,4 +21,4 @@ end
 #run Server.where('id >= 9301').order('level asc')
 #
 #run Server.where('project_id = 5 and is_confirmed_not_behind_waf = 1 and ehole_result not like "%not work%" and is_detected_by_dirsearch = 0', ).order('level asc')
-run Server.where('project_id = 5 and is_detected_by_dirsearch = 0', ).order('level asc')
+run Server.where('project_id = 31 and is_detected_by_dirsearch = 0', ).order('level asc')
