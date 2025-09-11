@@ -1,6 +1,9 @@
 class ServersController < ApplicationController
   before_action :set_server, only: %i[ show edit update destroy ]
 
+  def readme
+  end
+
   def index
     @servers = Server
     @servers = @servers.where("name like '%#{params[:like_name]}%'") if params[:like_name].present?

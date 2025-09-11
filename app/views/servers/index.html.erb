@@ -37,7 +37,7 @@
                                                      ["level4: same ip domains(name not same, e.g. another-site.com)", 4]], params[:level]), class: 'form_select' %>
   <b>OR</b> check level by range: <%= text_field_tag "level_by_range", params[:level_by_range], placeholder: '1,2,3', class: 'form_select' %>
   order by: <%= text_field_tag "order_by", params[:order_by], placeholder: 'id desc', class: 'form_select' %>
-  per page: <%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), class: 'form_select' %>
+  per page: <%= select_tag :per_page, options_for_select([100, 500, 1000], params[:per_page].to_i), class: 'form_select' %>
   <%= submit_tag 'Search', class: 'btn btn-primary' %>
   <%= link_to "New batch servers", new_batch_servers_servers_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
   <%= link_to 'Download csv', download_csv_servers_path %><br/>
@@ -110,6 +110,9 @@ total: <%= @total_count %><br/>
         <% else %>
           <span style='color:yellow'>Server seems down</span>
         <% end %>
+        <pre>
+        <%= server.wafwoof_result.split('Generic Detection results').last if server.wafwoof_result.present? %>
+        </pre>
       </td>
       <td>
         <%= raw server.short_text_for_wappalyzer_result %>
