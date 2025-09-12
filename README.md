@@ -2,6 +2,18 @@
 
 an internal tool to present the penitration testing result
 
+## install 
+
+git clone 
+bundle install 
+change config/database.yml
+bundle exec rake db:create
+bundle exec rake db:migrate
+rm config/credentials.yml.enc
+VISUAL="mate --wait" bin/rails credentials:edit
+RAILS_ENV=production bundle exec rake assets:precompile
+rails server
+
 ## usage
 
 1.(optional)setup your VPN or proxy
