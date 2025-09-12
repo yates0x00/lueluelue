@@ -6,6 +6,7 @@ gem 'httparty'
 gem 'devise'
 gem 'mysql2'
 gem 'kaminari'
+gem 'log4r'
 
 gem 'nokogiri'
 gem 'mechanize'
