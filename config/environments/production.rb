@@ -90,4 +90,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_dispatch.permitted_hosts = [
+    "showmethemoneymanymanymoney.happysky6.com",  # 主域名
+    # "*.myapp.com"    # 若需支持子域名，可添加通配符（谨慎使用）
+  ]
 end

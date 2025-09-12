@@ -12,8 +12,15 @@ def run servers
     result_file = "dirsearch_result_#{server.name}"
     #command = "python3 /workspace/coding_tools/dirsearch/dirsearch.py -e html,js -u #{server.name} -o #{result_file} --proxy=socks5://192.168.1.105:1094"
     #RunJob.perform_later command: command
-    command = "python3 /workspace/coding_tools/dirsearch/dirsearch.py -u #{server.name} -o #{result_file}"
-    `#{command}`
+    #command = "python3 /opt/app/dirsearch/dirsearch.py -u #{server.name} -o #{result_file}"
+    #`#{command}`
+
+    result = ''
+    result += `gobuster dir -u #{server.name} -w /opt/app/SecLists/dir_file.txt -t 50 -b 403,404 --random-agent`
+    result += `gobuster dir -u #{server.name} -w /opt/app/SecLists/Discovery/Web-Content/raft-small-files-lowercase.txt -t 50 -b 403,404 --random-agent`
+    result += `gobuster dir -u #{server.name} -w /opt/app/SecLists/Discovery/Web-Content/raft-small-directories-lowercase.txt -t 50 -b 403,404 --random-agent`
+#gobuster dir -u http://192.168.56.130 -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-directories-lowercase.txt -t 50 -b 403,404
+
   end
 end
 

@@ -41,6 +41,9 @@ class ServersController < ApplicationController
   def create_batch_servers
     @server = Server.new
     params[:names].split("\n").each do |temp_name|
+      temp_name = temp_name.gsub("\r", "").rstrip
+      next if temp_name.blank?
+
       if temp_name.include?('https://')
         name = temp_name.split("https://")[1]
         @server = Server.find_or_create_by! name: name, domain_protocol: 'https'

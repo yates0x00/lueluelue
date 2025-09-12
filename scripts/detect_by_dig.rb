@@ -8,27 +8,12 @@ require 'httparty'
 
 require 'csv'
 
-def get_ip_by_domains servers
-  #servers.each_slice(20) do |servers_in_20|
-  servers.each_slice(5) do |servers_in_20|
-
-    threads = []
-    servers_in_20.each do |server|
-      threads << Thread.new do
-        command = "dig +short #{server.name}"
-        dig_result = `#{command}`
-
-        Rails.logger.info "== command: #{command}, result: #{dig_result}"
-
-        server.update is_detected_by_dig: true, dig_result: dig_result
-      end
-    end
-    threads.each {|t| t.join}
-
-    sleep 5
+def run_dig servers
+  servers.each do |server|
+    RunDigJob.set(priority: 5).perform_later(server)
   end
 end
 
 servers = Server.where('project_id = ? and is_detected_by_dig = 0', ARGV[0])
 puts "== servers to detect: #{servers.count}"
-get_ip_by_domains servers
+run_dig servers
