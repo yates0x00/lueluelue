@@ -2,6 +2,44 @@
 
 an internal tool to present the penitration testing result
 
+
+## setup (buntu)
+
+
+### nmap wafw00f
+apt install nmap wafw00f
+
+### dirsearch
+apt install python3
+
+git clone https://github.com/maurosoria/dirsearch.git
+
+### SecList
+git clone https://github.com/danielmiessler/SecLists.git
+
+### ehole
+wget https://github.com/EdgeSecurityTeam/EHole/releases/download/v3.1/EHole_linux_amd64.zip && unzip  EHole_linux_amd64.zip
+
+### theharvester
+
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+https://github.com/laramies/theHarvester
+
+cd theHarvester
+
+uv sync
+
+uv run theHarvester ...
+
+### nuclei
+
+### wappalyzer
+
+git clone https://github.com/dochne/wappalyzer.git official repo is down
+
+直接用項目裏的吧
+
 ## usage
 
 1.(optional)setup your VPN or proxy
@@ -23,6 +61,8 @@ you should check the target manually to see if success, because some target will
 4. rails server and open localhost:3000
 
 5. run the delayed job command:
+
+$ chmod +x bin/delayed_job
 
 5.1 in development mode: $ bundle exec bin/delayed_job start
 5.2 in production mode:  $ bundle exec bin/delayed_job start -n 2 -e production
