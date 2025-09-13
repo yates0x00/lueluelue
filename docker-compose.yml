@@ -1,0 +1,42 @@
+version: '3'
+services:
+  mysql5.7:
+    container_name: "mysql5.7"
+    image: mysql:5.7
+    volumes:
+      - /opt/docker_folder/mysql5.7:/var/lib/mysql
+    #command: 'tail -F /dev/null'
+    command: 'mysqld'
+    ports:
+      - "127.0.0.1:3306:3306"
+    stdin_open: true
+    tty: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=666666
+      - MYSQL_ROOT_HOST=%
+
+  #mysql8.0:
+  #  container_name: "mysql8.0"
+  #  image: mysql:8.0
+  #  volumes:
+  #    - /opt/docker_folder/mysql8.0:/var/lib/mysql
+  #  #command: 'tail -F /dev/null'
+  #  command: 'mysqld'
+  #  ports:
+  #    - "127.0.0.1:3306:3306"
+  #  stdin_open: true
+  #  tty: true
+  #  environment:
+  #    - MYSQL_ROOT_PASSWORD=666666
+  #    - MYSQL_ROOT_HOST=%
+
+  redis:
+    container_name: 'redis'
+    image: redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - /opt/docker_folder/redis:/data
+    #command: 'tail -F /dev/null'
+    stdin_open: true
+    tty: true

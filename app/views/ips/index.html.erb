@@ -8,6 +8,8 @@
   Like by server name:<%= text_field_tag "like_name", params[:like_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   Equal by server name:<%= text_field_tag "equal_name", params[:equal_name], placeholder: 'e.g. beiersdorf', class: 'form_select' %>
   Server level: <%= text_field_tag "levels", params[:levels], placeholder: 'e.g. 1,2,3', class: 'form_select' %>
+  has_nmap_result: <%= select_tag "is_detected_by_nmap", options_for_select(['all', '1', '0'], params[:is_detected_by_nmap]), class: 'form_select' %>
+  Like by nmap result: <%= text_field_tag "like_nmap_result", params[:like_nmap_result], placeholder: "e.g. open ssh", class: 'form_select' %>
   <br/>
 
   per page: <%= select_tag :per_page, options_for_select([500, 1000, 100], params[:per_page].to_i), class: 'form_select' %>

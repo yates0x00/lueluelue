@@ -1,13 +1,17 @@
 class IpsController < ApplicationController
   before_action :set_ip, only: %i[ show edit update destroy ]
   def index
-    @ips = Ip.all
-    @ips = @ips.joins(:servers).where("servers.name like '%#{params[:like_name]}%'") if params[:like_name].present?
-    @ips = @ips.joins(:servers).where("servers.name = ?", params[:equal_name]) if params[:equal_name].present?
-    @ips = @ips.joins(:servers).where("servers.level in (?)", params[:levels]) if params[:levels].present?
+    @ips = Ip.joins(:servers).select("DISTINCT ips.*")
+    @ips = @ips.where("servers.name like '%#{params[:like_name]}%'") if params[:like_name].present?
+    @ips = @ips.where("servers.name = ?", params[:equal_name]) if params[:equal_name].present?
+    @ips = @ips.where("servers.level in (?)", params[:levels]) if params[:levels].present?
+    @ips = @ips.where("ips.is_detected_by_nmap = ?", params[:is_detected_by_nmap]) if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] != 'all'
+    @ips = @ips.where("servers.level in (?)", params[:levels]) if params[:levels].present?
+    @ips = @ips.where("ips.nmap_result like ?", "%#{param[:like_nmap_result]}%") if params[:like_nmap_result].present?
 
     @ips = @ips.joins(:servers => :project).where("projects.id = ?", params[:project_id]) if params[:project_id].present?
-    @total_count = @ips.count
+
+    @total_count = @ips.size
     params[:page] ||= 1
     params[:per_page] ||= 500
     @ips = @ips.order("id desc").page(params[:page]).per(params[:per_page])

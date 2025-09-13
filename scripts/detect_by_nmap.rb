@@ -1,13 +1,24 @@
-ENV['RAILS_ENV'] = ARGV.first || ENV['RAILS_ENV'] || 'production'
+ENV['RAILS_ENV'] = 'production'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails'
 require 'rubygems'
 require 'httparty'
 
+# 注意：
+# 这里不应该轮训所有 server ( 域名）
+# 而是应该直接访问ip
 
-# 1. model   app/models/csv_record.rb
-#    这么多列：  che_pai, name, entered_at , leaved_at
+def run ips
+  puts "== ips.count: #{ips.size}"
+  ips.each do |ip|
+    command = "nmap -sS #{ip.ip}"
+    RunJob.perform_later command: command, entity: ip, result_column: "nmap_result", is_detected_by_column: :is_detected_by_nmap
+  end
+end
 
+ips = Ip.joins(:servers)
+  .select("DISTINCT ips.*")
+  .where('servers.is_confirmed_not_behind_waf = ?',true)
+  #.limit(10)
 
-# 2. 分析
-CsvRecord.write_result_to_csv
+run ips

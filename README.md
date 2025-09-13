@@ -2,9 +2,17 @@
 
 an internal tool to present the penitration testing result
 
-
 ## setup (buntu)
 
+git clone
+bundle install
+change config/database.yml
+bundle exec rake db:create
+bundle exec rake db:migrate
+rm config/credentials.yml.enc
+VISUAL="mate --wait" bin/rails credentials:edit
+RAILS_ENV=production bundle exec rake assets:precompile
+rails server
 
 ### nmap wafw00f
 apt install nmap wafw00f

@@ -15,7 +15,7 @@ def run servers
       threads << Thread.new do
 
         puts "== #{Time.now}, checking site: #{site.name}, index: #{site.id}"
-        command = "cd /workspace/coding_tools/theHarvester && python3 theHarvester.py -d #{site.name} -b all -p"
+        command = "cd /opt/app/theHarvester && uv run theHarvester -d #{site.name} -b all -p"
         result = `#{command}`
         site.update the_harvester_result: result
         puts "== #{Time.now} done, #{site.name}, #{site.id}"

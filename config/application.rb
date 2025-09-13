@@ -11,6 +11,7 @@ module BeiersdorfInforGathering
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    require_relative "log4r"
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -20,5 +21,7 @@ module BeiersdorfInforGathering
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
     config.active_job.queue_adapter = :delayed_job
+    config.hosts << "showmethemoneymanymanymoney.happysky6.com"
+
   end
 end

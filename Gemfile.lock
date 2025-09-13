@@ -127,6 +127,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    log4r (1.1.10)
     logger (1.7.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
@@ -293,6 +294,7 @@ DEPENDENCIES
   devise
   httparty
   kaminari
+  log4r
   mechanize
   mysql2
   nokogiri

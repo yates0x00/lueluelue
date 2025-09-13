@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2023_06_12_035954) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_12_091748) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -66,6 +66,8 @@ ActiveRecord::Schema[7.2].define(version: 2023_06_12_035954) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "location"
+    t.boolean "is_waf", comment: "该IP是否是WAF的ip，例如cloudflare, cloudfront 的。是的话就没必要扫描了"
+    t.boolean "is_detected_by_nmap"
   end
 
   create_table "managers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -129,6 +131,12 @@ ActiveRecord::Schema[7.2].define(version: 2023_06_12_035954) do
     t.boolean "is_detected_by_dirsearch", default: false, comment: "is detected by dirsearch"
     t.text "dirsearch_result"
     t.text "nmap_result_for_special_ports"
+    t.string "protocal", comment: "http 或者 https"
+    t.integer "response_code", comment: "服务器返回码，200, 301, 404 .."
+    t.boolean "is_detected_by_nmap", default: false, comment: "是否被nmap檢測過"
+    t.text "nmap_result", comment: "nmap掃描結果"
+    t.boolean "is_detected_by_gobuster", comment: "是否被gobuster检查过"
+    t.text "gobuster_result", comment: "gobuster的结果"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
     t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
     t.index ["project_id"], name: "index_servers_on_project_id"
