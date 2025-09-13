@@ -16,7 +16,7 @@
   <%= submit_tag 'search' %>
 <% end %>
 <%= link_to "new batch ips", new_batch_ips_ips_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
-<%= link_to 'Download csv', download_csv_ips_path %>
+<%= link_to 'Download csv', download_csv_ips_path(request.query_parameters) %>
 <br/>
 total: <%= @total_count %><br/>
 <%= paginate @ips %>

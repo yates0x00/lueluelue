@@ -7,7 +7,7 @@ class IpsController < ApplicationController
     @ips = @ips.where("servers.level in (?)", params[:levels]) if params[:levels].present?
     @ips = @ips.where("ips.is_detected_by_nmap = ?", params[:is_detected_by_nmap]) if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] != 'all'
     @ips = @ips.where("servers.level in (?)", params[:levels]) if params[:levels].present?
-    @ips = @ips.where("ips.nmap_result like ?", "%#{param[:like_nmap_result]}%") if params[:like_nmap_result].present?
+    @ips = @ips.where("ips.nmap_result like ?", "%#{params[:like_nmap_result]}%") if params[:like_nmap_result].present?
 
     @ips = @ips.joins(:servers => :project).where("projects.id = ?", params[:project_id]) if params[:project_id].present?
 
@@ -39,11 +39,12 @@ class IpsController < ApplicationController
   def download_csv
     require 'csv'
 
-    headers = %w{ID Ip NmapResult Location}
+    headers = %w{ID Ip Domains NmapResult Location Created_at}
     file = CSV.generate do |csv|
       csv << headers
-      Ip.all.each_with_index do |ip, index|
-        row = [ip.id, ip.ip, ip.nmap_result, ip.location]
+      filtered_ips.each do |ip|
+        domains = ip.servers.first(20).map(&:name).join("\n")
+        row = [ip.id, ip.ip, domains, ip.nmap_result, ip.location, ip.created_at]
         csv << row
       end
     end
@@ -100,5 +101,16 @@ class IpsController < ApplicationController
 
     def ip_params
       params.require(:ip).permit(:ip, :location, :nmap_result)
+    end
+
+    def filtered_ips
+      ips = Ip.joins(:servers).select("DISTINCT ips.*")
+      ips = ips.where("servers.name like '%#{params[:like_name]}%'") if params[:like_name].present?
+      ips = ips.where("servers.name = ?", params[:equal_name]) if params[:equal_name].present?
+      ips = ips.where("servers.level in (?)", params[:levels]) if params[:levels].present?
+      ips = ips.where("ips.is_detected_by_nmap = ?", params[:is_detected_by_nmap]) if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] != 'all'
+      ips = ips.where("ips.nmap_result like ?", "%#{params[:like_nmap_result]}%") if params[:like_nmap_result].present?
+      ips = ips.joins(:servers => :project).where("projects.id = ?", params[:project_id]) if params[:project_id].present?
+      ips
     end
 end
