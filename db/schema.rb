@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_12_091748) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_18_061205) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -137,6 +137,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_12_091748) do
     t.text "nmap_result", comment: "nmap掃描結果"
     t.boolean "is_detected_by_gobuster", comment: "是否被gobuster检查过"
     t.text "gobuster_result", comment: "gobuster的结果"
+    t.boolean "is_detected_by_wpscan", comment: "是否被wpscan检测过"
+    t.text "wpscan_result", comment: "wpscan结果"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
     t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
     t.index ["project_id"], name: "index_servers_on_project_id"

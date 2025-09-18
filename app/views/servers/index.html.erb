@@ -43,7 +43,7 @@
   per page: <%= select_tag :per_page, options_for_select([100, 500, 1000], params[:per_page].to_i), class: 'form_select' %>
   <%= submit_tag 'Search', class: 'btn btn-primary' %>
   <%= link_to "New batch servers", new_batch_servers_servers_path, target: '_blank' %>&nbsp;&nbsp;&nbsp;&nbsp;
-  <%= link_to 'Download csv', download_csv_servers_path %><br/>
+  <%= link_to 'Download csv', download_csv_servers_path(request.query_parameters) %><br/>
 <% end %>
 
 <h3>batch operations</h3>

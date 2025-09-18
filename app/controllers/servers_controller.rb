@@ -108,18 +108,22 @@ class ServersController < ApplicationController
   def download_csv
     require 'csv'
 
-    headers = %w{ID Name Domain Comment Wafwoof_result dig_result Pure_ip title Os_type web_server Web_framework Web_language Observer_ward_result Ehole_result Level The_harvester_result Wappalyzer_result Nuclei_https_result Nuclei_http_result Nuclei_manual_result Domain_protocal Project_id Is_detected_by_wafwoof_result Is_detected_by_dig_result Is_detected_by_observer_ward_result Is_detected_by_ehole_result Is_detected_by_wappalyzer_result Is_detected_by_nuclei_https_result Is_detected_by_the_harvester_result Is_detected_by_nuclei_http_result Is_detected_by_nuclei_manual_result}
+    headers = %w{ID Name Domain Comment 确认没有WAF dig_result Pure_ip title 
+      web_server Web_framework Web_language Observer_ward_result 
+      Ehole_result Level The_harvester_result Wappalyzer_result Nuclei_https_result 
+      Nuclei_http_result Nuclei_manual_result Domain_protocal Project_id 
+      wafwoof_result dig_result observer_ward_result ehole_result wappalyzer_result nuclei_https_result the_harvester_result}
     file = CSV.generate do |csv|
       csv << headers
-      Server.all.each_with_index do |server, index|
+      filtered_servers.each do |server|
       row = [
-        server.id, server.name, server.domain, server.comment, server.wafwoof_result, server.dig_result, server.pure_ip, server.title, server.os_type,
-        server.web_server, server.web_framework, server.web_language, server.observer_ward_result, server.ehole_result, server.level,
+        server.id, server.name, server.domain, server.comment, server.is_confirmed_not_behind_waf, server.dig_result, server.pure_ip, server.title, 
+        server.web_server, server.web_framework, server.web_language, server.observer_ward_result, 
+        server.ehole_result, server.level,
         server.the_harvester_result, server.wappalyzer_result, server.nuclei_https_result, server.nuclei_http_result,
-        server.nuclei_manual_result, server.domain_protocol, server.project_id, server.is_detected_by_wafwoof_result,
-        server.is_detected_by_dig_result, server.is_detected_by_observer_ward_result, server.is_detected_by_ehole_result,
-        server.is_detected_by_wappalyzer_result, server.is_detected_by_nuclei_https_result, server.is_detected_by_the_harvester_result,
-        server.is_detected_by_nuclei_http_result, server.is_detected_by_nuclei_manual_result
+        server.nuclei_manual_result, server.domain_protocol, server.project_id, 
+        server.dig_result, server.observer_ward_result, server.ehole_result,
+        server.wappalyzer_result, server.nuclei_https_result, server.the_harvester_result,
       ]
         csv << row
       end
@@ -140,5 +144,27 @@ class ServersController < ApplicationController
                                      :nuclei_manual_result, :domain_protocol, :project_id, :is_detected_by_wafwoof, :is_detected_by_dig, :is_detected_by_observer_ward,
                                      :is_detected_by_ehole, :is_detected_by_wappalyzer, :is_detected_by_nuclei_https, :is_detected_by_the_harvester, :is_detected_by_nuclei_http,
                                      :is_detected_by_nuclei_manual, :is_stared)
+    end
+
+    # Filter servers based on params
+    def filtered_servers
+      servers = Server.all
+      servers = servers.where("name like '%#{params[:like_name]}%'") if params[:like_name].present?
+      servers = servers.where("name = ?", params[:equal_name]) if params[:equal_name].present?
+      servers = servers.where('project_id = ? ', params[:project_id]) if params[:project_id].present?
+      servers = servers.where("is_confirmed_not_behind_waf = 1") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'no'
+      servers = servers.where("is_confirmed_behind_waf = 1") if params[:is_detected_waf].present? && params[:is_detected_waf] == 'yes'
+      servers = servers.where("wappalyzer_result is not null") if params[:is_detected_by_wappalyzer].present? && params[:is_detected_by_wappalyzer] == 'yes'
+      servers = servers.where("ehole_result is not null") if params[:is_detected_by_ehole].present? && params[:is_detected_by_ehole] == 'yes'
+      servers = servers.where("ehole_result like '%#{params[:ehole_text]}%'") if params[:ehole_text].present?
+      servers = servers.where("the_harvester_result is not null") if params[:is_detected_by_the_harvester].present? && params[:is_detected_by_the_harvester] == 'yes'
+      #@servers = @servers.where("nmap_result is not null") if params[:is_detected_by_nmap].present? && params[:is_detected_by_nmap] == 'yes'
+      servers = servers.where("nmap_result_for_special_ports is not null") if params[:is_detected_by_nmap_for_special_ports].present? && params[:is_detected_by_nmap_for_special_ports] == 'yes'
+      servers = servers.where("nuclei_https_result is not null or nuclei_http_result is not null") if params[:is_detected_by_nuclei].present? && params[:is_detected_by_nmap] == 'yes'
+      servers = servers.where("level = ?", params[:level]) if params[:level].present?
+      servers = servers.where(level: params[:level_by_range].split(',')) if params[:level_by_range].present?
+      servers = servers.where("is_stared = ?", params[:is_stared]) if params[:is_stared].present?
+      servers = servers.where("dig_result is not null and dig_result != ''") if params[:is_detected_by_dig].present? && params[:is_detected_by_dig] == 'yes'
+      servers
     end
 end
