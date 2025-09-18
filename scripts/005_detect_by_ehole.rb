@@ -12,7 +12,7 @@ puts "== install ehole from: https://github.com/EdgeSecurityTeam/EHole"
 
 def run servers
   servers.each do |server|
-    RunEholeJob.set(priority: 5).perform_later server: server
+    RunEholeJob.set.perform_later server: server
   end
 end
 
