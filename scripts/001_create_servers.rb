@@ -5,6 +5,7 @@ require 'rubygems'
 require 'httparty'
 require 'csv'
 
+puts "=== notice: you must create project first"
 puts "=== ruby scripts/create_servers wordpress_20w.txt 2"
 
 # 数据量大的话，就使用本脚本批量导入数据，例如导入1W个
