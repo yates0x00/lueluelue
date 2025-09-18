@@ -8,6 +8,8 @@ require 'csv'
 
 # 把IP跟server做个映射，查看具体的ip 与server, 重要。
 
+puts "=== please input project id" if ARGV[0].blank?
+
 ips = []
 Server.where('project_id = ?', ARGV[0]).find_each do |server|
   next if server.dig_result.blank?

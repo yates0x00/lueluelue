@@ -16,5 +16,4 @@ def run servers
   end
 end
 
-#run Server.where('project_id = 2 and is_detected_by_ehole = 0').order('level asc')
-run Server.where('project_id = ? and is_detected_by_ehole = ?', ARGV[0], true).order('level asc')
+run Server.where('project_id = ?', ARGV[0] )
