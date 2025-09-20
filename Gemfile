@@ -14,6 +14,7 @@ gem 'optparse'
 
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'wpscan'
 
 gem "sprockets-rails"
 gem "puma", "~> 6.0"
