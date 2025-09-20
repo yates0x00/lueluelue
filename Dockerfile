@@ -1,0 +1,14 @@
+FROM ruby:3.2.0
+WORKDIR /opt/app/mass_info
+COPY . .
+RUN set -eux; \
+  apt update; \
+  apt-get install -y libapr1-dev libxml2-dev  libxslt1-dev \
+    default-libmysqlclient-dev \
+    libcurl4-openssl-dev \
+    git curl build-essential libssl-dev libreadline-dev libssl-dev libreadline-dev \
+    ruby-dev zlib1g-dev liblzma-dev ruby-all-dev  libyaml-dev libncurses5-dev libffi-dev libgdbm-dev libdb-dev vim
+RUN gem install bundler -v 2.6.9  && \
+  cd /opt/app/mass_info && bundle install --verbose && \
+  gem install wpscan && wpscan --update
+CMD ["tail", "-f", "/dev/null"]
