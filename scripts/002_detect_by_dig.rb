@@ -10,10 +10,10 @@ require 'csv'
 
 def run_dig servers
   servers.each do |server|
-    RunDigJob.set(priority: 5).perform_later(server)
+    RunDigJob.perform_later(server)
   end
 end
 
-servers = Server.where('project_id = ? and is_detected_by_dig = 0', ARGV[0])
+servers = Server.where('project_id = ?', ARGV[0])
 puts "== servers to detect: #{servers.count}"
 run_dig servers

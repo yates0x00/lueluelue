@@ -3,16 +3,13 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails'
 require 'rubygems'
 require 'httparty'
-
 require 'csv'
-
 
 puts "== install ehole from: https://github.com/EdgeSecurityTeam/EHole"
 
-
 def run servers
   servers.each do |server|
-    RunEholeJob.set.perform_later server: server
+    RunEholeJob.perform_later server: server
   end
 end
 
