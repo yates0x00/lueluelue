@@ -43,7 +43,8 @@ class RunGetWpUsernameJob < ApplicationJob
           'Accept' => 'application/json'
         },
         timeout: 10,
-        follow_redirects: true
+        follow_redirects: true,
+        verify: false  # 忽略SSL证书验证，处理证书过期问题
       )
       
       Rails.logger.info "Response status: #{response.code}"
@@ -54,8 +55,6 @@ class RunGetWpUsernameJob < ApplicationJob
           usernames = users.map { |user| user['slug'] }.compact
         end
       end
-    rescue JSON::ParserError => e
-      Rails.logger.warn "JSON Parse Error: #{e.message}"
     rescue Exception => e
       Rails.logger.warn "Error fetching JSON: #{e.message}"
       Rails.logger.warn e.backtrace.join("\n")
