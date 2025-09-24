@@ -20,9 +20,9 @@ file.each_line do |line|
   Rails.logger.info "Processing line #{line_count}: #{line}" if line_count % 100 == 0  # 每100行输出一次进度
 
   info = line.split('://')
-  protocal = info[0]
+  domain_protocol = info[0]
   name = info[1]
-  Server.create name: name, protocal: protocal
+  Server.create name: name, domain_protocol: domain_protocol
 
   Rails.logger.info "Created server #{line_count}: #{name}" if line_count % 1000 == 0  # 每1000行输出一次创建信息
 end
