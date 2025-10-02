@@ -20,4 +20,7 @@ gem "sprockets-rails"
 gem "puma", "~> 6.0"
 
 gem "redis", "~> 4.0"
+gem 'dotenv'
+
+# for: whatweb, don't install it as a rubygem,
 #gem "bootsnap", require: false
