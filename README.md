@@ -106,6 +106,10 @@ manually command: `$ bundle exec ruby scripts/detect_by_shuize.rb` (remember to 
 
 TODO: make it automatic in future.
 
+TODO: re-implement wappalyzer
+
+TODO: re-arrange the orders of the scripts to be executed.
+
 ## installation
 
 1.git clone https://github.com/yates0x00/lueluelue
