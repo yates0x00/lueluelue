@@ -11,7 +11,7 @@ require 'httparty'
 def run ips
   puts "== ips.count: #{ips.size}"
   ips.each do |ip|
-    command = "nmap -sS #{ip.ip}"
+    command = "#{ENV['COMMAND_OF_NMAP']} -sS #{ip.ip}"
     RunJob.perform_later command: command, entity: ip, result_column: "nmap_result", is_detected_by_column: :is_detected_by_nmap
   end
 end

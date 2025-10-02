@@ -6,7 +6,7 @@ class RunDigJob < ApplicationJob
   def perform(server)
     # 安全执行dig命令（处理可能的特殊字符）
     clean_name = server.name.chomp  # 移除可能的^M等字符
-    command = ["dig", "+short", clean_name]
+    command = [ENV['COMMAND_OF_DIG'], "+short", clean_name]
     stdout, stderr, status = Open3.capture3(*command)
     dig_result = "stdout: #{stdout}\nstderr: #{stderr}\nexit status: #{status.exitstatus}"
 

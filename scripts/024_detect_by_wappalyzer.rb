@@ -7,12 +7,8 @@ require 'httparty'
 require 'csv'
 
 
-puts "== install wappalyzer from: https://github.com/wappalyzer/wappalyzer"
-
-WAPPALYZER = "node /workspace/coding_tools/wappalyzer/src/drivers/npm/cli.js"
-
 def run_single_thread url, server
-  command = "#{WAPPALYZER} https://#{url}"
+  command = "#{ENV['COMMAND_OF_WAPPALYZER']} https://#{url}"
   result = `#{command}`
   puts "== result: #{result.inspect}"
   puts "== result.urls: #{JSON.parse(result)['urls'].inspect}"
@@ -21,7 +17,7 @@ def run_single_thread url, server
   if JSON.parse(result)['urls'][key]['status'] < 400
     server.update wappalyzer_result: result
   else
-    command = "#{WAPPALYZER} http://#{url}"
+    command = "#{ENV['COMMAND_OF_WAPPALYZER']} http://#{url}"
     result = `#{command}`
     server.update wappalyzer_result: "https is not available, <br/>" + result
   end

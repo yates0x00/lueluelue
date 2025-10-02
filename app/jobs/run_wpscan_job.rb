@@ -6,7 +6,6 @@ require 'fileutils'
 class RunWpscanJob < ApplicationJob
   queue_as :default
 
-  API_TOKEN = 'JyrztKLFjKYaAmPX6cUoFX2AWquTqZxaNBtacVPwjUo'
   def perform server
     site_url = "#{server.domain_protocol}://#{server.name}"
     Rails.logger.info "== checking: #{site_url}"
@@ -37,7 +36,7 @@ class RunWpscanJob < ApplicationJob
 
   def get_command options
     username = options[:username]
-    command = "wpscan --url #{options[:url]} --api-token #{API_TOKEN} --random-user-agent --no-update --disable-tls-checks --connect-timeout 5 --request-timeout 5  --no-banner --format=json --output=#{options[:result_json_file]}"
+    command = "#{COMMAND_OF_WPSCAN} --url #{options[:url]} --api-token #{ENV['API_TOKEN_OF_WPSCAN']} --random-user-agent --no-update --disable-tls-checks --connect-timeout 5 --request-timeout 5  --no-banner --format=json --output=#{options[:result_json_file]}"
 
     if username.present?
       # 2. 生成对应的密码字典  保存为临时密码文件  tmp/password_for_#{username}.txt

@@ -14,7 +14,7 @@ def run servers
     touch_command = "touch #{result_file}"
     `#{touch_command}`
     #command = "cd /workspace/coding_tools/shuize && python3 ShuiZe.py -d #{server.name} -f #{result_file} --proxy=socks5://192.168.1.105:1092"
-    command = "cd /workspace/coding_tools/shuize && python3 ShuiZe.py -d #{server.name} -f #{result_file}"
+    command = "#{COMMAND_OF_SHUIZE} -d #{server.name} -f #{result_file}"
     puts "== command: #{command}"
     #result = `#{command}`
     #puts "done, #{server.name}, #{server.id}, check saved to #{result_file}"

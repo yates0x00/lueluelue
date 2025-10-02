@@ -13,7 +13,7 @@ def run servers, is_https = true
     attribute = ''
 
     if is_https == "c_class"
-      command = "nuclei -u #{name} -se nuclei_c_class_ip_result_#{name} -as"
+      command = "#{ENV['COMMAND_OF_NUCLEI']} -u #{name} -se nuclei_c_class_ip_result_#{name} -as"
       attribute = 'nuclei_manual_result'
       #result = `#{command}`
       #if result.blank?
@@ -23,7 +23,7 @@ def run servers, is_https = true
       #server.update nuclei_manual_result: result
 
     elsif is_https
-      command = "nuclei -u https://#{name} -se nuclei_result_#{name} -as"
+      command = "#{ENV['COMMAND_OF_NUCLEI']} -u https://#{name} -se nuclei_result_#{name} -as"
       attribute = 'nuclei_https_result'
       #result = `#{command}`
       #if result.blank?
@@ -32,7 +32,7 @@ def run servers, is_https = true
       #Rails.logger.info "== command: #{command}, raw result: #{result}"
       #server.update nuclei_https_result: result
     else
-      command = "nuclei -u http://#{name} -se nuclei_result_#{name} -as"
+      command = "#{ENV['COMMAND_OF_NUCLEI']} -u http://#{name} -se nuclei_result_#{name} -as"
       attribute = 'nuclei_http_result'
       #result = `#{command}`
       #if result.blank?
