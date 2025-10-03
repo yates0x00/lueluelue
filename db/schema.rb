@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_02_091207) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_03_064638) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -142,6 +142,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_02_091207) do
     t.string "wpscan_usernames", comment: "wordpress用户名，给wpscan爆破用"
     t.string "wpscan_url", comment: "wpscan 最终探测的url"
     t.text "whatweb_result", comment: "whatweb result"
+    t.text "favicon_hash_of_fofa_result"
+    t.boolean "is_detected_by_favihunter"
+    t.boolean "is_detected_by_fofa", comment: "是否在fofa上检测了"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
     t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
     t.index ["project_id"], name: "index_servers_on_project_id"

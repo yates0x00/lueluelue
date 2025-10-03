@@ -25,6 +25,7 @@ data
 .secrets
 .env
 config/database.yml
+docker-compose.yml
 
 
 /config/master.key

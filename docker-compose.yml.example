@@ -4,11 +4,12 @@ networks:
     driver: bridge
     name: ruby-network  # 指定网络名称
 services:
-  mysql5.7:
-    container_name: "mysql5.7"
+  mass_info_mysql:
+    container_name: "mass_info_mysql"
     image: mysql:5.7
     volumes:
-      - /opt/docker_folder/mysql5.7:/var/lib/mysql
+      #- /opt/docker_folder/mysql5.7:/var/lib/mysql
+      - C:/workspace/docker_folder/mysql5.7:/var/lib/mysql
     #command: 'tail -F /dev/null'
     command: 'mysqld'
     ports:
@@ -21,39 +22,39 @@ services:
     networks:
       - ruby-network
 
-  redis:
-    container_name: 'redis'
+  mass_info_redis:
+    container_name: 'mass_info_redis'
     image: redis
     ports:
       - "127.0.0.1:6379:6379"
     volumes:
-      - /opt/docker_folder/redis:/data
+      - C:/workspace/docker_folder/redis:/data
     #command: 'tail -F /dev/null'
     #stdin_open: true
     #tty: true
     networks:
       - ruby-network
 
-  rails_mass_info:
-    container_name: 'rails_mass_info'
-    build: /opt/app/mass_info
+  mass_info_rails:
+    container_name: 'mass_info_rails'
+    build: C:/workspace/mass_info
     volumes:
-      - /opt/app/mass_info:/opt/app/mass_info
-    command: ["sh", "-c", "cd /opt/app/mass_info && rm tmp/pids/* -rf && RAILS_ENV=production bundle exec rails s -p 3333 -b 0.0.0.0"]
-    #command: 'tail -F /dev/null'
+      - C:/workspace/mass_info:/opt/app/mass_info
+    #    command: ["sh", "-c", "cd /opt/app/mass_info && rm tmp/pids/* -rf && RAILS_ENV=production bundle exec rails s -p 3333 -b 0.0.0.0 "]
+    command: 'tail -F /dev/null'
     ports:
       - '3333:3333'
     networks:
       - ruby-network
     depends_on:
-      - mysql5.7
-      - redis
+      - mass_info_mysql
+      - mass_info_redis
 
-  rails_delayed_job:
-    container_name: 'rails_delayed_job'
-    build: /opt/app/mass_info
+  mass_info_delayed_job:
+    container_name: 'mass_info_delayed_job'
+    build: C:/workspace/mass_info
     volumes:
-      - /opt/app/mass_info:/opt/app/mass_info
+      - C:/workspace/mass_info:/opt/app/mass_info
         #command: ["sh", "-c", "cd /opt/app/mass_info && RAILS_ENV=production bundle exec bin/delayed_job start -n 32"]
     command: ["sh", "-c", "cd /opt/app/mass_info && bundle exec bin/delayed_job start -n 32 && tail -f log/development.log"]
     # command: 'tail -F /dev/null'
@@ -62,5 +63,5 @@ services:
     networks:
       - ruby-network
     depends_on:
-      - mysql5.7
-      - redis
+      - mass_info_mysql
+      - mass_info_redis

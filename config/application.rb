@@ -21,6 +21,7 @@ module BeiersdorfInforGathering
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
     config.active_job.queue_adapter = :delayed_job
+    config.hosts << "localhost"
     config.hosts << "showmethemoneymanymanymoney.happysky6.com"
 
   end
