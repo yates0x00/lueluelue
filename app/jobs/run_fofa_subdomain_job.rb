@@ -10,11 +10,12 @@ class RunFofaSubdomainJob < ApplicationJob
     Rails.logger.info "== options: #{options.inspect}"
     fofa_tool = FofaTool.new
 
-    # step1. 根据 "domain" 来搜索
+    # 例如, domain = main.com
+    # step1. 根据 "main.com" 来搜索
     fofa_tool.query query_string: %Q{"#{server.name}"}, server: server
 
-#    # step2. 根据 "*.domain.com" 来搜索
-#    fofa_tool.query %Q{domain*="*.#{server.domain}.*"}, server: server
+    # step2. 根据 "*.main.*" 来搜索
+    fofa_tool.query query_string: %Q{domain*="*.#{server.name.split('.')[0]}.*"}, server: server
 #
 #    # step3. 根据 主域名的favicon来搜索，如果对应的server存在的话
 #    icon_hash = get_icon_hash server.favicon_hash_of_fofa_result
