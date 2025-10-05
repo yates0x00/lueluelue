@@ -108,20 +108,20 @@ class ServersController < ApplicationController
   def download_csv
     require 'csv'
 
-    headers = %w{ID Name Domain Comment 确认没有WAF dig_result Pure_ip title 
-      web_server Web_framework Web_language Observer_ward_result 
-      Ehole_result Level The_harvester_result Wappalyzer_result Nuclei_https_result 
-      Nuclei_http_result Nuclei_manual_result Domain_protocal Project_id 
+    headers = %w{ID Name Comment 确认没有WAF dig_result Pure_ip title
+      web_server Web_framework Web_language Observer_ward_result
+      Ehole_result Level The_harvester_result Wappalyzer_result Nuclei_https_result
+      Nuclei_http_result Nuclei_manual_result Domain_protocal Project_id
       wafwoof_result dig_result observer_ward_result ehole_result wappalyzer_result nuclei_https_result the_harvester_result}
     file = CSV.generate do |csv|
       csv << headers
       filtered_servers.each do |server|
       row = [
-        server.id, server.name, server.domain, server.comment, server.is_confirmed_not_behind_waf, server.dig_result, server.pure_ip, server.title, 
-        server.web_server, server.web_framework, server.web_language, server.observer_ward_result, 
+        server.id, server.name, server.comment, server.is_confirmed_not_behind_waf, server.dig_result, server.pure_ip, server.title,
+        server.web_server, server.web_framework, server.web_language, server.observer_ward_result,
         server.ehole_result, server.level,
         server.the_harvester_result, server.wappalyzer_result, server.nuclei_https_result, server.nuclei_http_result,
-        server.nuclei_manual_result, server.domain_protocol, server.project_id, 
+        server.nuclei_manual_result, server.domain_protocol, server.project_id,
         server.dig_result, server.observer_ward_result, server.ehole_result,
         server.wappalyzer_result, server.nuclei_https_result, server.the_harvester_result,
       ]

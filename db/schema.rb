@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_05_022213) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_05_025500) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -91,7 +91,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_05_022213) do
 
   create_table "servers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
-    t.string "domain"
     t.text "comment"
     t.text "wafwoof_result"
     t.text "dig_result"
@@ -144,6 +143,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_05_022213) do
     t.text "favicon_hash_of_fofa_result"
     t.boolean "is_detected_by_favihunter"
     t.boolean "is_detected_by_fofa", comment: "是否在fofa上检测了"
+    t.text "title_of_fofa", comment: "fofa的title"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
     t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
     t.index ["project_id"], name: "index_servers_on_project_id"

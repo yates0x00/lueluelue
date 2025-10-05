@@ -7,7 +7,7 @@ class RunWpscanJob < ApplicationJob
   queue_as :default
 
   def perform server
-    site_url = "#{server.domain_protocol}://#{server.name}"
+    site_url = "#{server.domain_protocol}://#{server.name}"
     Rails.logger.info "== checking: #{site_url}"
 
     # 1. 尝试出对方的author,  例如 http://target.com?author=1 ， 看一下 是否会变成 https://target.com/author/021loan
@@ -16,7 +16,7 @@ class RunWpscanJob < ApplicationJob
     username = get_username site_url
 
     result_json_file = File.join(Rails.root, "tmp", "wpscan_for_#{server.name}.json")
-    command = get_command url: "#{server.domain_protocol}://#{server.name}", username: username, result_json_file: result_json_file
+    command = get_command url: "#{server.domain_protocol}://#{server.name}", username: username, result_json_file: result_json_file
 
     result = `#{command}`
     # Scan Aborted: The URL supplied redirects to https://www.zzzsj.cn/. Use the --ignore-main-redirect option to ignore the redirection and scan the target, or change the --url option value to the redirected URL.

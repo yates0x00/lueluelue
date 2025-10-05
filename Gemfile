@@ -21,6 +21,7 @@ gem "puma", "~> 6.0"
 
 gem "redis", "~> 4.0"
 gem 'dotenv'
+gem 'murmurhash3'
 
 # for: whatweb, don't install it as a rubygem,
 #gem "bootsnap", require: false

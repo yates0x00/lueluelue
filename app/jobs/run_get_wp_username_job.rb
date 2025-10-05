@@ -9,7 +9,7 @@ class RunGetWpUsernameJob < ApplicationJob
   queue_as :default
 
   def perform(server)
-    site_url = "#{server.protocal}://#{server.name}"
+    site_url = "#{server.domain_protocol}://#{server.name}"
     Rails.logger.info "== checking: #{site_url}"
 
     # 1. 从/wp-json/wp/v2/users/获取用户名
