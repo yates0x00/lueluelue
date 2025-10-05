@@ -9,7 +9,7 @@ class RunEholeJob < ApplicationJob
     # try https
     #
     # [ http://jw.qut.edu.cn/info/1004/2786.htm |  | ********* | 200 | 85731 | 我校首获山东省本科教学改革研究项目重大专项-青岛理工大学教务处 ]
-    command = "/opt/app/EHole/ehole finger -u https://#{server.name}"
+    command = "#{COMMAND_OF_EHOLE} finger -u https://#{server.name}"
     https_result = `#{command}`.match(/\[.*\]/).to_s
     puts "-- https_result: #{https_result}"
 
@@ -24,7 +24,7 @@ class RunEholeJob < ApplicationJob
         response_code: response_code, domain_protocol: 'https'
     else
       # if blank, then http
-      command = "/opt/app/EHole/ehole finger -u http://#{server.name}"
+      command = "#{COMMAND_OF_EHOLE} finger -u http://#{server.name}"
       http_result = `#{command}`.match(/\[.*\]/).to_s
       parts = http_result.split('|')
 
