@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_19_044630) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_05_022213) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -131,14 +131,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_044630) do
     t.boolean "is_detected_by_dirsearch", default: false, comment: "is detected by dirsearch"
     t.text "dirsearch_result"
     t.text "nmap_result_for_special_ports"
-    t.string "protocal", comment: "http 或者 https"
     t.integer "response_code", comment: "服务器返回码，200, 301, 404 .."
     t.boolean "is_detected_by_nmap", default: false, comment: "是否被nmap檢測過"
     t.text "nmap_result", comment: "nmap掃描結果"
     t.boolean "is_detected_by_gobuster", comment: "是否被gobuster检查过"
     t.text "gobuster_result", comment: "gobuster的结果"
     t.boolean "is_detected_by_wpscan", comment: "是否被wpscan检测过"
-    t.text "wpscan_result", comment: "wpscan结果"
+    t.text "wpscan_result", size: :long, comment: "wpscan结果"
     t.string "wpscan_usernames", comment: "wordpress用户名，给wpscan爆破用"
     t.string "wpscan_url", comment: "wpscan 最终探测的url"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
