@@ -6,6 +6,8 @@ require 'optparse'
 require 'csv'
 
 def run servers
+  puts "=servers: #{servers.size}"
+
   # 为每个关键词执行搜索任务
   servers.each do |server|
     # 使用Delayed Job异步执行任务
@@ -13,4 +15,4 @@ def run servers
   end
 end
 
-run Server.where('project_id = ?', ARGV[0]).limit 2
+run Server.where('project_id = ?', ARGV[0])

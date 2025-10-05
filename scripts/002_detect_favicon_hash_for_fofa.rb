@@ -12,5 +12,5 @@ def run servers
   end
 end
 
-run Server.where('project_id = ?', ARGV[0]).limit(10)
+run Server.where('project_id = ? and level=1', ARGV[0])
 
