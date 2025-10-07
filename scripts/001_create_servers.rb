@@ -22,7 +22,8 @@ file.each_line do |line|
   info = line.split('://')
   domain_protocol = info[0]
   name = info[1]
-  Server.create name: name, domain_protocol: domain_protocol
+  # 注意这里的level
+  Server.create name: name, domain_protocol: domain_protocol, level: 1
 
   Rails.logger.info "Created server #{line_count}: #{name}" if line_count % 1000 == 0  # 每1000行输出一次创建信息
 end

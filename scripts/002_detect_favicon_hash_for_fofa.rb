@@ -3,6 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails'
 require 'rubygems'
 
+puts "== 运行这个，再运行 search from fofa"
+puts "== make sure only run 1 delayed job daemon, otherwise will failed , because all temp favicon will be over written"
+
 def run servers
   servers.each do |server|
     command = "favihunter -u #{server.domain_protocol}://#{server.name}"

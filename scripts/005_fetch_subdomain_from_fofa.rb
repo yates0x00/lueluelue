@@ -15,4 +15,6 @@ def run servers
   end
 end
 
-run Server.where('project_id = ?', ARGV[0])
+# TODO 需要考虑特别大型的结果集的情况，一天消耗 3000块。。。
+# run Server.where('project_id = ?', ARGV[0])
+run Server.where('level = 1 and favicon_hash_of_fofa_result = ? and project_id = 4', "Found 0 subdomains, will be saved to servers" )
