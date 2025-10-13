@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   #root "servers#index"
   root "servers#readme"
   devise_for :managers, controllers: {
-    registrations: 'managers/registrations',
+#    registrations: 'managers/registrations',
     passwords: 'managers/passwords',
     sessions: 'managers/sessions'
   }
