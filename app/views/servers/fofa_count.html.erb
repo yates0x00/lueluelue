@@ -5,6 +5,13 @@
 <%= form_tag '', method: 'GET' do |f| %>
   Project: <%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'All', class: 'form_select' %>
     per page: <%= select_tag :per_page, options_for_select([1000, 500, 100], params[:per_page].to_i), class: 'form_select' %>
+    Sort by: <%= select_tag :sort_by, options_for_select([
+      ['Subdomain Total Count', 'subdomain_total_count_of_fofa_result'],
+      ['Subdomain Count (Main Domain)', 'subdomain_count_main_domain_of_fofa_result'],
+      ['Subdomain Count (Base Name)', 'subdomain_count_base_name_of_fofa_result'],
+      ['Subdomain Count (Favicon)', 'subdomain_count_favicon_of_fofa_result']
+    ], params[:sort_by]), include_blank: 'Default', class: 'form_select' %>
+    Order: <%= select_tag :sort_order, options_for_select([['Ascending', 'asc'], ['Descending', 'desc']], params[:sort_order]), class: 'form_select' %>
   <%= submit_tag 'Search' %>
 <% end %>
 

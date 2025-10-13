@@ -33,16 +33,36 @@ class ServersController < ApplicationController
     latest_project = Project.order(id: :desc).first
     project_id = params[:project_id].presence || latest_project&.id
     
-    # 查询符合条件的servers，按ID倒序排列
-    @servers = Server.where(project_id: project_id)
-                     .order(id: :desc)
-                     .page(params[:page]).per(params[:per_page] || 1000)
+    # 构建查询条件
+    servers_scope = Server.where(project_id: project_id)
+    
+    # 处理排序参数
+    sort_column = params[:sort_by]
+    sort_direction = params[:sort_order] || 'desc'
+    
+    # 验证排序字段是否有效
+    valid_sort_columns = %w[
+      subdomain_total_count_of_fofa_result
+      subdomain_count_main_domain_of_fofa_result
+      subdomain_count_base_name_of_fofa_result
+      subdomain_count_favicon_of_fofa_result
+    ]
+    
+    # 应用排序
+    if sort_column.present? && valid_sort_columns.include?(sort_column)
+      servers_scope = servers_scope.order("#{sort_column} #{sort_direction}")
+    else
+      # 默认按ID倒序排列
+      servers_scope = servers_scope.order(id: :desc)
+    end
+    
+    # 查询符合条件的servers
+    @servers = servers_scope.page(params[:page]).per(params[:per_page] || 1000)
     
     # 计算总数
     @total_count = Server.where(project_id: project_id).count
     
     # 计算各字段存在值的条目数量
-    servers_scope = Server.where(project_id: project_id)
     @subdomain_main_count = servers_scope.where.not(subdomain_count_main_domain_of_fofa_result: nil).count
     @subdomain_base_count = servers_scope.where.not(subdomain_count_base_name_of_fofa_result: nil).count
     @subdomain_favicon_count = servers_scope.where.not(subdomain_count_favicon_of_fofa_result: nil).count
