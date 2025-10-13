@@ -4,8 +4,8 @@ require 'rails'
 require 'rubygems'
 
 puts "== 运行这个，再运行 search from fofa (等待5秒）"
-sleep 5
 puts "== make sure only run 1 delayed job daemon, otherwise will failed , because all temp favicon will be over written"
+sleep 5
 
 def run servers
   servers.each do |server|

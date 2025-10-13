@@ -1,0 +1,59 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>FOFA Count</h1>
+<p>说明： 该页面是为了后续的 从fofa上抓取数据做准备。对于数量特别大的，需要做手动甄别 </p>
+<%= form_tag '', method: 'GET' do |f| %>
+  Project: <%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'All', class: 'form_select' %>
+    per page: <%= select_tag :per_page, options_for_select([1000, 500, 100], params[:per_page].to_i), class: 'form_select' %>
+  <%= submit_tag 'Search' %>
+<% end %>
+
+<br/>
+<%= paginate @servers %>
+
+<table class='table table-bordered table-hovered table-striped'>
+  <thead>
+    <tr>
+      <th colspan="10">
+        Total: <%= @total_count %>
+      </th>
+    </tr>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th style="width: 50px;">Subdomain Count (Main Domain)<br/><small><%= @subdomain_main_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Subdomain Count (Base Name)<br/><small><%= @subdomain_base_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Subdomain Count (Favicon)<br/><small><%= @subdomain_favicon_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Subdomain Total Count<br/><small><%= @subdomain_total_count %> / <%= @total_count %></small></th>
+      <th style="width: 300px; word-wrap: break-word;">Favicon Hash<br/><small><%= @favicon_hash_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Is Detected by Favihunter</th>
+      <th style="width: 50px;">Is Detected by FOFA</th>
+      <th style="width: 50px;">Is Need to Fetch from FOFA</th>
+      <th style='width: 100px'>Title of FOFA</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @servers.each do |server| %>
+      <tr>
+        <td><%= server.id %></td>
+        <td><%= link_to server.name, server %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %></td>
+        <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
+        <td style="width: 300px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.favicon_hash_of_fofa_result %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_favihunter %>"><%= server.is_detected_by_favihunter ? 'true' : 'false' %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_fofa %>"><%= server.is_detected_by_fofa ? 'true' : 'false' %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.is_need_to_fetch_from_fofa %>"><%= server.is_need_to_fetch_from_fofa ? 'true' : 'false' %></td>
+        <td style="width: 100px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.title_of_fofa %></td>
+        <td><%= server.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= server.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @servers %>

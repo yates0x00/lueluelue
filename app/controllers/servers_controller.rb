@@ -28,6 +28,28 @@ class ServersController < ApplicationController
       .page(params[:page]).per(params[:per_page] || 1000)
   end
 
+  def fofa_count
+    # 获取最新的project_id作为默认值
+    latest_project = Project.order(id: :desc).first
+    project_id = params[:project_id].presence || latest_project&.id
+    
+    # 查询符合条件的servers，按ID倒序排列
+    @servers = Server.where(project_id: project_id)
+                     .order(id: :desc)
+                     .page(params[:page]).per(params[:per_page] || 1000)
+    
+    # 计算总数
+    @total_count = Server.where(project_id: project_id).count
+    
+    # 计算各字段存在值的条目数量
+    servers_scope = Server.where(project_id: project_id)
+    @subdomain_main_count = servers_scope.where.not(subdomain_count_main_domain_of_fofa_result: nil).count
+    @subdomain_base_count = servers_scope.where.not(subdomain_count_base_name_of_fofa_result: nil).count
+    @subdomain_favicon_count = servers_scope.where.not(subdomain_count_favicon_of_fofa_result: nil).count
+    @subdomain_total_count = servers_scope.where.not(subdomain_total_count_of_fofa_result: nil).count
+    @favicon_hash_count = servers_scope.where.not(favicon_hash_of_fofa_result: nil).count
+  end
+
   def show
   end
 

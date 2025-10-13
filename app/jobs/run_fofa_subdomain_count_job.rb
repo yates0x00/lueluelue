@@ -2,6 +2,9 @@ class RunFofaSubdomainCountJob < ApplicationJob
   queue_as :default
 
   def perform(options = {})
+
+    # 休息 0.x 秒。 跟其他的delayed job 稍微错开一下。
+    sleep rand(10) / 10.0  
     server = options[:server]
     Rails.logger.info "== options: #{options.inspect}"
 
@@ -19,14 +22,18 @@ class RunFofaSubdomainCountJob < ApplicationJob
 
     # step2. 根据 "*.main.*" 来搜索
     middle_domain_name =  server.name.split('.')[0]
-    if middle_domain_name.size > 6 && server.name.count('.') == 1 
+    if middle_domain_name.size >= 4 && server.name.count('.') == 1 
       fofa_tool.query_count query_string: %Q{domain*="*.#{middle_domain_name}.*"}, server: server
+    else
+      Rails.logger.warn "=== middle_domain_name is too short ( < 4 ), or level is NOT 1. return"
     end
 
     # step3. 根据 主域名的favicon来搜索，如果对应的server存在的话
     icon_hash = get_icon_hash server
     if icon_hash.present? && server.level == 1
       fofa_tool.query_count query_string: %Q{icon_hash="#{icon_hash}"}, server: server
+    else
+      Rails.logger.warn "=== icon_hash is empty or server.level is NOT 1. return"
     end
 
     # 目前这些应该都了，以后有需要再增加step4..吧。
@@ -39,7 +46,11 @@ class RunFofaSubdomainCountJob < ApplicationJob
     Rails.logger.info "== getting icon_hash of #{server.name}, raw result: #{server.favicon_hash_of_fofa_result}"
 
     # ["\t[MMH3] -462799784", "\t[FOFA][MMH3] https://is.gd/dQU8tF", "\t[Shodan][MMH3] https://is.gd/SAvBr3", "\t[Silent Push][MMH3] https://is.gd/ARMmCv", "\t[Zoomeye][MMH3] https://is.gd/gQhEMK"]
-    return server.favicon_hash_of_fofa_result.gsub(/\e\[\d+m/, '').split("\n").select{ |e| e.include?("[MMH3]")}.first.split(' ').last rescue nil
+    result = server.favicon_hash_of_fofa_result.gsub(/\e\[\d+m/, '').split("\n").select{ |e| e.include?("[MMH3]")}.first.split(' ').last rescue nil
+    
+    Rails.logger.info "== icon_hash of #{server.name}: |#{result}|"
+    
+    return result
   end
 
   def ipv4_address?(str)

@@ -190,7 +190,7 @@ class FofaTool
 
       if query_string.include? 'domain*='
         server.update subdomain_count_base_name_of_fofa_result: (data['size'] || 0)
-      elsif query_string.include? 'favicon' 
+      elsif query_string.include? 'icon_hash=' 
         server.update subdomain_count_favicon_of_fofa_result: (data['size'] || 0)
       else
         server.update subdomain_count_main_domain_of_fofa_result: (data['size'] || 0)

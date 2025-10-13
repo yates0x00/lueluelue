@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       post :create_batch_servers
       get :download_csv
       get :readme
+      get :fofa_count
     end
   end
   resources :emails do

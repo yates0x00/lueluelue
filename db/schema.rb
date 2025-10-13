@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_05_025500) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_13_085830) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -144,8 +144,36 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_05_025500) do
     t.boolean "is_detected_by_favihunter"
     t.boolean "is_detected_by_fofa", comment: "是否在fofa上检测了"
     t.text "title_of_fofa", comment: "fofa的title"
+    t.integer "subdomain_count_main_domain_of_fofa_result", comment: "fofa下查询到的子域名记录, 例如 a.com"
+    t.integer "subdomain_count_base_name_of_fofa_result", comment: "fofa下查询到的子域名记录, 例如 domain*=\"*.a.*\""
+    t.integer "subdomain_count_favicon_of_fofa_result", comment: "fofa下查询到的子域名记录, 例如： favicon=-11100011"
+    t.integer "subdomain_total_count_of_fofa_result"
+    t.boolean "is_need_to_fetch_from_fofa", default: false, comment: "是否需要从fofa 手动抓取数据, 仅用于该数据量很大，或者已经抓取过了"
+    t.index ["domain_protocol"], name: "index_servers_on_domain_protocol"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
     t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
+    t.index ["is_detected_by_dig"], name: "index_servers_on_is_detected_by_dig"
+    t.index ["is_detected_by_dirsearch"], name: "index_servers_on_is_detected_by_dirsearch"
+    t.index ["is_detected_by_ehole"], name: "index_servers_on_is_detected_by_ehole"
+    t.index ["is_detected_by_favihunter"], name: "index_servers_on_is_detected_by_favihunter"
+    t.index ["is_detected_by_fofa"], name: "index_servers_on_is_detected_by_fofa"
+    t.index ["is_detected_by_gobuster"], name: "index_servers_on_is_detected_by_gobuster"
+    t.index ["is_detected_by_nmap"], name: "index_servers_on_is_detected_by_nmap"
+    t.index ["is_detected_by_nuclei_http"], name: "index_servers_on_is_detected_by_nuclei_http"
+    t.index ["is_detected_by_nuclei_https"], name: "index_servers_on_is_detected_by_nuclei_https"
+    t.index ["is_detected_by_nuclei_manual"], name: "index_servers_on_is_detected_by_nuclei_manual"
+    t.index ["is_detected_by_observer_ward"], name: "index_servers_on_is_detected_by_observer_ward"
+    t.index ["is_detected_by_the_harvester"], name: "index_servers_on_is_detected_by_the_harvester"
+    t.index ["is_detected_by_wafwoof"], name: "index_servers_on_is_detected_by_wafwoof"
+    t.index ["is_detected_by_wappalyzer"], name: "index_servers_on_is_detected_by_wappalyzer"
+    t.index ["is_detected_by_wpscan"], name: "index_servers_on_is_detected_by_wpscan"
+    t.index ["is_stared"], name: "index_servers_on_is_stared"
+    t.index ["level"], name: "index_servers_on_level"
+    t.index ["name"], name: "index_servers_on_name"
     t.index ["project_id"], name: "index_servers_on_project_id"
+    t.index ["response_code"], name: "index_servers_on_response_code"
+    t.index ["subdomain_count_base_name_of_fofa_result"], name: "index_servers_on_subdomain_count_base_name_of_fofa_result"
+    t.index ["subdomain_count_favicon_of_fofa_result"], name: "index_servers_on_subdomain_count_favicon_of_fofa_result"
+    t.index ["subdomain_count_main_domain_of_fofa_result"], name: "index_servers_on_subdomain_count_main_domain_of_fofa_result"
   end
 end
