@@ -1,5 +1,5 @@
 kill -9 `ps -ef | grep puma | grep 3333 | awk {'print $2'}`
-RAILS_ENV=production bundle exec rails s -p 3333 -d
+RAILS_ENV=production bundle exec rails s -p 3333 -d -b 0.0.0.0
 
 kill -9 `ps -ef | grep delayed_job | awk {'print $2'}`
 # RAILS_ENV=production bundle exec bin/delayed_job start -n 32
