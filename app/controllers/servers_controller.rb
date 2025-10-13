@@ -50,6 +50,14 @@ class ServersController < ApplicationController
     @favicon_hash_count = servers_scope.where.not(favicon_hash_of_fofa_result: nil).count
   end
 
+  def toggle_is_need_to_fetch_from_fofa
+    @server = Server.find(params[:id])
+    @server.update(is_need_to_fetch_from_fofa: !@server.is_need_to_fetch_from_fofa)
+    respond_to do |format|
+      format.json { render json: { success: true, is_need_to_fetch_from_fofa: @server.is_need_to_fetch_from_fofa } }
+    end
+  end
+
   def show
   end
 

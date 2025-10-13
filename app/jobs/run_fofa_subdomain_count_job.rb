@@ -3,8 +3,8 @@ class RunFofaSubdomainCountJob < ApplicationJob
 
   def perform(options = {})
 
-    # 休息 0.x 秒。 跟其他的delayed job 稍微错开一下。
-    sleep rand(10) / 10.0  
+    # 休息 0.x - 5 秒。 跟其他的delayed job 稍微错开一下。
+    sleep rand(50) / 10.0  
     server = options[:server]
     Rails.logger.info "== options: #{options.inspect}"
 

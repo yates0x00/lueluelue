@@ -11,6 +11,34 @@
 <br/>
 <%= paginate @servers %>
 
+<script>
+  function toggleIsNeedToFetchFromFofa(serverId, element) {
+    fetch('/servers/' + serverId + '/toggle_is_need_to_fetch_from_fofa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+      body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // 更新图标显示
+        if (data.is_need_to_fetch_from_fofa) {
+          element.innerHTML = '<span style="color: green; font-size: 1.2em;">✓</span>';
+        } else {
+          element.innerHTML = '<span style="color: red; font-size: 1.2em;">✗</span>';
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('更新失败，请重试');
+    });
+  }
+</script>
+
 <table class='table table-bordered table-hovered table-striped'>
   <thead>
     <tr>
@@ -47,7 +75,15 @@
         <td style="width: 300px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.favicon_hash_of_fofa_result %></td>
         <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_favihunter %>"><%= server.is_detected_by_favihunter ? 'true' : 'false' %></td>
         <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_fofa %>"><%= server.is_detected_by_fofa ? 'true' : 'false' %></td>
-        <td style="width: 50px;<%= ' color: green;' if server.is_need_to_fetch_from_fofa %>"><%= server.is_need_to_fetch_from_fofa ? 'true' : 'false' %></td>
+        <td style="width: 50px; text-align: center;">
+          <a href="javascript:void(0)" onclick="toggleIsNeedToFetchFromFofa(<%= server.id %>, this)">
+            <% if server.is_need_to_fetch_from_fofa %>
+              <span style="color: green; font-size: 1.2em;">✓</span>
+            <% else %>
+              <span style="color: red; font-size: 1.2em;">✗</span>
+            <% end %>
+          </a>
+        </td>
         <td style="width: 100px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.title_of_fofa %></td>
         <td><%= server.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td><%= server.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>

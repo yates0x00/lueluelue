@@ -24,6 +24,9 @@ Rails.application.routes.draw do
       get :readme
       get :fofa_count
     end
+    member do
+      post :toggle_is_need_to_fetch_from_fofa
+    end
   end
   resources :emails do
     collection do
