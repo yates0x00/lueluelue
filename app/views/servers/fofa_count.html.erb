@@ -99,10 +99,21 @@
     <% @servers.each do |server| %>
       <tr>
         <td><%= server.id %></td>
-        <td><%= link_to server.name, server %></td>
-        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %></td>
-        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %></td>
-        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %></td>
+        <td><%= link_to server.name, server %>
+                
+        </td>
+        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %>
+        <br/>
+        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain=\"#{server.name}\"")}&page=1&page_size=50", target: "_blank" %>        
+        </td>
+        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %>
+        <br/>
+        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain*=\"*.#{server.name.split('.').first}.*\"")}&page=1&page_size=50", target: "_blank" %>
+        </td>
+        <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %>
+        <br/>
+        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("icon_hash=\"#{server.favicon_hash_of_fofa_result}\"")}&page=1&page_size=50", target: "_blank" %>
+        </td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 50px; text-align: center;">
           <a href="javascript:void(0)" onclick="toggleIsNeedToFetchFromFofa(<%= server.id %>, this)">
