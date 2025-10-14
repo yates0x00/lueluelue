@@ -16,8 +16,10 @@ def run servers
 end
 
 # TODO 需要考虑特别大型的结果集的情况，一天消耗 3000块。。。
-# run Server.where('project_id = ?', ARGV[0])
-run Server.where('level = 1 and favicon_hash_of_fofa_result = ? and project_id = 4', "Found 0 subdomains, will be saved to servers" )
+#
+run Server.where('level = 1 and is_need_to_fetch_from_fofa = 1 and project_id = ?', ARGV[0])
+
+#run Server.where('level = 1 and favicon_hash_of_fofa_result = ? and project_id = 4', "Found 0 subdomains, will be saved to servers" )
 
 # 常用命令：
 #  Server.where('level = 1 and project_id = 3').order('subdomain_total_count_of_fofa_result desc').limit(100).map {|e| puts "#{e.name}, #{e.subdomain_total_count_of_fofa_result}, #{e.subdomain_count_main_domain_of_fofa_result}, #{e.subdomain_count_base_name_of_fofa_result}, #{e.subdomain_count_favicon_of_fofa_result}" }
