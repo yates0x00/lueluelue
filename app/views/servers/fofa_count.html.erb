@@ -61,10 +61,13 @@
       <th style="width: 50px;">Subdomain Count (Favicon)<br/><small><%= @subdomain_favicon_count %> / <%= @total_count %></small></th>
       <th style="width: 50px;">Subdomain Total Count<br/><small><%= @subdomain_total_count %> / <%= @total_count %></small></th>
       <th style="width: 300px; word-wrap: break-word;">Favicon Hash <br/> <small><%= @favicon_hash_non_empty_count %> run / <%= @favicon_hash_without_err_count %> OK / <%= @total_count %> all</small></th>
+      <th>Favicon Hash of FOFA</th>
+      <th>Favicon URL</th>
       <th style="width: 50px;">Is Detected by Favihunter</th>
       <th style="width: 50px;">Is Detected by FOFA</th>
       <th style="width: 50px;">Is Need to Fetch from FOFA</th>
       <th style='width: 100px'>Title of FOFA</th>
+      
       <th>Created At</th>
       <th>Updated At</th>
     </tr>
@@ -80,6 +83,8 @@
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %></td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 300px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.favicon_hash_of_fofa_result %></td>
+        <td><%= server.favicon_hash_of_fofa %></td>
+        <td><% if server.favicon_url.present? %><img src="<%= server.favicon_url %>" alt="Favicon" style="max-width: 32px; max-height: 32px;"> <br/> <%= server.favicon_url %> <% else %>No favicon URL<% end %></td>
         <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_favihunter %>"><%= server.is_detected_by_favihunter ? 'true' : 'false' %></td>
         <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_fofa %>"><%= server.is_detected_by_fofa ? 'true' : 'false' %></td>
         <td style="width: 50px; text-align: center;">
