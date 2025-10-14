@@ -9,12 +9,12 @@ sleep 5
 
 def run servers
   servers.each do |server|
-    command = "favihunter -u #{server.domain_protocol}://#{server.name}"
+    command = "#{COMMAND_OF_FAVIHUNTER} -u #{server.domain_protocol}://#{server.name}"
     RunJob.perform_later command: command, result_column: 'favicon_hash_of_fofa_result',
       is_detected_by_column: 'is_detected_by_favihunter',
       entity: server
   end
 end
 
-run Server.where('project_id = ? and level=1', ARGV[0])
+run Server.where('project_id = ? and level=1 and favicon_hash_of_fofa_result like ?', ARGV[0], '%ERR%')
 
