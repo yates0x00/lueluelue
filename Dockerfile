@@ -15,6 +15,8 @@ RUN set -eux; \
   chmod +x pipx.pyz; \
   mv pipx.pyz /usr/bin/pipx; \
   /usr/bin/pipx install poetry; \
+  wget https://github.com/Becivells/iconhash/releases/download/v0.4.3/iconhash_0.4.3_linux_amd64.deb; \
+  dpkg -i iconhash_0.4.3_linux_amd64.deb; \
   rm -rf /var/lib/apt/lists/*
 
 #  pip install favihunter; \

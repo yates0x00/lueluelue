@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     end
     member do
       post :toggle_is_need_to_fetch_from_fofa
+      get :update_fofa_count
     end
   end
   resources :emails do

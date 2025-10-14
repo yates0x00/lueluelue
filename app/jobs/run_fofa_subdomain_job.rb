@@ -38,7 +38,11 @@ class RunFofaSubdomainJob < ApplicationJob
     Rails.logger.info "== getting icon_hash of #{server.name}, raw result: #{server.favicon_hash_of_fofa_result}"
 
     # ["\t[MMH3] -462799784", "\t[FOFA][MMH3] https://is.gd/dQU8tF", "\t[Shodan][MMH3] https://is.gd/SAvBr3", "\t[Silent Push][MMH3] https://is.gd/ARMmCv", "\t[Zoomeye][MMH3] https://is.gd/gQhEMK"]
-    return server.favicon_hash_of_fofa_result.gsub(/\e\[\d+m/, '').split("\n").select{ |e| e.include?("[MMH3]")}.first.split(' ').last rescue nil
+    result = server.favicon_hash_of_fofa_result.gsub(/\e\[\d+m/, '').split("\n").select{ |e| e.include?("[MMH3]")}.first.split(' ').last rescue nil
+    
+    Rails.logger.info "== icon_hash of #{server.name}: |#{result}|"
+    
+    return result
   end
 
   def ipv4_address?(str)

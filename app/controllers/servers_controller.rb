@@ -1,6 +1,5 @@
 class ServersController < ApplicationController
   before_action :set_server, only: %i[ show edit update destroy ]
-
   def readme
   end
 
@@ -90,6 +89,31 @@ class ServersController < ApplicationController
     end
   end
 
+  def update_fofa_count
+    @server = Server.find(params[:id])
+    
+    # 根据type参数确定查询类型
+    if params[:type] == 'favicon'
+      # 更新 favicon_hash_of_fofa
+      query_string = "icon_hash=\"#{@server.favicon_hash_of_fofa}\""
+      
+      # 调用FOFA工具查询数量
+      fofa_tool = FofaTool.new
+      fofa_tool.query_count(server: @server, query_string: query_string)
+      
+      # 更新FOFA计数总和
+      @server.update_related_fofa_count
+      
+      respond_to do |format|
+        format.json { render json: { success: true, message: 'FOFA计数已更新', subdomain_count: @server.reload.subdomain_count_favicon_of_fofa_result } }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { success: false, message: '不支持的查询类型' }, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def show
   end
 
@@ -151,6 +175,12 @@ class ServersController < ApplicationController
 
       if @server.update(server_params)
         format.html { redirect_to server_url(@server), notice: "Server was successfully updated." }
+        if server_params[:favicon_url].present?
+          new_favicon_hash = `iconhash #{server_params[:favicon_url]}`.strip
+          @server.update(favicon_hash_of_fofa: new_favicon_hash)
+          @server.update_related_fofa_count
+        end
+
         format.json { render json: { status: 'success', message: 'Server was successfully updated.', server: @server }, status: :ok }
       else
         format.html { render :edit, status: :unprocessable_entity }

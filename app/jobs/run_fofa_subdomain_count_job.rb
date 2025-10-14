@@ -37,7 +37,7 @@ class RunFofaSubdomainCountJob < ApplicationJob
     end
 
     # 目前这些应该都了，以后有需要再增加step4..吧。
-    server.update subdomain_total_count_of_fofa_result: (server.subdomain_count_base_name_of_fofa_result || 0) + (server.subdomain_count_favicon_of_fofa_result || 0) + (server.subdomain_count_main_domain_of_fofa_result || 0)
+    server.update_related_fofa_count
   end
 
   private

@@ -24,6 +24,14 @@ class Server < ApplicationRecord
     return temp[0,2000]
   end
 
+  # 更新相关的FOFA计数，计算并更新subdomain_total_count_of_fofa_result字段
+  def update_related_fofa_count
+    total_count = (subdomain_count_main_domain_of_fofa_result || 0) + 
+                  (subdomain_count_base_name_of_fofa_result || 0) + 
+                  (subdomain_count_favicon_of_fofa_result || 0)
+    update(subdomain_total_count_of_fofa_result: total_count)
+  end
+
   def remove_ansi_color string
     return if string.blank?
     string.gsub("[0m]", '').gsub('[96m', '').gsub('[92m', '').gsub('[34m','').gsub('[94m', '')

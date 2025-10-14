@@ -195,6 +195,9 @@ class FofaTool
       else
         server.update subdomain_count_main_domain_of_fofa_result: (data['size'] || 0)
       end
+      
+      # 更新FOFA计数总和
+      server.update_related_fofa_count
 
     rescue => e
       Rails.logger.error e

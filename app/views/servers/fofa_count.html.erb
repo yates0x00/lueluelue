@@ -142,7 +142,7 @@
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('更新失败，请重试');
+      showTemporaryMessage('更新失败，请重试', false);
     });
   }
 
@@ -162,6 +162,45 @@
       fullContent.style.display = 'none';
       element.innerHTML = '<span class="collapsed-content">Click to expand</span><span class="full-content" style="display: none;">' + fullContent.innerHTML + '</span>';
     }
+  }
+
+  function refreshFofaCount(serverId) {
+    // 禁用按钮并显示加载状态
+    const button = event.target;
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = '刷新中...';
+    
+    // 发起AJAX请求
+    fetch(`/servers/${serverId}/update_fofa_count?type=favicon`, {
+      method: 'GET',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // 更新页面上的数值
+        const countCell = button.closest('td');
+        const countElement = countCell.querySelector('span') || countCell.firstChild;
+        if (countElement) {
+          countElement.textContent = data.subdomain_count || '0';
+        }
+        showTemporaryMessage('FOFA计数已更新', true);
+      } else {
+        showTemporaryMessage(data.message || '更新失败', false);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showTemporaryMessage('更新失败，请重试', false);
+    })
+    .finally(() => {
+      // 恢复按钮状态
+      button.disabled = false;
+      button.textContent = originalText;
+    });
   }
 </script>
 
@@ -212,6 +251,7 @@
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %>
         <br/>
         <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("icon_hash=\"#{server.favicon_hash_of_fofa_result}\"")}&page=1&page_size=50", target: "_blank" %>
+        <button class="btn btn-sm btn-primary refresh-btn" data-server-id="<%= server.id %>" onclick="refreshFofaCount(<%= server.id %>)">刷新</button>
         </td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 50px; text-align: center;">
