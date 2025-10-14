@@ -68,6 +68,10 @@ class ServersController < ApplicationController
     @subdomain_favicon_count = servers_scope.where.not(subdomain_count_favicon_of_fofa_result: nil).count
     @subdomain_total_count = servers_scope.where.not(subdomain_total_count_of_fofa_result: nil).count
     @favicon_hash_count = servers_scope.where.not(favicon_hash_of_fofa_result: nil).count
+    
+    # 计算favicon_hash_of_fofa_result字段中不包含ERR的数量
+    @favicon_hash_non_empty_count = servers_scope.where.not(favicon_hash_of_fofa_result: nil).count
+    @favicon_hash_without_err_count = servers_scope.where.not(favicon_hash_of_fofa_result: nil).where("favicon_hash_of_fofa_result NOT LIKE '%ERR%'").count
   end
 
   def toggle_is_need_to_fetch_from_fofa
