@@ -8,8 +8,13 @@ RUN set -eux; \
     libcurl4-openssl-dev \
     git curl build-essential libssl-dev libreadline-dev libssl-dev libreadline-dev \
     ruby-dev zlib1g-dev liblzma-dev ruby-all-dev  libyaml-dev libncurses5-dev libffi-dev libgdbm-dev libdb-dev vim \
-    python3 pip nmap wafw00f dnsutils; \
+    python3 pip python3-venv \
+    map wafw00f dnsutils; \
   apt clean; \
+  wget https://github.com/pypa/pipx/releases/latest/download/pipx.pyz; \
+  chmod +x pipx.pyz; \
+  mv pipx.pyz /usr/bin; \
+  /usr/bin/pipx install poetry; \
   rm -rf /var/lib/apt/lists/*
 
 #  pip install favihunter; \
