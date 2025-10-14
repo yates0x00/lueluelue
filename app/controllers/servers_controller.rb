@@ -36,6 +36,14 @@ class ServersController < ApplicationController
     # 构建查询条件
     servers_scope = Server.where(project_id: project_id)
     
+    # 添加favicon_hash_of_fofa过滤条件
+    case params[:favicon_hash_of_fofa_filter]
+    when 'null'
+      servers_scope = servers_scope.where(favicon_hash_of_fofa: nil)
+    when 'not_null'
+      servers_scope = servers_scope.where.not(favicon_hash_of_fofa: nil)
+    end
+    
     # 处理排序参数
     sort_column = params[:sort_by]
     sort_direction = params[:sort_order] || 'desc'

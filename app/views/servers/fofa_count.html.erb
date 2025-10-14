@@ -12,7 +12,9 @@
       ['Subdomain Count (Favicon)', 'subdomain_count_favicon_of_fofa_result']
     ], params[:sort_by]), include_blank: 'Default', class: 'form_select' %>
     Order: <%= select_tag :sort_order, options_for_select([['Ascending', 'asc'], ['Descending', 'desc']], params[:sort_order]), class: 'form_select' %>
-  <%= submit_tag 'Search' %>
+    Favicon Hash of FOFA: <%= select_tag :favicon_hash_of_fofa_filter, options_for_select([['All', ''], ['Null', 'null'], ['Not Null', 'not_null']], params[:favicon_hash_of_fofa_filter]), include_blank: 'Default', class: 'form_select' %>
+    
+  <%= submit_tag 'Search', class: 'btn btn-primary' %>
 <% end %>
 
 <br/>
@@ -44,6 +46,24 @@
       alert('更新失败，请重试');
     });
   }
+
+  function toggleContent(element) {
+    const parent = element.closest('td');
+    const collapsedContent = parent.querySelector('.collapsed-content');
+    const fullContent = parent.querySelector('.full-content');
+    
+    if (fullContent.style.display === 'none') {
+      // 展开内容
+      collapsedContent.style.display = 'none';
+      fullContent.style.display = 'inline';
+      element.innerHTML = '<span class="full-content">' + fullContent.innerHTML + '</span>';
+    } else {
+      // 折叠内容
+      collapsedContent.style.display = 'inline';
+      fullContent.style.display = 'none';
+      element.innerHTML = '<span class="collapsed-content">Click to expand</span><span class="full-content" style="display: none;">' + fullContent.innerHTML + '</span>';
+    }
+  }
 </script>
 
 <table class='table table-bordered table-hovered table-striped'>
@@ -60,12 +80,14 @@
       <th style="width: 50px;">Subdomain Count (Base Name)<br/><small><%= @subdomain_base_count %> / <%= @total_count %></small></th>
       <th style="width: 50px;">Subdomain Count (Favicon)<br/><small><%= @subdomain_favicon_count %> / <%= @total_count %></small></th>
       <th style="width: 50px;">Subdomain Total Count<br/><small><%= @subdomain_total_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Is Need to Fetch from FOFA</th>
       <th style="width: 300px; word-wrap: break-word;">Favicon Hash <br/> <small><%= @favicon_hash_non_empty_count %> run / <%= @favicon_hash_without_err_count %> OK / <%= @total_count %> all</small></th>
+
       <th>Favicon Hash of FOFA</th>
       <th>Favicon URL</th>
       <th style="width: 50px;">Is Detected by Favihunter</th>
       <th style="width: 50px;">Is Detected by FOFA</th>
-      <th style="width: 50px;">Is Need to Fetch from FOFA</th>
+
       <th style='width: 100px'>Title of FOFA</th>
       
       <th>Created At</th>
@@ -82,11 +104,6 @@
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %></td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %></td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
-        <td style="width: 300px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.favicon_hash_of_fofa_result %></td>
-        <td><%= server.favicon_hash_of_fofa %></td>
-        <td><% if server.favicon_url.present? %><img src="<%= server.favicon_url %>" alt="Favicon" style="max-width: 32px; max-height: 32px;"> <br/> <%= server.favicon_url %> <% else %>No favicon URL<% end %></td>
-        <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_favihunter %>"><%= server.is_detected_by_favihunter ? 'true' : 'false' %></td>
-        <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_fofa %>"><%= server.is_detected_by_fofa ? 'true' : 'false' %></td>
         <td style="width: 50px; text-align: center;">
           <a href="javascript:void(0)" onclick="toggleIsNeedToFetchFromFofa(<%= server.id %>, this)">
             <% if server.is_need_to_fetch_from_fofa %>
@@ -95,7 +112,18 @@
               <span style="color: red; font-size: 1.2em;">✗</span>
             <% end %>
           </a>
+        </td>        
+        <td style="width: 300px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;">
+          <a href="javascript:void(0);" onclick="toggleContent(this)">
+            <span class="collapsed-content">Click to expand</span>
+            <span class="full-content" style="display: none;"><%= server.favicon_hash_of_fofa_result %></span>
+          </a>
         </td>
+        <td><%= server.favicon_hash_of_fofa %></td>
+        <td><% if server.favicon_url.present? %><img src="<%= server.favicon_url %>" alt="Favicon" style="max-width: 32px; max-height: 32px;"> <br/> <%= server.favicon_url %> <% else %>No favicon URL<% end %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_favihunter %>"><%= server.is_detected_by_favihunter ? 'true' : 'false' %></td>
+        <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_fofa %>"><%= server.is_detected_by_fofa ? 'true' : 'false' %></td>
+
         <td style="width: 100px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;"><%= server.title_of_fofa %></td>
         <td><%= server.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td><%= server.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
