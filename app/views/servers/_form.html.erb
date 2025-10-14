@@ -186,6 +186,14 @@
         <%= form.select :is_stared, options_for_select([["yes", true], ["no", false]], @server.is_stared), {}, {class: 'form-control'} %>
       </td>
     </tr>
+    <tr>
+      <th>
+        <%= form.label :favicon_url, style: "display: block" %>
+      </th>
+      <td>
+        <%= form.text_field :favicon_url, class: 'form-control' %>
+      </td>
+    </tr>
 
   </table>
   <%= form.submit class: 'btn btn-primary' %>

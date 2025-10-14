@@ -147,12 +147,14 @@ class ServersController < ApplicationController
   # PATCH/PUT /servers/1 or /servers/1.json
   def update
     respond_to do |format|
+      Rails.logger.info "==  format: #{format }"
+
       if @server.update(server_params)
         format.html { redirect_to server_url(@server), notice: "Server was successfully updated." }
-        format.json { render :show, status: :ok, location: @server }
+        format.json { render json: { status: 'success', message: 'Server was successfully updated.', server: @server }, status: :ok }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @server.errors, status: :unprocessable_entity }
+        format.json { render json: { status: 'error', message: @server.errors.full_messages.join(', ') }, status: :unprocessable_entity }
       end
     end
   end
@@ -205,7 +207,7 @@ class ServersController < ApplicationController
                                      :observer_ward_result, :ehole_result, :level, :the_harvester_result, :wappalyzer_result, :nuclei_https_result, :nuclei_http_result,
                                      :nuclei_manual_result, :domain_protocol, :project_id, :is_detected_by_wafwoof, :is_detected_by_dig, :is_detected_by_observer_ward,
                                      :is_detected_by_ehole, :is_detected_by_wappalyzer, :is_detected_by_nuclei_https, :is_detected_by_the_harvester, :is_detected_by_nuclei_http,
-                                     :is_detected_by_nuclei_manual, :is_stared)
+                                     :is_detected_by_nuclei_manual, :is_stared, :favicon_url)
     end
 
     # Filter servers based on params

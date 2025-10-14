@@ -20,6 +20,105 @@
 <br/>
 <%= paginate @servers %>
 
+<!-- Modal for editing favicon URL -->
+<div class="modal fade" id="editFaviconUrlModal" tabindex="-1" role="dialog" aria-labelledby="editFaviconUrlModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editFaviconUrlModalLabel">编辑 Favicon URL</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editFaviconUrlForm">
+          <input type="hidden" id="editServerId" value="">
+          <div class="form-group">
+            <label for="faviconUrlInput" class="col-form-label">Favicon URL:</label>
+            <input type="text" class="form-control" id="faviconUrlInput">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="saveFaviconUrlBtn">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to open the modal for editing favicon URL
+  function openEditFaviconUrlModal(serverId, currentUrl) {
+    // Set the server ID and current favicon URL in the modal
+    document.getElementById('editServerId').value = serverId;
+    document.getElementById('faviconUrlInput').value = currentUrl;
+    
+    // Show the modal
+    $('#editFaviconUrlModal').modal('show');
+  }
+  
+  // Function to save the favicon URL
+  function saveFaviconUrl() {
+    const serverId = document.getElementById('editServerId').value;
+    const faviconUrl = document.getElementById('faviconUrlInput').value;
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    // Send AJAX request to update the favicon URL
+    fetch(`/servers/${serverId}.json`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({
+        server: {
+          favicon_url: faviconUrl
+        }
+      })
+    })
+    .then(data => {
+        const urlElement = document.querySelector(`#favicon-url-${serverId}`);
+        if (urlElement) {
+          urlElement.textContent = faviconUrl;
+        }
+        const imgElement = document.querySelector(`#favicon-url-${serverId}`).closest('td').querySelector('img');
+        if (imgElement) {
+          imgElement.src = faviconUrl;
+        }
+        
+        $('#editFaviconUrlModal').modal('hide');
+    })
+    .catch(error => {
+      console.error('Error updating favicon URL:', error);
+      alert('更新失败，请重试');
+    })
+  }
+  
+  // Function to initialize event listeners
+  function initializeEventListeners() {
+    // Remove existing event listeners to prevent duplicates
+    const saveButton = document.getElementById('saveFaviconUrlBtn');
+    const faviconUrlInput = document.getElementById('faviconUrlInput');
+    
+    // Add event listener to the save button
+    saveButton.addEventListener('click', saveFaviconUrl);
+    
+    // Add event listener for Enter key in the input field
+    faviconUrlInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        saveFaviconUrl();
+      }
+    });
+  }
+  
+  // Initialize event listeners when the DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeEventListeners();
+  });
+</script>
+
 <script>
   function toggleIsNeedToFetchFromFofa(serverId, element) {
     fetch('/servers/' + serverId + '/toggle_is_need_to_fetch_from_fofa', {
@@ -131,7 +230,21 @@
           </a>
         </td>
         <td><%= server.favicon_hash_of_fofa %></td>
-        <td><% if server.favicon_url.present? %><img src="<%= server.favicon_url %>" alt="Favicon" style="max-width: 32px; max-height: 32px;"> <br/> <%= server.favicon_url %> <% else %>No favicon URL<% end %></td>
+        <td>
+          <% if server.favicon_url.present? %>
+            <img src="<%= server.favicon_url %>" alt="Favicon" style="max-width: 32px; max-height: 32px;"> <br/>
+            <span id="favicon-url-<%= server.id %>"><%= server.favicon_url %></span> <br/>
+            <a href="javascript:void(0)" onclick="openEditFaviconUrlModal(<%= server.id %>, '<%= server.favicon_url %>')" style="color: #007bff; text-decoration: none; margin-right: 10px;">
+              <i class="fas fa-edit"></i> 编辑
+            </a>
+            <%= link_to raw('<i class="fas fa-external-link-alt" style="color: #28a745; font-size: 16px;"></i>'), server.favicon_url, target: '_blank', title: '访问', style: 'text-decoration: none;' %>
+          <% else %>
+            No favicon URL <br/>
+            <a href="javascript:void(0)" onclick="openEditFaviconUrlModal(<%= server.id %>, '')" style="color: #007bff; text-decoration: none;">
+              <i class="fas fa-edit"></i> 添加
+            </a>
+          <% end %>
+        </td>
         <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_favihunter %>"><%= server.is_detected_by_favihunter ? 'true' : 'false' %></td>
         <td style="width: 50px;<%= ' color: green;' if server.is_detected_by_fofa %>"><%= server.is_detected_by_fofa ? 'true' : 'false' %></td>
 
