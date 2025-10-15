@@ -99,27 +99,22 @@ class ServersController < ApplicationController
 
   def update_fofa_count
     @server = Server.find(params[:id])
-    
     # 根据type参数确定查询类型
     if params[:type] == 'favicon'
-      # 更新 favicon_hash_of_fofa
       query_string = "icon_hash=\"#{@server.favicon_hash_of_fofa}\""
-      
-      # 调用FOFA工具查询数量
-      fofa_tool = FofaTool.new
-      fofa_tool.query_count(server: @server, query_string: query_string)
-      
-      # 更新FOFA计数总和
-      @server.update_related_fofa_count
-      
-      respond_to do |format|
-        format.json { render json: { success: true, message: 'FOFA计数已更新', subdomain_count: @server.reload.subdomain_count_favicon_of_fofa_result } }
-      end
-    else
-      respond_to do |format|
-        format.json { render json: { success: false, message: '不支持的查询类型' }, status: :unprocessable_entity }
-      end
+      attribute_name = 'subdomain_count_favicon_of_fofa_result'
+    elsif params[:type] == 'main_domain'
+      query_string = "host=\".#{@server.name}\""
+      attribute_name = 'subdomain_count_main_domain_of_fofa_result'
+    elsif params[:type] == 'base_name'
+      query_string = "domain*=\"*.#{@server.name.split('.')[0]}.*\""
+      attribute_name = 'subdomain_count_base_name_of_fofa_result'
     end
+    FofaTool.new.query_count(server: @server, query_string: query_string)
+    @server.update_related_fofa_count
+    render json: { 
+      success: true, message: 'FOFA计数已更新', subdomain_count: @server.reload.send(attribute_name) 
+    } 
   end
 
   def show

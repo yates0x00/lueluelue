@@ -1,7 +1,20 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>FOFA Count</h1>
-<p>说明： 该页面是为了后续的 从fofa上抓取数据做准备。对于数量特别大的，需要做手动甄别 </p>
+<div class='alert alert-info'>说明： 
+1. 该页面是为了后续的 从fofa上抓取数据做准备。对于数量特别大的，需要做手动甄别 。icon 不是每个站点都有. 可以手动查询，也可以通过 favicone api来查询  <br/>
+3. 查询到的icon 不一定跟 fofa的一样<br/>
+4. 不追求完美，建议手动查询<br/>
+5. 如果目标量很大的话，在当前页面，做好调整。 <br/>
+建议过程：<br/>
+002_detect_favicon_hash_for_fofa.rb<br/>
+003_update_favicon_hash_of_fofa_from_favihunter_result.rb<br/>
+004_detect_favicon_hash_using_favicone_api_and_ruby.rb<br/>
+运行完毕后，手动微调这里，查看多少页面的结果是 > 1000的，是的话就容易有问题。也要排查出 wordpress, joomla, discuz 等大范围的结果<br/>
+然后，还需要手动微调：查询fofa的策略，是否需要查询fofa. <br/>
+最后，本页面都弄好了，运行 <br/>
+009_fetch_subdomain_from_fofa.rb<br/>
+</div>
 <%= form_tag '', method: 'GET' do |f| %>
   Project: <%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'All', class: 'form_select' %>
     per page: <%= select_tag :per_page, options_for_select([1000, 500, 100], params[:per_page].to_i), class: 'form_select' %>
@@ -165,7 +178,7 @@
     }
   }
 
-  function refreshFofaCount(serverId) {
+  function refreshFofaCount(serverId, queryType) {
     // 禁用按钮并显示加载状态
     const button = event.target;
     const originalText = button.textContent;
@@ -173,7 +186,7 @@
     button.textContent = '刷新中...';
     
     // 发起AJAX请求
-    fetch(`/servers/${serverId}/update_fofa_count?type=favicon`, {
+    fetch(`/servers/${serverId}/update_fofa_count?type=${queryType}`, {
       method: 'GET',
       headers: {
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -198,7 +211,6 @@
       showTemporaryMessage('更新失败，请重试', false);
     })
     .finally(() => {
-      // 恢复按钮状态
       button.disabled = false;
       button.textContent = originalText;
     });
@@ -216,7 +228,7 @@
       <th>ID</th>
       <th>Name</th>
       <th style="width: 50px;">Subdomain Count (Main Domain)<br/>
-        "a.com"  <br/>
+        host=".a.com"  <br/>
         <small><%= @subdomain_main_count %> / <%= @total_count %></small>
       </th>
       <th style="width: 50px;">Subdomain Count (Base Name)<br/>
@@ -251,16 +263,26 @@
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %>
         <br/>
-        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain=\"#{server.name}\"")}&page=1&page_size=50", target: "_blank" %>        
+        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain=\"#{server.name}\"")}&page=1&page_size=50", target: "_blank" %>
+        
+        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'main_domain')" title="刷新FOFA计数" style="text-decoration: none;">
+          <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
+        </a>        
+
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %>
         <br/>
         <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain*=\"*.#{server.name.split('.').first}.*\"")}&page=1&page_size=50", target: "_blank" %>
+        
+        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'base_name')" title="刷新FOFA计数" style="text-decoration: none;">
+          <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
+        </a>        
+
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %>
         <br/>
         <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("icon_hash=\"#{server.favicon_hash_of_fofa_result}\"")}&page=1&page_size=50", target: "_blank" %>
-        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>)" title="刷新FOFA计数" style="text-decoration: none;">
+        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'favicon')" title="刷新FOFA计数" style="text-decoration: none;">
           <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
         </a>
         

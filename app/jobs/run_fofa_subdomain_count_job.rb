@@ -18,7 +18,7 @@ class RunFofaSubdomainCountJob < ApplicationJob
 
     # 例如, domain = main.com
     # step1. 根据 "main.com" 来搜索
-    fofa_tool.query_count query_string: %Q{"#{server.name}"}, server: server
+    fofa_tool.query_count query_string: %Q{host=".#{server.name}"}, server: server
 
     # step2. 根据 "*.main.*" 来搜索
     middle_domain_name =  server.name.split('.')[0]
@@ -29,7 +29,7 @@ class RunFofaSubdomainCountJob < ApplicationJob
     end
 
     # step3. 根据 主域名的favicon来搜索，如果对应的server存在的话
-    icon_hash = get_icon_hash server
+    icon_hash = server.favicon_hash_of_fofa || get_icon_hash(server) # TODO 后面这个可能没用了。
     if icon_hash.present? && server.level == 1
       fofa_tool.query_count query_string: %Q{icon_hash="#{icon_hash}"}, server: server
     else

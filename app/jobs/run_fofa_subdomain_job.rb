@@ -11,25 +11,13 @@ class RunFofaSubdomainJob < ApplicationJob
       return 
     end
 
-    fofa_tool = FofaTool.new
-
-    # 例如, domain = main.com
-    # step1. 根据 "main.com" 来搜索
-    fofa_tool.query query_string: %Q{"#{server.name}"}, server: server
-
-    # step2. 根据 "*.main.*" 来搜索
-    middle_domain_name =  server.name.split('.')[0]
-    if middle_domain_name.size > 6 && server.name.count('.') == 1 
-      fofa_tool.query query_string: %Q{domain*="*.#{middle_domain_name}.*"}, server: server
-    end
-
-    # step3. 根据 主域名的favicon来搜索，如果对应的server存在的话
-    icon_hash = get_icon_hash server
-    if icon_hash.present? && server.level == 1
-      fofa_tool.query query_string: %Q{icon_hash="#{icon_hash}"}, server: server
-    end
-
     # 目前这些应该都了，以后有需要再增加step4..吧。
+    query_strings = []
+    query_strings << %Q{host=".#{server.name}"} if server.is_to_query_fofa_by_main_domain
+    query_strings << %Q{domain*="*.#{server.name.split('.')[0]}.*"} if server.is_to_query_fofa_by_base_name
+    query_strings << %Q{icon_hash="#{server.favicon_hash_of_fofa}"} if server.is_to_query_fofa_by_icon_hash
+
+    FofaTool.new.query query_string: query_strings.join(' || '), server: server
   end
 
   private
