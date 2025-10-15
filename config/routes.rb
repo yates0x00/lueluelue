@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       get :fofa_count
     end
     member do
-      post :toggle_is_need_to_fetch_from_fofa
+      post :toggle_attribute
       get :update_fofa_count
     end
   end

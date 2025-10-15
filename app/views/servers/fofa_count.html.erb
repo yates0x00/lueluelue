@@ -134,14 +134,14 @@
 </script>
 
 <script>
-  function toggleIsNeedToFetchFromFofa(serverId, element) {
-    fetch('/servers/' + serverId + '/toggle_is_need_to_fetch_from_fofa', {
+  function toggleServerAttribute(serverId, element, attributeName) {
+    fetch(`/servers/${serverId}/toggle_attribute`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
       },
-      body: JSON.stringify({})
+      body: JSON.stringify({ attribute_name: attributeName })
     })
     .then(response => response.json())
     .then(data => {
@@ -262,30 +262,48 @@
           <%= link_to raw('<i class="fas fa-external-link-alt" style="color: #28a745; font-size: 16px;"></i>'), "#{server.domain_protocol}://#{server.name}", target: '_blank', title: '访问', style: 'text-decoration: none;' %>               
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %>
-        <br/>
-        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain=\"#{server.name}\"")}&page=1&page_size=50", target: "_blank" %>
-        
-        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'main_domain')" title="刷新FOFA计数" style="text-decoration: none;">
-          <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
-        </a>        
+          <br/>
+          <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain=\"#{server.name}\"")}&page=1&page_size=50", target: "_blank" %>
+          <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'main_domain')" title="刷新FOFA计数" style="text-decoration: none;">
+            <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
+          </a>        
+          <a href="javascript:void(0)" onclick="toggleServerAttribute(<%= server.id %>, this, 'is_to_query_fofa_by_main_domain')">
+            <% if server.is_to_query_fofa_by_main_domain %>
+              <span style="color: green; font-size: 1.2em;">✓</span>
+            <% else %>
+              <span style="color: red; font-size: 1.2em;">✗</span>
+            <% end %>
+          </a>
 
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %>
-        <br/>
-        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain*=\"*.#{server.name.split('.').first}.*\"")}&page=1&page_size=50", target: "_blank" %>
-        
-        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'base_name')" title="刷新FOFA计数" style="text-decoration: none;">
-          <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
-        </a>        
-
+          <br/>
+          <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain*=\"*.#{server.name.split('.').first}.*\"")}&page=1&page_size=50", target: "_blank" %>
+          
+          <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'base_name')" title="刷新FOFA计数" style="text-decoration: none;">
+            <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
+          </a>        
+          <a href="javascript:void(0)" onclick="toggleServerAttribute(<%= server.id %>, this, 'is_to_query_fofa_by_base_name')">
+            <% if server.is_to_query_fofa_by_base_name %>
+              <span style="color: green; font-size: 1.2em;">✓</span>
+            <% else %>
+              <span style="color: red; font-size: 1.2em;">✗</span>
+            <% end %>
+          </a>
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %>
-        <br/>
-        <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("icon_hash=\"#{server.favicon_hash_of_fofa_result}\"")}&page=1&page_size=50", target: "_blank" %>
-        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'favicon')" title="刷新FOFA计数" style="text-decoration: none;">
-          <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
-        </a>
-        
+          <br/>
+          <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("icon_hash=\"#{server.favicon_hash_of_fofa_result}\"")}&page=1&page_size=50", target: "_blank" %>
+          <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'favicon')" title="刷新FOFA计数" style="text-decoration: none;">
+            <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
+          </a>
+          <a href="javascript:void(0)" onclick="toggleServerAttribute(<%= server.id %>, this, 'is_to_query_fofa_by_icon_hash')">
+            <% if server.is_to_query_fofa_by_icon_hash %>
+              <span style="color: green; font-size: 1.2em;">✓</span>
+            <% else %>
+              <span style="color: red; font-size: 1.2em;">✗</span>
+            <% end %>
+          </a>        
         </td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 50px; text-align: center;">

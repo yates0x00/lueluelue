@@ -89,12 +89,11 @@ class ServersController < ApplicationController
     @favicon_hash_without_err_count = servers_scope.where.not(favicon_hash_of_fofa_result: nil).where("favicon_hash_of_fofa_result NOT LIKE '%ERR%'").count
   end
 
-  def toggle_is_need_to_fetch_from_fofa
+  def toggle_attribute
     @server = Server.find(params[:id])
-    @server.update(is_need_to_fetch_from_fofa: !@server.is_need_to_fetch_from_fofa)
-    respond_to do |format|
-      format.json { render json: { success: true, is_need_to_fetch_from_fofa: @server.is_need_to_fetch_from_fofa } }
-    end
+    attribute_name = params[:attribute_name]
+    @server.update(attribute_name.to_sym => !@server.send(attribute_name.to_sym))
+    render json: { success: true, attribute_name => @server.send(attribute_name.to_sym) } 
   end
 
   def update_fofa_count
