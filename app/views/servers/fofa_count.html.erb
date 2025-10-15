@@ -147,7 +147,7 @@
     .then(data => {
       if (data.success) {
         // 更新图标显示
-        if (data.is_need_to_fetch_from_fofa) {
+        if (data[attributeName]) {
           element.innerHTML = '<span style="color: green; font-size: 1.2em;">✓</span>';
         } else {
           element.innerHTML = '<span style="color: red; font-size: 1.2em;">✗</span>';
@@ -158,6 +158,18 @@
       console.error('Error:', error);
       showTemporaryMessage('更新失败，请重试', false);
     });
+  }
+
+  function showTemporaryMessage(message, isSuccess) {
+    const messageElement = document.getElementById('temporaryMessage');
+    messageElement.textContent = message;
+    messageElement.className = isSuccess ? 'alert alert-success' : 'alert alert-danger';
+    messageElement.style.display = 'block';
+    
+    // 5秒后隐藏消息
+    setTimeout(() => {
+      messageElement.style.display = 'none';
+    }, 5000);
   }
 
   function toggleContent(element) {
@@ -307,7 +319,7 @@
         </td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 50px; text-align: center;">
-          <a href="javascript:void(0)" onclick="toggleIsNeedToFetchFromFofa(<%= server.id %>, this)">
+          <a href="javascript:void(0)" onclick="toggleServerAttribute(<%= server.id %>, this, 'is_need_to_fetch_from_fofa')">
             <% if server.is_need_to_fetch_from_fofa %>
               <span style="color: green; font-size: 1.2em;">✓</span>
             <% else %>
