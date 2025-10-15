@@ -13,6 +13,7 @@
     ], params[:sort_by]), include_blank: 'Default', class: 'form_select' %>
     Order: <%= select_tag :sort_order, options_for_select([['Ascending', 'asc'], ['Descending', 'desc']], params[:sort_order]), class: 'form_select' %>
     Favicon Hash of FOFA: <%= select_tag :favicon_hash_of_fofa_filter, options_for_select([['All', ''], ['Null', 'null'], ['Not Null', 'not_null']], params[:favicon_hash_of_fofa_filter]), include_blank: 'Default', class: 'form_select' %>
+    Is Need to Fetch from FOFA: <%= select_tag :is_need_to_fetch_from_fofa_filter, options_for_select([['All', ''], ['Yes', 'true'], ['No', 'false']], params[:is_need_to_fetch_from_fofa_filter]), include_blank: 'Default', class: 'form_select' %>
     
   <%= submit_tag 'Search', class: 'btn btn-primary' %>
 <% end %>
@@ -214,9 +215,16 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
-      <th style="width: 50px;">Subdomain Count (Main Domain)<br/><small><%= @subdomain_main_count %> / <%= @total_count %></small></th>
-      <th style="width: 50px;">Subdomain Count (Base Name)<br/><small><%= @subdomain_base_count %> / <%= @total_count %></small></th>
-      <th style="width: 50px;">Subdomain Count (Favicon)<br/><small><%= @subdomain_favicon_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Subdomain Count (Main Domain)<br/>
+        "a.com"  <br/>
+        <small><%= @subdomain_main_count %> / <%= @total_count %></small>
+      </th>
+      <th style="width: 50px;">Subdomain Count (Base Name)<br/>
+        domain*="*.a.*" <br/>
+        <small><%= @subdomain_base_count %> / <%= @total_count %></small></th>
+      <th style="width: 50px;">Subdomain Count (Favicon)<br/>
+        icon_hash="123456" <br/>
+        <small><%= @subdomain_favicon_count %> / <%= @total_count %></small></th>
       <th style="width: 50px;">Subdomain Total Count<br/><small><%= @subdomain_total_count %> / <%= @total_count %></small></th>
       <th style="width: 50px;">Is Need to Fetch from FOFA</th>
       <th style="width: 300px; word-wrap: break-word;">Favicon Hash <br/> <small><%= @favicon_hash_non_empty_count %> run / <%= @favicon_hash_without_err_count %> OK / <%= @total_count %> all</small></th>
@@ -237,8 +245,9 @@
     <% @servers.each do |server| %>
       <tr>
         <td><%= server.id %></td>
-        <td><%= link_to server.name, server %>
-                
+        <td>
+          <%= link_to server.name, server %>
+          <%= link_to raw('<i class="fas fa-external-link-alt" style="color: #28a745; font-size: 16px;"></i>'), "#{server.domain_protocol}://#{server.name}", target: '_blank', title: '访问', style: 'text-decoration: none;' %>               
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %>
         <br/>
@@ -251,7 +260,10 @@
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_favicon_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_favicon_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_favicon_of_fofa_result %>
         <br/>
         <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("icon_hash=\"#{server.favicon_hash_of_fofa_result}\"")}&page=1&page_size=50", target: "_blank" %>
-        <button class="btn btn-sm btn-primary refresh-btn" data-server-id="<%= server.id %>" onclick="refreshFofaCount(<%= server.id %>)">刷新</button>
+        <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>)" title="刷新FOFA计数" style="text-decoration: none;">
+          <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
+        </a>
+        
         </td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 50px; text-align: center;">

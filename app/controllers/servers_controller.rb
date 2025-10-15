@@ -43,6 +43,14 @@ class ServersController < ApplicationController
       servers_scope = servers_scope.where.not(favicon_hash_of_fofa: nil)
     end
     
+    # 添加is_need_to_fetch_from_fofa过滤条件
+    case params[:is_need_to_fetch_from_fofa_filter]
+    when 'true'
+      servers_scope = servers_scope.where(is_need_to_fetch_from_fofa: true)
+    when 'false'
+      servers_scope = servers_scope.where(is_need_to_fetch_from_fofa: false)
+    end
+    
     # 处理排序参数
     sort_column = params[:sort_by]
     sort_direction = params[:sort_order] || 'desc'
