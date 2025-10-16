@@ -11,11 +11,20 @@ class RunFofaSubdomainJob < ApplicationJob
       return 
     end
 
+    unless server.is_need_to_fetch_from_fofa
+      Rails.logger.info "=== server #{server.name} is not need to fetch from fofa. return"
+      return
+    end
+
     # 目前这些应该都了，以后有需要再增加step4..吧。
     query_strings = []
     query_strings << %Q{host=".#{server.name}"} if server.is_to_query_fofa_by_main_domain
     query_strings << %Q{domain*="*.#{server.name.split('.')[0]}.*"} if server.is_to_query_fofa_by_base_name
-    query_strings << %Q{icon_hash="#{server.favicon_hash_of_fofa}"} if server.is_to_query_fofa_by_icon_hash
+
+    icon_hash = server.favicon_hash_of_fofa || get_icon_hash(server) # TODO 后面这个可能没用了。
+    if server.is_to_query_fofa_by_icon_hash && icon_hash.present? && icon_hash.size > 4 && server.level == 1
+      query_strings << %Q{icon_hash="#{icon_hash}"} 
+    end
 
     FofaTool.new.query query_string: query_strings.join(' || '), server: server
   end
