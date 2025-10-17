@@ -18,6 +18,7 @@
 然后，还需要手动微调：查询fofa的策略，是否需要查询fofa. <br/>
 最后，本页面都弄好了，运行 <br/>
 009_fetch_subdomain_from_fofa.rb<br/>
+然后还需要时刻关注日志，如果发现 大量的fofa查询（例如 1000 个），说明 有问题。需要检查 query 的具体的内容
 </div>
 <%= form_tag '', method: 'GET' do |f| %>
   Project: <%= select_tag :project_id, options_from_collection_for_select(Project.all, :id, :name, params[:project_id]), include_blank: 'All', class: 'form_select' %>
