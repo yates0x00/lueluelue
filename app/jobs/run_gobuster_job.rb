@@ -3,8 +3,8 @@ class RunGobusterJob < ApplicationJob
 
   def perform(server)
     result = ''
-    result += `#{ENV['COMMAND_OF_GOBUSTER']} dir -u #{server.domain_protocol}://#{server.name} -w /opt/app/mass_info/SecLists/raft-small-files-lowercase.txt -t 50 -b 403,404 --random-agent`
-    result += `#{ENV['COMMAND_OF_GOBUSTER']} dir -u #{server.domain_protocol}://#{server.name} -w /opt/app/mass_info/SecLists/raft-small-directories-lowercase.txt -t 50 -b 403,404 --random-agent`
+    result += `#{ENV['COMMAND_OF_GOBUSTER']} dir -u #{server.domain_protocol}://#{server.name} -w /opt/app/mass_info/third_party_libs/SecList/raft-small-files-lowercase.txt -t 50 -b 403,404 --random-agent`
+    result += `#{ENV['COMMAND_OF_GOBUSTER']} dir -u #{server.domain_protocol}://#{server.name} -w /opt/app/mass_info/third_party_libs/SecList/raft-small-directories-lowercase.txt -t 50 -b 403,404 --random-agent`
 
     server.update(
       is_detected_by_gobuster: true,
