@@ -39,3 +39,4 @@ docker-compose.yml
 *.pptx
 
 node_modules
+*/tmp/*
