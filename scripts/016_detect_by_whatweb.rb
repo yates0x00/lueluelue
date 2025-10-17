@@ -1,4 +1,3 @@
-
 ENV['RAILS_ENV'] = 'production'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails'
@@ -12,3 +11,4 @@ def run servers
   end
 end
 
+run Server.where('project_id = ?', ARGV[0])

@@ -17,6 +17,7 @@ RUN set -eux; \
   /usr/bin/pipx install poetry; \
   wget https://github.com/Becivells/iconhash/releases/download/v0.4.3/iconhash_0.4.3_linux_amd64.deb; \
   dpkg -i iconhash_0.4.3_linux_amd64.deb; \
+  rm iconhash_0.4.3_linux_amd64.deb; \
   rm -rf /var/lib/apt/lists/*
 
 #  pip install favihunter; \
@@ -25,6 +26,8 @@ RUN gem install bundler -v 2.6.9  && \
   cd /opt/app/mass_info && bundle install --verbose && \
   gem install wpscan && wpscan --update
 
-RUN pip3 install favihunter
+RUN pip3 install favihunter; \
+  cd /opt/app && git clone https://github.com/urbanadventurer/WhatWeb.git && \
+  cd /opt/app/WhatWeb && bundle install
 
 CMD ["tail", "-f", "/dev/null"]

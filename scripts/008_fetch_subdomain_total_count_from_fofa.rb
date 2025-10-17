@@ -20,7 +20,7 @@ end
 # run Server.where('project_id = ?', ARGV[0])
 #
 #run Server.where('level = 1 and favicon_hash_of_fofa_result = ? and project_id = 4', "Found 0 subdomains, will be saved to servers" )
-run Server.where('level = 1 and project_id =? ', ARGV[0])
+run Server.where('level = 1 and project_id =? ', ARGV[0]).order('id asc')
 
 
 # 说明：该脚本非常重要，因为下列权重高的站点，完全不能使用默认的策略（ "a.com" , 而是需要 domain*="*.a.*" 和 icon_hash = xxx )

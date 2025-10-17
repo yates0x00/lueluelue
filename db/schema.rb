@@ -148,7 +148,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_15_075345) do
     t.integer "subdomain_count_base_name_of_fofa_result", comment: "fofa下查询到的子域名记录, 例如 domain*=\"*.a.*\""
     t.integer "subdomain_count_favicon_of_fofa_result", comment: "fofa下查询到的子域名记录, 例如： favicon=-11100011"
     t.integer "subdomain_total_count_of_fofa_result"
-    t.boolean "is_need_to_fetch_from_fofa", default: false, comment: "是否需要从fofa 手动抓取数据, 仅用于该数据量很大，或者已经抓取过了"
+    t.boolean "is_need_to_fetch_from_fofa", default: true, comment: "是否需要从fofa 手动抓取数据, 仅用于该数据量很大，或者已经抓取过了"
     t.string "favicon_hash_of_fofa", comment: "favicon_hash, of fofa, MMH3"
     t.string "favicon_url", comment: "favicon url, e.g. http://a.com/favicon.ico  http://b.com/logo.jpg"
     t.boolean "is_to_query_fofa_by_main_domain", default: true, comment: "是否查询 host=\"a.com\""
