@@ -9,7 +9,7 @@ def get_wafw00f_result_by_domains servers
 
   servers.each do |server|
 
-    command = "#{COMMAND_OF_WAFW00F} #{server.name}"
+    command = "#{ENV['COMMAND_OF_WAFW00F']} #{server.name}"
 
     RunJob.perform_later command: command, result_column: 'wafwoof_result',
       is_detected_by_column: 'is_detected_by_wafwoof',

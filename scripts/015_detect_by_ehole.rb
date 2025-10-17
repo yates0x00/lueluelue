@@ -5,8 +5,6 @@ require 'rubygems'
 require 'httparty'
 require 'csv'
 
-puts "== install ehole from: https://github.com/EdgeSecurityTeam/EHole"
-
 def run servers
   servers.each do |server|
     RunEholeJob.perform_later server: server
