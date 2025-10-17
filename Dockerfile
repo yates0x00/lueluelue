@@ -20,14 +20,12 @@ RUN set -eux; \
   rm iconhash_0.4.3_linux_amd64.deb; \
   rm -rf /var/lib/apt/lists/*
 
-#  pip install favihunter; \
-
 RUN gem install bundler -v 2.6.9  && \
   cd /opt/app/mass_info && bundle install --verbose && \
   gem install wpscan && wpscan --update
 
 RUN pip3 install favihunter; \
-  cd /opt/app && git clone https://github.com/urbanadventurer/WhatWeb.git && \
-  cd /opt/app/WhatWeb && bundle install
+  cd /opt/app/mass_info/third_party_libs && git clone https://github.com/urbanadventurer/WhatWeb.git && \
+  cd /opt/app/mass_info/third_party_libs/WhatWeb && bundle install 
 
 CMD ["tail", "-f", "/dev/null"]
