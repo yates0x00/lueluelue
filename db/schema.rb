@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_15_075345) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_17_102438) do
   create_table "c_class_networks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.string "value"
@@ -154,6 +154,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_15_075345) do
     t.boolean "is_to_query_fofa_by_main_domain", default: true, comment: "是否查询 host=\"a.com\""
     t.boolean "is_to_query_fofa_by_base_name", default: true, comment: "是否查询 host*=\"*.a.*\""
     t.boolean "is_to_query_fofa_by_icon_hash", default: true, comment: "是否查询 icon_hash=\"1234\""
+    t.boolean "is_detected_by_whatweb", comment: "is detected by whatweb"
     t.index ["domain_protocol"], name: "index_servers_on_domain_protocol"
     t.index ["is_confirmed_behind_waf"], name: "index_servers_on_is_confirmed_behind_waf"
     t.index ["is_confirmed_not_behind_waf"], name: "index_servers_on_is_confirmed_not_behind_waf"
@@ -171,6 +172,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_15_075345) do
     t.index ["is_detected_by_the_harvester"], name: "index_servers_on_is_detected_by_the_harvester"
     t.index ["is_detected_by_wafwoof"], name: "index_servers_on_is_detected_by_wafwoof"
     t.index ["is_detected_by_wappalyzer"], name: "index_servers_on_is_detected_by_wappalyzer"
+    t.index ["is_detected_by_whatweb"], name: "index_servers_on_is_detected_by_whatweb"
     t.index ["is_detected_by_wpscan"], name: "index_servers_on_is_detected_by_wpscan"
     t.index ["is_need_to_fetch_from_fofa"], name: "index_servers_on_is_need_to_fetch_from_fofa"
     t.index ["is_stared"], name: "index_servers_on_is_stared"

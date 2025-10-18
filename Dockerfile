@@ -25,7 +25,7 @@ RUN gem install bundler -v 2.6.9  && \
   gem install wpscan && wpscan --update
 
 RUN pip3 install favihunter; \
-  cd /opt/app/mass_info/third_party_libs && git clone https://github.com/urbanadventurer/WhatWeb.git && \
-  cd /opt/app/mass_info/third_party_libs/WhatWeb && bundle install 
+  cd /opt/app && git clone https://github.com/urbanadventurer/WhatWeb.git && \
+  cd /opt/app/WhatWeb && bundle install
 
 CMD ["tail", "-f", "/dev/null"]
