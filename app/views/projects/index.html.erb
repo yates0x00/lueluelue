@@ -49,11 +49,11 @@ total: <%= @total_count %>
           <%= project.description %>
         </td>
         <td>
-          <%= raw project.ips_not_behind_waf.map {|e| e.ip }.uniq.join('<br/>')%>
+          <%= raw project.ips_not_behind_waf.first(500).map {|e| e.ip rescue 'ip > 1000' }.uniq.join('<br/>')%>
         </td>
         <td>
           (<%= project.servers.where('level <= 3').count %>)<br/>
-          <% project.servers.where('level <= 3').first(500).each do |server| %>
+          <% project.servers.where('level <= 3').limit(100).each do |server| %>
             <%= link_to server.name, server %><br/>
           <% end %>
         </td>
