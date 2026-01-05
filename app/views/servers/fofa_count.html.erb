@@ -1,7 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>FOFA Count</h1>
-<div class='alert alert-info'>说明： 
+<div class='alert alert-info'>说明：
 1. 该页面是为了后续的 从fofa上抓取数据做准备。对于数量特别大的，需要做手动甄别 。icon 不是每个站点都有. 可以手动查询，也可以通过 favicone api来查询  <br/>
 3. 查询到的icon 不一定跟 fofa的一样<br/>
 4. 不追求完美，建议手动查询<br/>
@@ -32,7 +32,7 @@
     Order: <%= select_tag :sort_order, options_for_select([['Ascending', 'asc'], ['Descending', 'desc']], params[:sort_order]), class: 'form_select' %>
     Favicon Hash of FOFA: <%= select_tag :favicon_hash_of_fofa_filter, options_for_select([['All', ''], ['Null', 'null'], ['Not Null', 'not_null']], params[:favicon_hash_of_fofa_filter]), include_blank: 'Default', class: 'form_select' %>
     Is Need to Fetch from FOFA: <%= select_tag :is_need_to_fetch_from_fofa_filter, options_for_select([['All', ''], ['Yes', 'true'], ['No', 'false']], params[:is_need_to_fetch_from_fofa_filter]), include_blank: 'Default', class: 'form_select' %>
-    
+
   <%= submit_tag 'Search', class: 'btn btn-primary' %>
 <% end %>
 
@@ -72,16 +72,16 @@
     // Set the server ID and current favicon URL in the modal
     document.getElementById('editServerId').value = serverId;
     document.getElementById('faviconUrlInput').value = currentUrl;
-    
+
     // Show the modal
     $('#editFaviconUrlModal').modal('show');
   }
-  
+
   // Function to save the favicon URL
   function saveFaviconUrl() {
     const serverId = document.getElementById('editServerId').value;
     const faviconUrl = document.getElementById('faviconUrlInput').value;
-    
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     // Send AJAX request to update the favicon URL
     fetch(`/servers/${serverId}.json`, {
@@ -106,7 +106,7 @@
         if (imgElement) {
           imgElement.src = faviconUrl;
         }
-        
+
         $('#editFaviconUrlModal').modal('hide');
     })
     .catch(error => {
@@ -114,16 +114,16 @@
       alert('更新失败，请重试');
     })
   }
-  
+
   // Function to initialize event listeners
   function initializeEventListeners() {
     // Remove existing event listeners to prevent duplicates
     const saveButton = document.getElementById('saveFaviconUrlBtn');
     const faviconUrlInput = document.getElementById('faviconUrlInput');
-    
+
     // Add event listener to the save button
     saveButton.addEventListener('click', saveFaviconUrl);
-    
+
     // Add event listener for Enter key in the input field
     faviconUrlInput.addEventListener('keypress', function(event) {
       if (event.key === 'Enter') {
@@ -131,7 +131,7 @@
       }
     });
   }
-  
+
   // Initialize event listeners when the DOM is loaded
   document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
@@ -170,7 +170,7 @@
     messageElement.textContent = message;
     messageElement.className = isSuccess ? 'alert alert-success' : 'alert alert-danger';
     messageElement.style.display = 'block';
-    
+
     // 5秒后隐藏消息
     setTimeout(() => {
       messageElement.style.display = 'none';
@@ -181,7 +181,7 @@
     const parent = element.closest('td');
     const collapsedContent = parent.querySelector('.collapsed-content');
     const fullContent = parent.querySelector('.full-content');
-    
+
     if (fullContent.style.display === 'none') {
       // 展开内容
       collapsedContent.style.display = 'none';
@@ -201,7 +201,7 @@
     const originalText = button.textContent;
     button.disabled = true;
     button.textContent = '刷新中...';
-    
+
     // 发起AJAX请求
     fetch(`/servers/${serverId}/update_fofa_count?type=${queryType}`, {
       method: 'GET',
@@ -264,7 +264,7 @@
       <th style="width: 50px;">Is Detected by FOFA</th>
 
       <th style='width: 100px'>Title of FOFA</th>
-      
+
       <th>Created At</th>
       <th>Updated At</th>
     </tr>
@@ -276,14 +276,14 @@
         <td><%= server.id %></td>
         <td>
           <%= link_to server.name, server %>
-          <%= link_to raw('<i class="fas fa-external-link-alt" style="color: #28a745; font-size: 16px;"></i>'), "#{server.domain_protocol}://#{server.name}", target: '_blank', title: '访问', style: 'text-decoration: none;' %>               
+          <%= link_to raw('<i class="fas fa-external-link-alt" style="color: #28a745; font-size: 16px;"></i>'), "#{server.domain_protocol}://#{server.name}", target: '_blank', title: '访问', style: 'text-decoration: none;' %>
         </td>
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_main_domain_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_main_domain_of_fofa_result %>
           <br/>
           <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain=\"#{server.name}\"")}&page=1&page_size=50", target: "_blank" %>
           <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'main_domain')" title="刷新FOFA计数" style="text-decoration: none;">
             <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
-          </a>        
+          </a>
           <a href="javascript:void(0)" onclick="toggleServerAttribute(<%= server.id %>, this, 'is_to_query_fofa_by_main_domain')">
             <% if server.is_to_query_fofa_by_main_domain %>
               <span style="color: green; font-size: 1.2em;">✓</span>
@@ -296,10 +296,10 @@
         <td style="width: 50px;<%= ' color: green;' if server.subdomain_count_base_name_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_count_base_name_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_count_base_name_of_fofa_result %>
           <br/>
           <%= link_to "fofa", "https://fofa.info/result?qbase64=#{Base64.strict_encode64("domain*=\"*.#{server.name.split('.').first}.*\"")}&page=1&page_size=50", target: "_blank" %>
-          
+
           <a href="javascript:void(0)" onclick="refreshFofaCount(<%= server.id %>, 'base_name')" title="刷新FOFA计数" style="text-decoration: none;">
             <i class="fas fa-sync-alt" style="color: #007bff; font-size: 16px;"></i>
-          </a>        
+          </a>
           <a href="javascript:void(0)" onclick="toggleServerAttribute(<%= server.id %>, this, 'is_to_query_fofa_by_base_name')">
             <% if server.is_to_query_fofa_by_base_name %>
               <span style="color: green; font-size: 1.2em;">✓</span>
@@ -320,7 +320,7 @@
             <% else %>
               <span style="color: red; font-size: 1.2em;">✗</span>
             <% end %>
-          </a>        
+          </a>
         </td>
         <td style="<%= ' color: green;' if server.subdomain_total_count_of_fofa_result.to_i > 1000 %><%= ' color: red;' if server.subdomain_total_count_of_fofa_result.to_i > 3000 %>"><%= server.subdomain_total_count_of_fofa_result %></td>
         <td style="width: 50px; text-align: center;">
@@ -331,7 +331,7 @@
               <span style="color: red; font-size: 1.2em;">✗</span>
             <% end %>
           </a>
-        </td>        
+        </td>
         <td style="width: 300px; word-wrap: break-word; word-break: break-all; white-space: pre-wrap;">
           <a href="javascript:void(0);" onclick="toggleContent(this)">
             <span class="collapsed-content">Click to expand</span>
@@ -349,6 +349,7 @@
             <%= link_to raw('<i class="fas fa-external-link-alt" style="color: #28a745; font-size: 16px;"></i>'), server.favicon_url, target: '_blank', title: '访问', style: 'text-decoration: none;' %>
           <% else %>
             No favicon URL <br/>
+            <span id="favicon-url-<%= server.id %>"></span> <br/>
             <a href="javascript:void(0)" onclick="openEditFaviconUrlModal(<%= server.id %>, '')" style="color: #007bff; text-decoration: none;">
               <i class="fas fa-edit"></i> 添加
             </a>
