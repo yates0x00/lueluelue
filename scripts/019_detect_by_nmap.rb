@@ -18,7 +18,9 @@ end
 
 ips = Ip.joins(:servers)
   .select("DISTINCT ips.*")
-  .where('servers.is_confirmed_not_behind_waf = ?',true)
-  #.limit(10)
+  .where('servers.project_id = ?', ARGV[0])
+  .where('servers.is_confirmed_not_behind_waf = ?', true)
+
+#  .limit(10)
 
 run ips

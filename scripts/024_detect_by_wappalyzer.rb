@@ -1,4 +1,4 @@
-ENV['RAILS_ENV'] = ARGV.first || ENV['RAILS_ENV'] || 'production'
+ENV['RAILS_ENV'] = 'production'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails'
 require 'rubygems'
@@ -6,9 +6,8 @@ require 'httparty'
 
 require 'csv'
 
-
 def run_single_thread url, server
-  command = "#{ENV['COMMAND_OF_WAPPALYZER']} https://#{url}"
+  command = "#{ENV['COMMAND_OF_WAPPALYZER']} -i https://#{url}"
   result = `#{command}`
   puts "== result: #{result.inspect}"
   puts "== result.urls: #{JSON.parse(result)['urls'].inspect}"
@@ -39,5 +38,5 @@ def run servers
   end
 end
 
-servers = Server.where("project_id = 31 and is_detected_by_wappalyzer = ?", false).order('id desc')
+servers = Server.where("project_id = ? and is_detected_by_wappalyzer = ?", ARGV[0], false).order('id desc')
 run servers

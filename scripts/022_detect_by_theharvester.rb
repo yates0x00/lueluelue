@@ -1,4 +1,4 @@
-ENV['RAILS_ENV'] = ARGV.first || ENV['RAILS_ENV'] || 'production'
+ENV['RAILS_ENV'] = 'production'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails'
 require 'rubygems'
@@ -15,7 +15,7 @@ def run servers
       threads << Thread.new do
 
         puts "== #{Time.now}, checking site: #{site.name}, index: #{site.id}"
-        command = "#{COMMAND_OF_THEHARVESTER} -d #{site.name} -b all -p"
+        command = "#{ENV['COMMAND_OF_THEHARVESTER']} -d #{site.name} -b all -p"
         result = `#{command}`
         site.update the_harvester_result: result
         puts "== #{Time.now} done, #{site.name}, #{site.id}"
@@ -32,4 +32,4 @@ end
 #run Server.where('name like ? and name != ?', "%nextcloud%", 'nextcloud.com').order('level asc')
 
 #run Server.where('name = ?', 'bc.game').order('level asc')
-run Server.where('project_id = 31 and is_detected_by_the_harvester = 0 ').order('level asc')
+run Server.where('project_id = ? and is_detected_by_the_harvester = 0 ', ARGV[0]).order('level asc')
